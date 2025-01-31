@@ -37,7 +37,7 @@
   </v-container>
 
   <v-dialog v-model="dialog.open" width="800" persistent>
-    <v-form :disable="isSubmitting" @submit.prevent="onSuWWbmit">
+    <v-form :disable="isSubmitting" @submit.prevent="onSubmit">
       <v-card>
         <v-card-title>{{ $t(dialog.id ? 'adminGroup.edit' : 'adminGroup.new') }}</v-card-title>
         <v-card-text>

@@ -6,7 +6,7 @@
         <v-divider></v-divider>
         <v-col cols="12">
           <div class="d-flex align-center justify-space-between mb-5">
-            <v-btn>{{ $t('admin.userNew') }}</v-btn>
+            <v-btn @click="openDialog(null)">{{ $t('admin.userNew') }}</v-btn>
             <div style="height: 60px; width: 80%" class="d-flex align-ceneter mr-3 ml-5">
               <v-text-field
                 v-model="search"
@@ -22,7 +22,7 @@
               <span>{{ roleName(item.role) }} </span>
             </template>
             <template #[`item.edit`]="{ item }">
-              <v-btn @click="">{{ $t('admin.userEdit') }}</v-btn>
+              <v-btn @click="openDialog(item)">{{ $t('admin.userEdit') }}</v-btn>
             </template>
             <template #[`item.delete`]="{ item }">
               <v-btn @click="deleteUser(item)">{{ $t('admin.userDelete') }}</v-btn>
@@ -32,6 +32,65 @@
       </v-col>
     </v-row>
   </v-container>
+
+  <v-dialog v-model="dialog.open" width="500">
+    <v-form :loading="isSubmitting" @submit="onSubmit(item)">
+      <v-card>
+        <v-card-title>{{ $t(dialog.id ? 'admin.userEdit' : 'admin.userNew') }}</v-card-title>
+        <v-card-text>
+          <v-container>
+            <v-row>
+              <v-col cols="12" class="d-flex align-center">
+                <v-avatar size="x-large">
+                  <v-img alt="John" :src="userData.avatar"></v-img>
+                </v-avatar>
+                <v-btn class="ml-5">變更頭像</v-btn>
+              </v-col>
+              <v-col cols="12">
+                <v-text-field
+                  :v-model="email.value.value"
+                  :error-messages="email.errorMessage.value"
+                  :label="$t('user.email')"
+                ></v-text-field>
+                <v-text-field
+                  :v-model="name.value.value"
+                  :error-messages="name.errorMessage.value"
+                  :label="$t('user.name')"
+                  counter
+                ></v-text-field>
+                <v-text-field
+                  :v-model="account.value.value"
+                  :error-messages="account.errorMessage.value"
+                  :label="$t('user.account')"
+                  counter
+                ></v-text-field>
+                <v-text-field
+                  :v-model="password.value.value"
+                  :error-messages="password.errorMessage.value"
+                  :label="$t('user.password')"
+                  counter
+                ></v-text-field>
+                <v-text-field
+                  :v-model="gender.value.value"
+                  :error-messages="gender.errorMessage.value"
+                  :label="$t('user.gender')"
+                ></v-text-field>
+                <v-text-field
+                  :v-model="age.value.value"
+                  :error-messages="age.errorMessage.value"
+                  :label="$t('user.age')"
+                ></v-text-field>
+              </v-col>
+            </v-row>
+          </v-container>
+        </v-card-text>
+        <v-card-actions>
+          <v-btn @click="closeDialog">{{ $t('user.cancel') }}</v-btn>
+          <v-btn type="submit" :loading="isSubmitting">{{ $t('user.submit') }}</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-form>
+  </v-dialog>
 </template>
 
 <script setup>
@@ -39,12 +98,16 @@ import { ref, reactive } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useAxios } from '@/composables/axios'
 import { useSnackbar } from 'vuetify-use-dialog'
+import { useUserStore } from '@/stores/user'
+import { useForm, useField } from 'vee-validate'
+import * as yup from 'yup'
+import validator from 'validator'
 
 const search = ref('')
 const user = reactive([])
 const { t } = useI18n()
 const { apiAuth } = useAxios()
-const { createSnackbar } = useSnackbar()
+const createSnackbar = useSnackbar()
 const headers = [
   { title: t('admin.userId'), key: '_id', sortable: true },
   { title: t('admin.userName'), key: 'name', sortable: true },
@@ -55,6 +118,32 @@ const headers = [
   { title: '', key: 'edit', sortable: false },
   { title: '', key: 'delete', sortable: false },
 ]
+const dialog = ref({
+  open: true,
+  id: '',
+})
+const openDialog = async (item) => {
+  if (item) {
+    console.log(item)
+
+    dialog.value.id = item._id
+    name.value.value = item.name
+    account.value.value = item.account
+    email.value.value = item.email
+    password.value.value = ''
+    age.value.value = item.age
+    gender.value.value = item.gender
+  }
+  dialog.value.open = true
+}
+
+const closeDialog = () => {
+  resetForm()
+  dialog.value.id = ''
+  dialog.value.open = false
+}
+
+const userData = useUserStore()
 
 // 使用者權限名稱
 const roleName = (role) => {
@@ -85,13 +174,100 @@ getUser()
 
 const deleteUser = async (item) => {
   try {
-    const { data } = await apiAuth.delete('/user/' + item._id)
-
-
+    await apiAuth.delete('/user/' + item._id)
+    user.length = 0
+    await getUser()
+    createSnackbar({
+      text: t('admin.groupDeleted'),
+      snackbarProps: {
+        color: 'green',
+      },
+    })
   } catch (error) {
     console.log(error)
+    createSnackbar({
+      text: t('api.' + (error?.response?.data?.message || 'unknownError')),
+      snackbarProps: {
+        color: 'red',
+      },
+    })
   }
 }
+
+const schema = yup.object({
+  name: yup
+    // 資料型態是文字
+    .string()
+    // 必填
+    .required(t('api.userNameRequired'))
+    // 自訂驗證(自訂驗證名稱, 錯誤訊息, function)
+    .test('isAlphanumeric', t('api.userNameInvalid'), (value) => validator.isAlphanumeric(value)),
+  account: yup
+    // 資料型態是文字
+    .string()
+    // 必填
+    .required(t('api.userAccountRequired'))
+    // 最短長度
+    .min(4, t('api.userAccountTooShort'))
+    // 最長長度
+    .max(20, t('api.userAccountTooLong'))
+    // 自訂驗證(自訂驗證名稱, 錯誤訊息, function)
+    .test('isAlphanumeric', t('api.userAccountInvalid'), (value) =>
+      validator.isAlphanumeric(value),
+    ),
+  email: yup
+    // 資料型態是文字
+    .string()
+    // 必填
+    .required(t('api.userEmailRequired'))
+    // 自訂驗證(自訂驗證名稱, 錯誤訊息, function)
+    .test('isEmail', t('api.userEmailInvalid'), (value) => validator.isEmail(value)),
+  password: yup
+    .string()
+    .required(t('api.userPasswordRequired'))
+    .min(4, t('api.userPasswordTooShort'))
+    .max(20, t('api.userPasswordTooLong')),
+  gender: yup.string().required(t('api.userGenderRequired')),
+  age: yup.number().required(t('api.userAgeRequired')),
+})
+
+const { handleSubmit, isSubmitting, resetForm } = useForm({
+  validationSchema: schema,
+})
+
+const name = useField('name')
+const account = useField('account')
+const email = useField('email')
+const password = useField('password')
+const gender = useField('gender')
+const age = useField('age')
+
+const onSubmit = handleSubmit(async (values) => {
+  try {
+    const fd = new FormDate()
+
+    fd.append('name', values.name)
+    fd.append('account', values.account)
+    fd.append('email', values.email)
+    fd.append('age', values.age)
+    fd.append('gender', values.gender)
+    fd.append('password', values.password)
+    createSnackbar({
+      text: t('admin.userCreateSuccess'),
+      snackbarProps: {
+        color: 'green',
+      },
+    })
+  } catch (error) {
+    console.log(error)
+    createSnackbar({
+      text: t('api.' + (error?.response?.data?.message || 'unknownError')),
+      snackbarProps: {
+        color: 'red',
+      },
+    })
+  }
+})
 </script>
 
 <route lang="yaml">
