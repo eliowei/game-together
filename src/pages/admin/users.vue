@@ -7,7 +7,7 @@
         <v-col cols="12">
           <div class="d-flex align-center justify-space-between mb-5">
             <v-btn @click="openDialog(null)">{{ $t('admin.userNew') }}</v-btn>
-            <div style="height: 60px; width: 80%" class="d-flex align-ceneter mr-3 ml-5">
+            <div style="height: 60px; width: 80%" class="d-flex mr-3 ml-5">
               <v-text-field
                 v-model="search"
                 prepend-icon="mdi-magnify"
@@ -34,7 +34,7 @@
   </v-container>
 
   <v-dialog v-model="dialog.open" width="500">
-    <v-form :loading="isSubmitting" @submit="onSubmit(item)">
+    <v-form :disabled="isSubmitting" @submit.prevent="onSubmit">
       <v-card>
         <v-card-title>{{ $t(dialog.id ? 'admin.userEdit' : 'admin.userNew') }}</v-card-title>
         <v-card-text>
@@ -48,38 +48,45 @@
               </v-col>
               <v-col cols="12">
                 <v-text-field
-                  :v-model="email.value.value"
+                  v-model="email.value.value"
                   :error-messages="email.errorMessage.value"
                   :label="$t('user.email')"
                 ></v-text-field>
                 <v-text-field
-                  :v-model="name.value.value"
+                  v-model="name.value.value"
                   :error-messages="name.errorMessage.value"
                   :label="$t('user.name')"
                   counter
                 ></v-text-field>
                 <v-text-field
-                  :v-model="account.value.value"
+                  v-model="account.value.value"
                   :error-messages="account.errorMessage.value"
                   :label="$t('user.account')"
                   counter
                 ></v-text-field>
                 <v-text-field
-                  :v-model="password.value.value"
+                  v-model="password.value.value"
+                  type="password"
                   :error-messages="password.errorMessage.value"
                   :label="$t('user.password')"
                   counter
                 ></v-text-field>
-                <v-text-field
-                  :v-model="gender.value.value"
+                <v-select
+                  v-model="gender.value.value"
                   :error-messages="gender.errorMessage.value"
                   :label="$t('user.gender')"
-                ></v-text-field>
-                <v-text-field
-                  :v-model="age.value.value"
+                  :items="genderItems"
+                  item-title="text"
+                  item-value="value"
+                ></v-select>
+                <v-select
+                  v-model="age.value.value"
                   :error-messages="age.errorMessage.value"
                   :label="$t('user.age')"
-                ></v-text-field>
+                  :items="ageItems"
+                  item-title="text"
+                  item-value="value"
+                ></v-select>
               </v-col>
             </v-row>
           </v-container>
@@ -119,7 +126,7 @@ const headers = [
   { title: '', key: 'delete', sortable: false },
 ]
 const dialog = ref({
-  open: true,
+  open: false,
   id: '',
 })
 const openDialog = async (item) => {
@@ -199,9 +206,7 @@ const schema = yup.object({
     // 資料型態是文字
     .string()
     // 必填
-    .required(t('api.userNameRequired'))
-    // 自訂驗證(自訂驗證名稱, 錯誤訊息, function)
-    .test('isAlphanumeric', t('api.userNameInvalid'), (value) => validator.isAlphanumeric(value)),
+    .required(t('api.userNameRequired')),
   account: yup
     // 資料型態是文字
     .string()
@@ -234,17 +239,17 @@ const schema = yup.object({
 const { handleSubmit, isSubmitting, resetForm } = useForm({
   validationSchema: schema,
 })
-
+// 建立欄位
 const name = useField('name')
 const account = useField('account')
 const email = useField('email')
 const password = useField('password')
 const gender = useField('gender')
 const age = useField('age')
-
+// 表單送出
 const onSubmit = handleSubmit(async (values) => {
   try {
-    const fd = new FormDate()
+    const fd = new FormData()
 
     fd.append('name', values.name)
     fd.append('account', values.account)
@@ -252,12 +257,23 @@ const onSubmit = handleSubmit(async (values) => {
     fd.append('age', values.age)
     fd.append('gender', values.gender)
     fd.append('password', values.password)
+
+    if (dialog.value.id.length > 0) {
+      await apiAuth.patch('/user/profile/' + dialog.value.id, fd)
+    } else {
+      await apiAuth.post('/user', fd)
+    }
+
+    user.splice(0, user.length)
+    getUser()
+
     createSnackbar({
-      text: t('admin.userCreateSuccess'),
+      text: t(dialog.value.id.length > 0 ? 'admin.userEditSuccess' : 'admin.userCreated'),
       snackbarProps: {
         color: 'green',
       },
     })
+    closeDialog()
   } catch (error) {
     console.log(error)
     createSnackbar({
@@ -268,6 +284,16 @@ const onSubmit = handleSubmit(async (values) => {
     })
   }
 })
+
+const genderItems = computed(() => [
+  { text: t('user.genderMale'), value: '男' },
+  { text: t('user.genderFemale'), value: '女' },
+])
+
+const ageItems = Array.from({ length: 100 }, (_, i) => ({
+  text: i + 1,
+  value: i + 1,
+}))
 </script>
 
 <route lang="yaml">

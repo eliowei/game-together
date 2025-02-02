@@ -41,6 +41,8 @@ export default {
     age: '年齡',
     cancel: '取消',
     submit: '確認',
+    genderMale: '男',
+    genderFemale: '女',
   },
   admin: {
     index: '管理',
@@ -66,6 +68,16 @@ export default {
     userRoleMember: '會員',
     userRoleAdmin: '管理員',
     userCreateSuccess: '新增成功',
+    userEditSuccess: '編輯成功',
+    userCreated: '新增成功',
+    contactName: '暱稱',
+    contactEmail: '電子郵件',
+    contactTitle: '主旨',
+    contactDescription: '內容',
+    contactDate: '建立時間',
+    contactView: '查看',
+    contactDelete: '刪除',
+    contactDeleted: '刪除成功',
   },
   adminGroup: {
     new: '新增揪團',
@@ -75,6 +87,10 @@ export default {
     submit: '確認',
     newSuccess: '新增成功',
     editSuccess: '編輯成功',
+  },
+  adminContact: {
+    view: '聯絡表單',
+
   },
   fileAgent: {
     helpText: '點擊或拖曳檔案至此',

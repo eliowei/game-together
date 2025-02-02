@@ -9,10 +9,12 @@
 import { onMounted, onBeforeUnmount, ref } from 'vue'
 import { createEditor, createToolbar } from '@wangeditor/editor'
 import '@wangeditor/editor/dist/css/style.css'
+import { useAxios } from '@/composables/axios'
 
 const editor = ref(null)
 const toolbar = ref(null)
 const fileAgent = ref(null)
+const { api } = useAxios()
 
 // 取得文字編輯器內容
 const getContent = () => {
@@ -34,19 +36,16 @@ onMounted(() => {
       MENU_CONF: {
         uploadImage: {
           // 自定義上傳按鈕點擊事件
-          customUpload: async (file, insertFn) => {
+          customUpload: async (files, insertFn) => {
+            if (!files || files.length === 0) return
+
             const formData = new FormData()
-            formData.append('image', file)
+            formData.append('image', files)
 
             try {
-              const response = await fetch('/api/upload', {
-                method: 'POST',
-                body: formData,
-              })
-              const data = await response.json()
-
-              // 插入圖片到編輯器
-              insertFn(data.data.url)
+              const { data } = await api.post('/api/upload', formData)
+              console.log('上傳成功:', data)
+              insertFn(data.file.path)
             } catch (error) {
               console.error('上傳失敗:', error)
             }
@@ -55,7 +54,6 @@ onMounted(() => {
       },
     },
   })
-
   // 建立工具列
   toolbar.value = createToolbar({
     editor: editor.value,

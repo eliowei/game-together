@@ -7,7 +7,7 @@
         <v-col cols="12">
           <div class="d-flex align-center justify-space-between mb-5">
             <v-btn @click="openDialog(null)">{{ $t('admin.groupNew') }}</v-btn>
-            <div style="height: 60px; width: 80%" class="d-flex align-ceneter mr-3 ml-5">
+            <div style="height: 60px; width: 80%" class="d-flex mr-3 ml-5">
               <v-text-field
                 v-model="search"
                 prepend-icon="mdi-magnify"
@@ -51,7 +51,7 @@
                   v-model="organizer_id.value.value"
                   :label="$t('group.organizerName')"
                   :items="organizerNameItems"
-                  :error-message="organizer.errorMessage"
+                  :error-messages="organizer_id.errorMessage.value"
                   item-title="text"
                   item-value="value"
                   variant="solo"
@@ -60,14 +60,14 @@
                 <v-text-field
                   v-model="name.value.value"
                   :label="$t('group.name')"
-                  :error-message="name.errorMessage.value"
+                  :error-messages="name.errorMessage.value"
                   minLength="1"
                 ></v-text-field>
 
                 <v-text-field
                   v-model="description.value.value"
                   :label="$t('group.description')"
-                  :error-message="description.errorMessage.value"
+                  :error-messages="description.errorMessage.value"
                   minLength="1"
                 ></v-text-field>
 
@@ -75,7 +75,7 @@
                   v-model="type.value.value"
                   :label="$t('group.type')"
                   :items="typeItems"
-                  :error-message="type.errorMessage.value"
+                  :error-messages="type.errorMessage.value"
                   item-title="text"
                   item-value="value"
                   variant="solo"
@@ -85,7 +85,7 @@
                   v-model="member_limit.value.value"
                   :label="$t('group.memberLimit')"
                   :items="memberLimitItems"
-                  :error-message="member_limit.errorMessage.value"
+                  :error-messages="member_limit.errorMessage.value"
                   item-title="text"
                   item-value="value"
                 ></v-select>
@@ -94,20 +94,20 @@
                   v-model="contact_method.value.value"
                   :label="$t('group.contactMethod')"
                   :items="['Line', 'Discord', 'Facebook']"
-                  :error-message="contact_method.errorMessage.value"
+                  :error-messages="contact_method.errorMessage.value"
                   variant="solo"
                 ></v-select>
 
                 <v-text-field
                   v-model="contact_info.value.value"
                   :label="$t('group.contactInfo')"
-                  :error-message="contact_info.errorMessage.value"
+                  :error-messages="contact_info.errorMessage.value"
                 ></v-text-field>
 
                 <v-select
                   v-model="city.value.value"
                   :label="$t('group.city')"
-                  :error-message="city.errorMessage.value"
+                  :error-messages="city.errorMessage.value"
                   v-if="type.value.value === typeItems[1].value"
                   :items="cityItems"
                   item-title="text"
@@ -117,7 +117,7 @@
                 <v-select
                   v-model="region.value.value"
                   :label="$t('group.region')"
-                  :error-message="region.errorMessage.value"
+                  :error-messages="region.errorMessage.value"
                   v-if="type.value.value === typeItems[1].value"
                   :items="regionItems"
                   item-title="text"
@@ -127,7 +127,7 @@
                 <v-text-field
                   v-model="address.value.value"
                   :label="$t('group.address')"
-                  :error-message="address.errorMessage.value"
+                  :error-messages="address.errorMessage.value"
                   v-if="type.value.value === typeItems[1].value"
                 ></v-text-field>
 
@@ -158,7 +158,7 @@
                       :select-text="$t('group.selectSure')"
                       :cancel-text="$t('group.selectCancel')"
                       :format="formatTime"
-                      :error-message="time.errorMessage.value"
+                      :error-messages="time.errorMessage.value"
                     ></VueDatePicker>
                   </v-col>
                 </div>
