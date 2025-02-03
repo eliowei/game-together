@@ -44,7 +44,14 @@
                 <v-avatar size="x-large">
                   <v-img alt="John" :src="userData.avatar"></v-img>
                 </v-avatar>
-                <v-btn class="ml-5">變更頭像</v-btn>
+                <input
+                  type="file"
+                  ref="fileInput"
+                  accept="image/*"
+                  @change="uploadAvatar"
+                  class="d-none"
+                />
+                <v-btn class="ml-5" @click="avatarFileInput">變更頭像</v-btn>
               </v-col>
               <v-col cols="12">
                 <v-text-field
@@ -148,6 +155,12 @@ const closeDialog = () => {
   resetForm()
   dialog.value.id = ''
   dialog.value.open = false
+}
+
+const fileInput = ref(null)
+
+const avatarFileInput = () => {
+  fileInput.value.click()
 }
 
 const userData = useUserStore()

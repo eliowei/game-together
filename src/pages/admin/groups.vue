@@ -213,6 +213,15 @@
             <v-tabs-window-item :value="2">
               <v-container>
                 <h1 class="text-center">{{ $t('admin.groupContent') }}</h1>
+                <quill-editor
+                  theme="snow"
+                  v-model:content="editorContent"
+                  :toolbar="editorOptions.modules.toolbar"
+                  :options="editorOptions"
+                  :modules="[BlotFormatterModule]"
+                  contentType="html"
+                />
+                <span class="text-h6 font-weight-bold">圖片:</span>
                 <VueFileAgent
                   v-model="fileRecords"
                   v-model:raw-model-value="rawFileRecords"
@@ -220,11 +229,13 @@
                   deletable
                   max-size="1MB"
                   :help-text="$t('fileAgent.helpText')"
-                  :error-text="{ type: $t('fileAgent.errorType'), size: $t('fileAgent.errorSize') }"
-                  class="mb-3"
+                  :error-text="{
+                    type: $t('fileAgent.errorType'),
+                    size: $t('fileAgent.errorSize'),
+                  }"
+                  class="w-25"
                   ref="fileAgent"
                 ></VueFileAgent>
-                <MyEditor ref="fileAgentRef"></MyEditor>
               </v-container>
             </v-tabs-window-item>
           </v-tabs-window>
@@ -238,19 +249,6 @@
   </v-dialog>
 </template>
 
-<style>
-#editor—wrapper {
-  border: 1px solid #ccc;
-  z-index: 100; /* If you need */
-}
-#toolbar-container {
-  border-bottom: 1px solid #ccc;
-}
-#editor-container {
-  height: 500px;
-}
-</style>
-
 <script setup>
 import { useAxios } from '@/composables/axios'
 import { useSnackbar } from 'vuetify-use-dialog'
@@ -262,8 +260,8 @@ import { useAreaData } from '@/composables/areaData'
 import VueDatePicker from '@vuepic/vue-datepicker'
 import '@vuepic/vue-datepicker/dist/main.css'
 import { zhTW } from 'date-fns/locale'
-import MyEditor from '@/components/MyEditor.vue'
 import { useDate } from 'vuetify'
+import BlotFormatter from 'quill-blot-formatter'
 
 const { apiAuth } = useAxios()
 const { t } = useI18n()
@@ -273,12 +271,57 @@ const group = reactive([])
 const search = ref('')
 const format = "yyyy'-'MM'-'dd'"
 const formatTime = "HH':'mm'"
-const fileAgentRef = ref(null)
 const dateVuetify = useDate()
 const fileRecords = ref([])
 const rawFileRecords = ref([])
 const fileAgent = ref(null)
 const organizer = reactive([])
+
+const editorContent = ref('')
+const editorOptions = {
+  modules: {
+    toolbar: [
+      // 粗體 斜體 底線 刪除線 -----['bold', 'italic', 'underline', 'strike']
+      ['bold', 'italic', 'underline', 'strike'],
+      // 引用  程式碼-----['blockquote', 'code-block']
+      ['blockquote', 'code-block'],
+      // 1、2 級標題-----[{ header: 1 }, { header: 2 }]
+      [{ header: 1 }, { header: 2 }],
+      // 有序、無序列表-----[{ list: 'ordered' }, { list: 'bullet' }]
+      [{ list: 'ordered' }, { list: 'bullet' }],
+      // 上標/下標-----[{ script: 'sub' }, { script: 'super' }]
+      [{ script: 'sub' }, { script: 'super' }],
+      // 縮排-----[{ indent: '-1' }, { indent: '+1' }]
+      [{ indent: '-1' }, { indent: '+1' }],
+      // 文本方向-----[{'direction': 'rtl'}]
+      [{ direction: 'rtl' }],
+      // 字體大小-----[{ size: ['small', false, 'large', 'huge'] }]
+      [{ size: ['small', false, 'large', 'huge'] }],
+      // 標題-----[{ header: [1, 2, 3, 4, 5, 6, false] }]
+      [{ header: [1, 2, 3, 4, 5, 6, false] }],
+      // 字體顏色、字體背景顏色-----[{ color: [] }, { background: [] }]
+      [{ color: [] }, { background: [] }],
+      // 字體種類-----[{ font: [] }]
+      [{ font: [] }],
+      // 對齊方式-----[{ align: [] }]
+      [{ align: [] }],
+      // 清除文本格式-----['clean']
+      ['clean'],
+      // 連結、圖片、視頻-----['link', 'image', 'video']
+      ['link'],
+      // ['table'] // 表格
+    ],
+  },
+  placeholder: '請輸入內容...',
+}
+
+const BlotFormatterModule = ref({
+  name: 'blotFormatter',
+  module: BlotFormatter,
+  options: {
+    /* options */
+  },
+})
 
 const tabSelect = ref(0)
 const tagSelectCount = ref(5)
@@ -472,16 +515,7 @@ const openDialog = async (item) => {
 
     tabSelect.value = 2
     await nextTick()
-    // 等待編輯器初始化完成
-    const checkEditor = setInterval(() => {
-      if (fileAgentRef.value?.editor) {
-        fileAgentRef.value.editor.setHtml(item.content || '')
-        clearInterval(checkEditor)
-      }
-    }, 100)
-
-    // 設定檢查超時
-    setTimeout(() => clearInterval(checkEditor), 3000)
+    editorContent.value = item.content
     tabSelect.value = 0
   }
   dialog.value.open = true
@@ -497,6 +531,7 @@ const closeDialog = () => {
   }
   tagSelectItems.value.length = 0
   tagSelectCount.value = 5
+  editorContent.value = ''
 }
 // 取得未選擇的標籤
 const tagItemsFiltered = computed(() => {
@@ -641,10 +676,6 @@ const tagSelectItemsSplice = (item) => {
 }
 // 表單送出
 const onSubmit = handleSubmit(async (values) => {
-  // 取得檔案和編輯器內容
-  const editorContent = fileAgentRef.value?.getContent()
-  console.log('編輯器內容:', editorContent)
-
   // 檢查是否有上傳檔案
   if (fileRecords.value[0]?.error) return
   if (dialog.value.id.length === 0 && fileRecords.value.length === 0) {
@@ -709,8 +740,9 @@ const onSubmit = handleSubmit(async (values) => {
     for (let tag of tags) {
       fd.append('tags[]', tag) //後端接收為array
     }
+    console.log(editorContent.value)
     // content -> 文字編輯器內容
-    fd.append('content', editorContent)
+    fd.append('content', editorContent.value)
 
     // 如果有上傳檔案，代表fileRecords值會大於0，就加入到FormData
     if (fileRecords.value.length > 0) {
@@ -748,6 +780,12 @@ const onSubmit = handleSubmit(async (values) => {
   }
 })
 </script>
+
+<style>
+.ql-editor {
+  min-height: 150px;
+}
+</style>
 
 <route lang="yaml">
 meta:

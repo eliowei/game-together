@@ -13,9 +13,11 @@
     "@boindil/vue-file-agent-next": "^1.0.5",
     "@mdi/font": "7.4.47",
     "@vuepic/vue-datepicker": "^11.0.1",
-    "@wangeditor/editor": "^5.1.23",
+    "@vueup/vue-quill": "^1.2.0",
     "axios": "^1.7.9",
     "pinia-plugin-persistedstate": "^4.2.0",
+    "quill": "^2.0.3",
+    "quill-blot-formatter": "^1.0.5",
     "roboto-fontface": "*",
     "validator": "^13.12.0",
     "vee-validate": "^4.15.0",
@@ -24,6 +26,9 @@
     "vuetify": "^3.6.14",
     "vuetify-use-dialog": "^0.6.11",
     "yup": "^1.6.1"
+  },
+  "overrides": {
+    "quill": "^2.0.3"
   },
   "devDependencies": {
     "@eslint/js": "^9.14.0",
