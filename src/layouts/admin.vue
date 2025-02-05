@@ -9,6 +9,8 @@
       <v-btn v-if="user.isLoggedIn" prepend-icon="mdi-account-arrow-right" @click="logout">{{
         $t('nav.logout')
       }}</v-btn>
+
+      <v-avatar border="xs" :image="user.avatar"> </v-avatar>
     </v-container>
   </v-app-bar>
 
@@ -30,15 +32,17 @@
 import { computed } from 'vue'
 import { useUserStore } from '@/stores/user'
 import { useI18n } from 'vue-i18n'
+import { useSnackbar } from 'vuetify-use-dialog'
 
 const { t } = useI18n()
 const user = useUserStore()
+const createSnackbar = useSnackbar()
 
 // 導覽列項目
 const navs = computed(() => {
   return [
     {
-      to: '/group/list',
+      to: '/group',
       text: t('nav.groupList'),
       icon: 'mdi-invoice-list-outline',
       show: user.isLoggedIn || !user.isLoggedIn,

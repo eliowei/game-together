@@ -7,7 +7,7 @@
         <v-col cols="12">
           <div class="d-flex align-center justify-space-between mb-5">
             <v-btn @click="openDialog(null)">{{ $t('admin.groupNew') }}</v-btn>
-            <div style="height: 60px; width: 80%" class="d-flex mr-3 ml-5">
+            <div style="height: 60px; width: 100%" class="d-flex justify-center">
               <v-text-field
                 v-model="search"
                 prepend-icon="mdi-magnify"
@@ -218,7 +218,6 @@
                   v-model:content="editorContent"
                   :toolbar="editorOptions.modules.toolbar"
                   :options="editorOptions"
-                  :modules="[BlotFormatterModule]"
                   contentType="html"
                 />
                 <span class="text-h6 font-weight-bold">圖片:</span>
@@ -311,18 +310,10 @@ const editorOptions = {
       ['link'],
       // ['table'] // 表格
     ],
+    BlotFormatter,
   },
   placeholder: '請輸入內容...',
 }
-
-const BlotFormatterModule = ref({
-  name: 'blotFormatter',
-  module: BlotFormatter,
-  options: {
-    /* options */
-  },
-})
-
 const tabSelect = ref(0)
 const tagSelectCount = ref(5)
 const tagInput = ref('')
@@ -573,7 +564,7 @@ const schema = yup.object({
     .required(t('group.timeRequired')),
 })
 // 表單
-const { handleSubmit, isSubmitting, resetForm } = useForm({
+const { handleSubmit, isSubmitting, resetForm, errors } = useForm({
   // 表單schema驗證
   validationSchema: schema,
   // 表單初始值
@@ -609,6 +600,19 @@ const region = useField('region')
 const address = useField('address')
 const date = useField('date')
 const time = useField('time')
+
+watch(
+  errors,
+  (newErrors) => {
+    console.log(newErrors)
+    if (Object.keys(newErrors).length > 0) {
+      tabSelect.value = 0
+    }
+  },
+  {
+    deep: true,
+  },
+)
 
 // 監聽縣市變更
 watch(
@@ -678,7 +682,21 @@ const tagSelectItemsSplice = (item) => {
 const onSubmit = handleSubmit(async (values) => {
   // 檢查是否有上傳檔案
   if (fileRecords.value[0]?.error) return
-  if (dialog.value.id.length === 0 && fileRecords.value.length === 0) {
+  if (tagSelectItems.value.length === 0) {
+    tabSelect.value = 1
+    await nextTick()
+
+    createSnackbar({
+      text: t('admin.groupTagRequired'),
+      snackbarProps: {
+        color: 'red',
+      },
+    })
+    return
+  } else if (dialog.value.id.length === 0 && fileRecords.value.length === 0) {
+    tabSelect.value = 2
+    await nextTick()
+
     createSnackbar({
       text: t('admin.groupImageRequired'),
       snackbarProps: {

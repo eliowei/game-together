@@ -9,6 +9,8 @@
       <v-btn v-if="user.isLoggedIn" prepend-icon="mdi-account-arrow-right" @click="logout">{{
         $t('nav.logout')
       }}</v-btn>
+
+      <v-avatar border="xs" :image="user.avatar"> </v-avatar>
     </v-container>
   </v-app-bar>
   <v-main>
@@ -34,7 +36,7 @@ const router = useRouter()
 const navs = computed(() => {
   return [
     {
-      to: '/group/list',
+      to: '/group',
       text: t('nav.groupList'),
       icon: 'mdi-invoice-list-outline',
       show: user.isLoggedIn || !user.isLoggedIn,

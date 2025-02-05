@@ -55,6 +55,7 @@ export default {
     groupPlaceHolder: '請輸入適合揪團的標籤',
     groupContent: '揪團內文',
     groupImageRequired: '揪團圖片必填',
+    groupTagRequired: '標籤必填',
     userNew: '新增會員',
     userEdit: '編輯會員',
     userDelete: '刪除',
@@ -70,6 +71,9 @@ export default {
     userCreateSuccess: '新增成功',
     userEditSuccess: '編輯成功',
     userCreated: '新增成功',
+    userImageInvalid: '圖片格式錯誤，只能上傳jpeg、png格式',
+    userImageMaxSize: '圖片大小超過1MB限制',
+    unknownError: '未知錯誤',
     contactName: '暱稱',
     contactEmail: '電子郵件',
     contactTitle: '主旨',
@@ -90,7 +94,6 @@ export default {
   },
   adminContact: {
     view: '聯絡表單',
-
   },
   fileAgent: {
     helpText: '點擊或拖曳檔案至此',
@@ -142,6 +145,7 @@ export default {
     notOrganizer: '非揪團主辦人',
     unknownError: '未知錯誤',
     uploadFailed: '上傳失敗',
+    contentRequired: '揪團內文必填',
   },
   group: {
     organizerIdRequired: '主辦者ID必填',

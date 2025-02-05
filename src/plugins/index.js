@@ -14,6 +14,7 @@ import VueFileAgentNext from '@boindil/vue-file-agent-next'
 import '@boindil/vue-file-agent-next/dist/vue-file-agent-next.css'
 import { QuillEditor } from '@vueup/vue-quill'
 import '@vueup/vue-quill/dist/vue-quill.snow.css'
+import VueDOMPurifyHTML from 'vue-dompurify-html'
 
 export function registerPlugins(app) {
   app
@@ -30,5 +31,6 @@ export function registerPlugins(app) {
       },
     })
     .use(VueFileAgentNext)
+    .use(VueDOMPurifyHTML)
     .component('QuillEditor', QuillEditor)
 }

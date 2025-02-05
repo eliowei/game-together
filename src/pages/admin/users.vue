@@ -7,7 +7,7 @@
         <v-col cols="12">
           <div class="d-flex align-center justify-space-between mb-5">
             <v-btn @click="openDialog(null)">{{ $t('admin.userNew') }}</v-btn>
-            <div style="height: 60px; width: 80%" class="d-flex mr-3 ml-5">
+            <div style="height: 60px; width: 100%" class="d-flex justify-center">
               <v-text-field
                 v-model="search"
                 prepend-icon="mdi-magnify"
@@ -16,7 +16,6 @@
               ></v-text-field>
             </div>
           </div>
-
           <v-data-table :items="user" :headers="headers" :search="search">
             <template #[`item.role`]="{ item }">
               <span>{{ roleName(item.role) }} </span>
@@ -42,12 +41,13 @@
             <v-row>
               <v-col cols="12" class="d-flex align-center">
                 <v-avatar size="x-large">
-                  <v-img alt="John" :src="userData.avatar"></v-img>
+                  <v-img alt="John" :src="userPreviewAvatar" :alt="user.name"></v-img>
                 </v-avatar>
                 <input
-                  type="file"
                   ref="fileInput"
-                  accept="image/*"
+                  type="file"
+                  accept="image/jpeg,image/png"
+                  minlength="1024"
                   @change="uploadAvatar"
                   class="d-none"
                 />
@@ -112,7 +112,6 @@ import { ref, reactive } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useAxios } from '@/composables/axios'
 import { useSnackbar } from 'vuetify-use-dialog'
-import { useUserStore } from '@/stores/user'
 import { useForm, useField } from 'vee-validate'
 import * as yup from 'yup'
 import validator from 'validator'
@@ -147,23 +146,54 @@ const openDialog = async (item) => {
     password.value.value = ''
     age.value.value = item.age
     gender.value.value = item.gender
+    userPreviewAvatar.value = item.image || `http://api.multiavatar.com/${account.value.value}.png`
   }
   dialog.value.open = true
 }
 
 const closeDialog = () => {
-  resetForm()
-  dialog.value.id = ''
   dialog.value.open = false
+  dialog.value.id = ''
+  resetForm()
+  fileInput.value = null
+  image.value = null
 }
 
+const userPreviewAvatar = ref('http://api.multiavatar.com/bbb.png')
 const fileInput = ref(null)
+const image = ref(null)
 
 const avatarFileInput = () => {
   fileInput.value.click()
 }
 
-const userData = useUserStore()
+const uploadAvatar = async () => {
+  try {
+    const file = fileInput.value.files[0]
+    if (!file) return
+
+    // 檢查檔案類型
+    const validTypes = ['image/jpeg', 'image/png']
+    if (!validTypes.includes(file.type)) {
+      throw new Error('userImageInvalid')
+    }
+
+    // 檢查檔案大小 (1MB)
+    if (file.size > 1024 * 1024) {
+      throw new Error('userImageMaxSize')
+    }
+    userPreviewAvatar.value = URL.createObjectURL(file)
+    image.value = file
+  } catch (error) {
+    console.log(error)
+    createSnackbar({
+      text: t('admin.' + (error.message || 'unknownError')),
+      snackbarProps: {
+        color: 'red',
+      },
+    })
+  }
+}
 
 // 使用者權限名稱
 const roleName = (role) => {
@@ -270,6 +300,10 @@ const onSubmit = handleSubmit(async (values) => {
     fd.append('age', values.age)
     fd.append('gender', values.gender)
     fd.append('password', values.password)
+
+    if (image.value) {
+      fd.append('image', image.value)
+    }
 
     if (dialog.value.id.length > 0) {
       await apiAuth.patch('/user/profile/' + dialog.value.id, fd)
