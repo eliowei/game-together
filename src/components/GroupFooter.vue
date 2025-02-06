@@ -8,20 +8,16 @@
         <v-col cols="3">
           <h1>SITEMAP</h1>
           <v-list>
-            <v-list-item-group>
-              <v-list-item>
-                <v-list-item-title>揪團列表</v-list-item-title>
+            <template v-for="nav of navs" :key="nav.to">
+              <v-list-item
+                v-if="nav.show"
+                :to="nav.to"
+                :active="false"
+                :ripple="false"
+                lines="false"
+                >{{ nav.text }}
               </v-list-item>
-              <v-list-item>
-                <v-list-item-title>主辦揪團</v-list-item-title>
-              </v-list-item>
-              <v-list-item>
-                <v-list-item-title>會員專區</v-list-item-title>
-              </v-list-item>
-              <v-list-item>
-                <v-list-item-title>關於我們</v-list-item-title>
-              </v-list-item>
-            </v-list-item-group>
+            </template>
           </v-list>
         </v-col>
         <v-col cols="3">
@@ -41,7 +37,7 @@
               <button class="mr-5">
                 <v-icon icon="mdi-instagram" size="x-large"></v-icon>
               </button>
-              <button class="mr-5">
+              <button>
                 <v-icon icon="mdi-twitter" size="x-large"></v-icon>
               </button>
             </div>
@@ -58,3 +54,20 @@
   color: white;
 }
 </style>
+
+<script setup>
+import { ref } from 'vue'
+import { useUserStore } from '@/stores/user'
+import { useI18n } from 'vue-i18n'
+
+const user = useUserStore()
+const { t } = useI18n()
+
+const navs = ref([
+  { text: t('nav.groupList'), to: '/group', show: user.isLoggedIn || !user.isLoggedIn },
+  { text: t('nav.groupCreate'), to: '/group/create', show: user.isLoggedIn || !user.isLoggedIn },
+  { text: t('nav.membersSection'), to: '/member', show: user.isLoggedIn },
+  { text: t('nav.adminSection'), to: '/admin', show: user.isLoggedIn && user.isAdmin },
+  { text: t('nav.contactUs'), to: '/contact', show: user.isLoggedIn || !user.isLoggedIn },
+])
+</script>

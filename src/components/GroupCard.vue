@@ -18,14 +18,16 @@
           <v-chip v-if="type === '線下'" class="mr-2">{{ city + region }}</v-chip>
           <v-chip prepend-icon="mdi-clock-time-four-outline">{{ time }}</v-chip>
         </div>
-        <div class="d-flex flex-column mr-3 mb-2">
+        <div class="d-flex mb-1">
           <template v-for="number in groupMembers">
-            <v-avatar>
-              <v-img :src="number.user_id.image" />
-            </v-avatar>
+            <div class="d-flex flex-column mr-5">
+              <v-avatar>
+                <v-img :src="number.user_id.image" />
+              </v-avatar>
+            </div>
           </template>
         </div>
-        <p>{{ member_count }}位已參加揪團 剩餘{{ member_limit }}空位</p>
+        <p class="mt-2">{{ member_count }}位已參加揪團 剩餘{{ member_limit }}空位</p>
       </v-card-text>
     </div>
     <div class="card-end mt-2">

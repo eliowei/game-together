@@ -204,6 +204,9 @@ export default {
     alreadyOrganized: '已經是揪團主辦人',
     selectSure: '確定',
     selectCancel: '取消',
+    end: '揪團已結束',
+    full: '揪團已滿',
+    loginRequired: '請先登入',
   },
   tab: {
     group: '揪團資訊',

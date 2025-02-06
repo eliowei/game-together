@@ -12,6 +12,7 @@ export const useUserStore = defineStore(
     const email = ref('')
     const role = ref(UserRole)
     const image = ref('')
+    const favorite_groups = ref([])
 
     const isLoggedIn = computed(() => {
       return token.value.length > 0
@@ -43,6 +44,7 @@ export const useUserStore = defineStore(
       email.value = data.email
       role.value = data.role
       image.value = data.image
+      favorite_groups.value = data.favorite_groups
     }
 
     const logout = () => {
@@ -52,6 +54,17 @@ export const useUserStore = defineStore(
       email.value = ''
       role.value = UserRole.USER
       image.value = ''
+      favorite_groups.value = []
+    }
+
+    const updateFavoriteGroups = (groupData, isFavorite) => {
+      if (isFavorite) {
+        favorite_groups.value = favorite_groups.value.filter(
+          (favorite) => favorite.group_id !== groupData._id,
+        )
+      } else {
+        favorite_groups.value.push({ group_id: groupData.value._id })
+      }
     }
 
     return {
@@ -66,7 +79,9 @@ export const useUserStore = defineStore(
       logout,
       avatar,
       image,
+      favorite_groups,
       setAvatar,
+      updateFavoriteGroups,
     }
   },
   {

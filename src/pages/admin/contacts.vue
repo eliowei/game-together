@@ -57,8 +57,6 @@ import { ref, reactive } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useAxios } from '@/composables/axios'
 import { useSnackbar } from 'vuetify-use-dialog'
-import { useForm, useField } from 'vee-validate'
-import * as yup from 'yup'
 
 const search = ref('')
 const contact = reactive([])

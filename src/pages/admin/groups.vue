@@ -604,7 +604,6 @@ const time = useField('time')
 watch(
   errors,
   (newErrors) => {
-    console.log(newErrors)
     if (Object.keys(newErrors).length > 0) {
       tabSelect.value = 0
     }
@@ -742,13 +741,10 @@ const onSubmit = handleSubmit(async (values) => {
     }
     fd.append(
       'time',
-      dateVuetify.format(values.date, 'keyboardDate') +
-        ' ' +
-        dateVuetify.format(values.time, 'fullTime24h'),
+      `${dateVuetify.format(values.date, 'keyboardDate')} ${String(values.time.hours).padStart(2, '0')}:${String(values.time.minutes).padStart(2, '0')}:00`,
     )
     console.log(
-      dateVuetify.format(values.date, 'keyboardDate'),
-      dateVuetify.format(values.time, 'fullTime24h'),
+      `${dateVuetify.format(values.date, 'keyboardDate')} ${String(values.time.hours).padStart(2, '0')}:${String(values.time.minutes).padStart(2, '0')}:00`,
     )
 
     // 宣告tags為選擇的標籤，並轉換成array
