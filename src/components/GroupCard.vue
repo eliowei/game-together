@@ -15,7 +15,7 @@
         {{ description }}
         <div class="chip-list d-flex mt-2 mb-2">
           <v-chip class="mr-2">{{ type }}</v-chip>
-          <v-chip v-if="type === '線下'" class="mr-2">{{ city + region }}</v-chip>
+          <v-chip v-if="type === '線下'" class="mr-2">{{ t('area.' + city) + region }}</v-chip>
           <v-chip prepend-icon="mdi-clock-time-four-outline">{{ time }}</v-chip>
         </div>
         <div class="d-flex mb-1">
@@ -27,7 +27,7 @@
             </div>
           </template>
         </div>
-        <p class="mt-2">{{ member_count }}位已參加揪團 剩餘{{ member_limit }}空位</p>
+        <p class="mt-2">{{ member_count }}位已參加揪團 剩餘{{ member_limit - member_count }}空位</p>
       </v-card-text>
     </div>
     <div class="card-end mt-2">
@@ -38,6 +38,8 @@
 
 <script setup>
 import { useUserStore } from '@/stores/user'
+import { useI18n } from 'vue-i18n'
+const { t } = useI18n()
 const user = useUserStore()
 defineProps({
   _id: {

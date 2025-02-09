@@ -89,23 +89,16 @@
             </v-tabs-window-item>
             <v-tabs-window-item :value="1">
               <template v-for="(comment, keys) of group.comments">
-                <div
-                  :class="[
-                    'd-flex',
-                    'mb-5',
-                    'mt-3',
-                    keys === 0 ? 'justify-start' : 'justify-end',
-                    'w-100',
-                  ]"
-                >
+                <div :class="['d-flex', 'mb-5', 'mt-3', 'w-100']">
                   <div class="d-flex flex-column mr-3 ml-5 order-1">
                     <v-avatar>
                       <v-img :src="comment.user_id.image"></v-img>
                     </v-avatar>
                     <span class="mt-1 ml-1">{{ comment.user_id.name }}</span>
                   </div>
-                  <v-card :class="[keys === 0 ? 'order-2' : '', '']" style="width: 600px">
+                  <v-card class="order-2" style="width: 600px">
                     <v-card-text>{{ comment.content }}</v-card-text>
+                    <v-card-actions>B{{ keys }} </v-card-actions>
                   </v-card>
                 </div>
               </template>
@@ -172,7 +165,7 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import { useAxios } from '@/composables/axios'
 import { useRoute, useRouter } from 'vue-router'
 import GroupFooter from '@/components/GroupFooter.vue'
@@ -415,3 +408,8 @@ const favoriteAction = async () => {
   }
 }
 </script>
+
+<route lang="yaml">
+meta:
+  title: 'nav.groupDetail'
+</route>

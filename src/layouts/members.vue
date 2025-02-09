@@ -10,19 +10,24 @@
         $t('nav.logout')
       }}</v-btn>
 
-      <v-avatar border="xs" :image="user.avatar"> </v-avatar>
+      <v-avatar border="xs" :image="user.avatar"></v-avatar>
     </v-container>
   </v-app-bar>
 
   <v-navigation-drawer permanent>
     <v-list>
-      <v-list-item
-        ><v-avatar :image="user.avatar" size="50" class="mr-2 mb-3"></v-avatar>
-        <span class="mr-3">{{ user.account }}</span
-        ><span>{{ user.email }}</span>
+      <v-list-item>
+        <div class="d-flex">
+          <v-avatar :image="user.avatar" size="50"> </v-avatar>
+          <div class="d-flex flex-column ml-3 justify-center">
+            <span class="mr-3">{{ user.account }}</span
+            ><span>{{ user.email }}</span>
+          </div>
+        </div>
       </v-list-item>
-
-      <v-chip v-for="item in userTag" :key="item" class="ml-2">{{ item }} </v-chip>
+      <v-list-item>
+        <v-chip v-for="item in userTags" :key="item" class="mr-2 mb-1">{{ item }} </v-chip>
+      </v-list-item>
     </v-list>
     <v-divider></v-divider>
     <v-list>
@@ -91,7 +96,9 @@ const { apiAuth } = useAxios()
 const createSnackbar = useSnackbar()
 const router = useRouter()
 
-const userTag = ref(['標籤', '標籤', '標籤', '標籤', '標籤'])
+const userTags = computed(() => {
+  return user.tags
+})
 
 // 導覽列項目
 const navs = computed(() => {
@@ -133,16 +140,16 @@ const navs = computed(() => {
 
 const groupNavs = computed(() => {
   return [
-    { title: '主辦的揪團', icon: 'mdi-cog-outline', to: '/numbers/group/organizer' },
-    { title: '參加的揪團', icon: 'mdi-cog-outline', to: '/numbers/group/participation' },
-    { title: '收藏的揪團', icon: 'mdi-cog-outline', to: '/numbers/group/favorites' },
+    { title: '主辦的揪團', icon: 'mdi-cog-outline', to: '/member/organizer' },
+    { title: '參加的揪團', icon: 'mdi-cog-outline', to: '/member/participation' },
+    { title: '收藏的揪團', icon: 'mdi-cog-outline', to: '/member/favorites' },
   ]
 })
 
 const infoNavs = computed(() => {
   return [
-    { title: '個人資訊', icon: 'mdi-account-multiple-outline', to: '/numbers/user/info' },
-    { title: '個人標籤', icon: 'mdi-cog-outline', to: '/numbers/user/tag' },
+    { title: '個人資訊', icon: 'mdi-account-multiple-outline', to: '/member/info' },
+    { title: '個人標籤', icon: 'mdi-cog-outline', to: '/member/tag' },
   ]
 })
 

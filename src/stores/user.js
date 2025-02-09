@@ -13,6 +13,7 @@ export const useUserStore = defineStore(
     const role = ref(UserRole)
     const image = ref('')
     const favorite_groups = ref([])
+    const tags = ref([])
 
     const isLoggedIn = computed(() => {
       return token.value.length > 0
@@ -45,6 +46,7 @@ export const useUserStore = defineStore(
       role.value = data.role
       image.value = data.image
       favorite_groups.value = data.favorite_groups
+      tags.value = data.tags
     }
 
     const logout = () => {
@@ -55,6 +57,7 @@ export const useUserStore = defineStore(
       role.value = UserRole.USER
       image.value = ''
       favorite_groups.value = []
+      tags.value = []
     }
 
     const updateFavoriteGroups = (groupData, isFavorite) => {
@@ -80,6 +83,7 @@ export const useUserStore = defineStore(
       avatar,
       image,
       favorite_groups,
+      tags,
       setAvatar,
       updateFavoriteGroups,
     }

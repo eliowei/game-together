@@ -2,7 +2,7 @@
 
 <route lang="yaml">
 meta:
-  layout: mumbers
+  layout: members
   title: 'nav.memberIndex'
   login: true
 </route>
