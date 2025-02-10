@@ -36,6 +36,10 @@ export const useUserStore = defineStore(
       image.value = value
     }
 
+    const setTags = (value) => {
+      tags.value = value
+    }
+
     const login = (data) => {
       if (data.token) {
         token.value = data.token
@@ -85,6 +89,7 @@ export const useUserStore = defineStore(
       favorite_groups,
       tags,
       setAvatar,
+      setTags,
       updateFavoriteGroups,
     }
   },

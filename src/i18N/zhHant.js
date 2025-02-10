@@ -47,6 +47,7 @@ export default {
     genderFemale: '女',
   },
   member: {
+    index: '會員專區',
     organizer: '主辦的揪團',
     groupEdit: '編輯',
     groupView: '頁面',
@@ -122,6 +123,17 @@ export default {
     uploadSuccess: '上傳成功',
     uploadImageFailed: '圖片上傳失敗',
     uploadImageSuccess: '圖片上傳成功',
+  },
+  contact: {
+    nickname: '暱稱',
+    nicknameRequired: '暱稱必填',
+    email: '電子郵件',
+    emailRequired: '電子郵件必填',
+    title: '主旨',
+    titleRequired: '主旨必填',
+    description: '訊息內容',
+    descriptionRequired: '訊息內容必填',
+    success: '訊息已送出',
   },
   api: {
     userAccountRequired: '請輸入用戶名',
@@ -225,6 +237,7 @@ export default {
     end: '揪團已結束',
     full: '揪團已滿',
     loginRequired: '請先登入',
+    createSetp1: 'SETP 1 設定揪團資訊',
   },
   tab: {
     group: '揪團資訊',

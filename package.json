@@ -11,6 +11,9 @@
   },
   "dependencies": {
     "@boindil/vue-file-agent-next": "^1.0.5",
+    "@fullcalendar/core": "^6.1.15",
+    "@fullcalendar/daygrid": "^6.1.15",
+    "@fullcalendar/vue3": "^6.1.15",
     "@mdi/font": "7.4.47",
     "@vuepic/vue-datepicker": "^11.0.1",
     "@vueup/vue-quill": "^1.2.0",

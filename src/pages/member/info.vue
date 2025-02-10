@@ -7,7 +7,7 @@
         <v-form :disabled="isSubmitting" @submit.prevent="onSubmit">
           <v-container>
             <v-row>
-              <v-col cols="12" class="d-flex align-center">
+              <v-col cols="12" offset="2" class="d-flex align-center">
                 <v-avatar size="x-large">
                   <v-img alt="John" :src="userPreviewAvatar" :alt="user.name"></v-img>
                 </v-avatar>
@@ -21,44 +21,52 @@
                 />
                 <v-btn class="ml-5" @click="avatarFileInput" :disabled="!userEdit">變更頭像</v-btn>
               </v-col>
-              <v-col cols="12">
-                <v-text-field
-                  v-model="name.value.value"
-                  :error-messages="name.errorMessage.value"
-                  :label="$t('user.name')"
-                  counter
-                  :disabled="!userEdit"
-                ></v-text-field>
-                <v-select
-                  v-model="gender.value.value"
-                  :error-messages="gender.errorMessage.value"
-                  :label="$t('user.gender')"
-                  :items="genderItems"
-                  item-title="text"
-                  item-value="value"
-                  :disabled="!userEdit"
-                ></v-select>
-                <v-select
-                  v-model="age.value.value"
-                  :error-messages="age.errorMessage.value"
-                  :label="$t('user.age')"
-                  :items="ageItems"
-                  item-title="text"
-                  item-value="value"
-                  :disabled="!userEdit"
-                ></v-select>
+              <v-col cols="12" offset="2">
+                <v-col cols="4">
+                  <v-text-field
+                    v-model="name.value.value"
+                    :error-messages="name.errorMessage.value"
+                    :label="$t('user.name')"
+                    counter
+                    :disabled="!userEdit"
+                  ></v-text-field>
+                  <v-select
+                    v-model="gender.value.value"
+                    :error-messages="gender.errorMessage.value"
+                    :label="$t('user.gender')"
+                    :items="genderItems"
+                    item-title="text"
+                    item-value="value"
+                    :disabled="!userEdit"
+                  ></v-select>
+                  <v-select
+                    v-model="age.value.value"
+                    :error-messages="age.errorMessage.value"
+                    :label="$t('user.age')"
+                    :items="ageItems"
+                    item-title="text"
+                    item-value="value"
+                    :disabled="!userEdit"
+                  ></v-select>
+                </v-col>
+              </v-col>
+              <v-col cols="12" offset="5" v-if="!userEdit">
+                <button v-if="!userEdit" @click="userEdit = true">
+                  <v-icon icon="mdi-pencil-outline" size="large"></v-icon>
+                  {{ t('member.userEdit') }}
+                </button>
+              </v-col>
+              <v-col cols="6">
+                <div class="d-flex justify-end">
+                  <v-btn v-if="userEdit" type="submit" :loading="isSubmitting" class="mr-3">{{
+                    $t('member.submitEdit')
+                  }}</v-btn>
+                  <v-btn v-if="userEdit" @click="userEdit = false">{{
+                    $t('member.cancelEdit')
+                  }}</v-btn>
+                </div>
               </v-col>
             </v-row>
-            <div class="d-flex justify-end">
-              <v-btn v-if="userEdit" type="submit" :loading="isSubmitting" class="mr-3">{{
-                $t('member.submitEdit')
-              }}</v-btn>
-              <v-btn v-if="userEdit" @click="userEdit = false">{{ $t('member.cancelEdit') }}</v-btn>
-              <button v-if="!userEdit" @click="userEdit = true">
-                <v-icon icon="mdi-pencil-outline" size="large"></v-icon>
-                {{ t('member.userEdit') }}
-              </button>
-            </div>
           </v-container>
         </v-form>
       </v-col>

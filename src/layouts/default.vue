@@ -36,13 +36,13 @@ const router = useRouter()
 const navs = computed(() => {
   return [
     {
-      to: '/group',
+      to: '/group/',
       text: t('nav.groupList'),
       icon: 'mdi-invoice-list-outline',
       show: user.isLoggedIn || !user.isLoggedIn,
     },
     {
-      to: '/group/create',
+      to: '/creategroup/setp1',
       text: t('nav.groupCreate'),
       icon: 'mdi-flag-outline',
       show: user.isLoggedIn || !user.isLoggedIn,

@@ -70,12 +70,30 @@
       </v-list-group>
     </v-list>
     <v-divider></v-divider>
-    <v-list-item
-      >本周揪團<v-btn class="ml-10" append-icon="mdi-arrow-top-right">詳細月曆</v-btn></v-list-item
-    >
-    <v-list-item>名稱: 線上/線下 時間</v-list-item>
-    <v-list-item>名稱: 線上/線下 時間</v-list-item>
-    <v-list-item>名稱: 線上/線下 時間</v-list-item>
+    <v-list-item class="w-100">
+      <div class="d-flex justify-space-between align-center">
+        <span class="font-weight-bold">本周揪團</span>
+        <v-btn
+          :to="'/member/date'"
+          append-icon="mdi-arrow-top-right"
+          variant="text"
+          :ripple="false"
+          :active="false"
+        >
+          詳細月曆
+        </v-btn>
+      </div>
+    </v-list-item>
+    <template v-for="group of groupFilter">
+      <v-divider></v-divider>
+      <v-list-item style="font-size: 14px"
+        >{{ group.group_id.name }} {{ group.group_id.type }}
+        <v-chip class="ml-1" prepend-icon="mdi-clock-time-four-outline">{{
+          new Date(group.group_id.time).toLocaleDateString()
+        }}</v-chip>
+      </v-list-item>
+    </template>
+    <v-divider></v-divider>
   </v-navigation-drawer>
   <v-main>
     <router-view></router-view>
@@ -95,6 +113,7 @@ const user = useUserStore()
 const { apiAuth } = useAxios()
 const createSnackbar = useSnackbar()
 const router = useRouter()
+const group = ref([])
 
 const userTags = computed(() => {
   return user.tags
@@ -110,7 +129,7 @@ const navs = computed(() => {
       show: user.isLoggedIn || !user.isLoggedIn,
     },
     {
-      to: '/group/create',
+      to: '/creategroup/setp1',
       text: t('nav.groupCreate'),
       icon: 'mdi-flag-outline',
       show: user.isLoggedIn || !user.isLoggedIn,
@@ -140,16 +159,16 @@ const navs = computed(() => {
 
 const groupNavs = computed(() => {
   return [
-    { title: '主辦的揪團', icon: 'mdi-cog-outline', to: '/member/organizer' },
-    { title: '參加的揪團', icon: 'mdi-cog-outline', to: '/member/participation' },
-    { title: '收藏的揪團', icon: 'mdi-cog-outline', to: '/member/favorites' },
+    { title: '主辦的揪團', icon: '', to: '/member/organizer' },
+    { title: '參加的揪團', icon: '', to: '/member/participation' },
+    { title: '收藏的揪團', icon: '', to: '/member/favorites' },
   ]
 })
 
 const infoNavs = computed(() => {
   return [
-    { title: '個人資訊', icon: 'mdi-account-multiple-outline', to: '/member/info' },
-    { title: '個人標籤', icon: 'mdi-cog-outline', to: '/member/tag' },
+    { title: '個人資訊', icon: '', to: '/member/info' },
+    { title: '個人標籤', icon: '', to: '/member/tag' },
   ]
 })
 
@@ -173,4 +192,31 @@ const logout = async () => {
   })
   router.push('/')
 }
+
+const getGroup = async () => {
+  try {
+    const res = await Promise.all([
+      apiAuth.get('/user/organizerGroup'),
+      apiAuth.get('/user/joinGroup'),
+    ])
+
+    for (let i = 0; i < res.length; i++) {
+      group.value.push(...res[i].data.result)
+    }
+  } catch (error) {
+    console.log(error)
+  }
+}
+getGroup()
+
+const groupFilter = computed(() => {
+  return group.value
+    .filter((item) => {
+      const date = new Date(item.group_id.time).toLocaleString()
+      const now = new Date().toLocaleString()
+      return date > now
+    })
+    .sort((a, b) => new Date(a.group_id.time) - new Date(b.group_id.time))
+    .slice(0, 3)
+})
 </script>

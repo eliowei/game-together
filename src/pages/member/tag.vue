@@ -3,23 +3,30 @@
     <v-row>
       <v-col cols="12">
         <h1>{{ $t('member.tagSetting') }}</h1>
+      </v-col>
+      <v-col cols="12" offset="2">
         <span class="text-h6">
           {{ $t('member.TagInfo', { variable: tagSelectCount }) }}
         </span>
       </v-col>
-      <v-col cols="5" class="d-flex">
+      <v-col cols="3" offset="2" class="d-flex align-center">
         <v-text-field
           :disabled="!tagEditState"
           v-model="tagInput"
           :placeholder="tagEditState ? t('member.tagPlaceHolder') : ''"
           @keydown.enter="tagSelectItemsPush({ text: tagInput, value: tagInput })"
         ></v-text-field>
-        <button v-if="!tagEditState" @click="tagEditState = true">
+      </v-col>
+      <v-col cols="2" class="d-flex align-center">
+        <v-btn v-if="tagEditState" @click="tagSelectItemsPush({ text: tagInput, value: tagInput })"
+          >新增</v-btn
+        >
+        <button v-if="!tagEditState" @click="openTagEdit">
           <v-icon icon="mdi-pencil-outline" size="large"></v-icon>
           {{ t('member.tagEdit') }}
         </button>
       </v-col>
-      <v-col cols="12">
+      <v-col cols="12" offset="2">
         <v-chip
           v-for="tags in tagSelectItems"
           :key="tags"
@@ -35,15 +42,13 @@
             <v-btn v-if="tagEditState" class="mr-3" type="submit">{{
               $t('member.submitEdit')
             }}</v-btn>
-            <v-btn v-if="tagEditState" @click="tagEditState = false">{{
-              $t('member.cancelEdit')
-            }}</v-btn>
+            <v-btn v-if="tagEditState" @click="closedTagEdit">{{ $t('member.cancelEdit') }}</v-btn>
           </div>
         </v-form>
 
         <h2 v-if="tagEditState">標籤:</h2>
       </v-col>
-      <v-col v-if="tagEditState">
+      <v-col v-if="tagEditState" cols="5" offset="2">
         <v-chip
           v-for="tags in tagItemsFiltered"
           :key="tags"
@@ -71,13 +76,11 @@ const { apiAuth } = useAxios()
 const createSnackbar = useSnackbar()
 const user = ref([])
 const userData = useUserStore()
-const userTags = computed(() => {
-  return userData.tags
-})
-const tabSelect = ref(0)
+
 const tagSelectCount = ref(5)
 const tagInput = ref('')
 const tagSelectItems = ref([])
+const tagSelectTempItems = ref([])
 const tagItems = [
   {
     text: t('tag.computer'),
@@ -146,9 +149,22 @@ const tagItems = [
 ]
 // 取得未選擇的標籤
 const tagItemsFiltered = computed(() => {
-  return tagItems.filter((item) => !tagSelectItems.value.includes(item))
+  return tagItems.filter((item) => !tagSelectItems.value.some((tag) => tag.value === item.value))
 })
 const tagEditState = ref(false)
+
+const openTagEdit = () => {
+  tagEditState.value = true
+  tagSelectTempItems.value.length = 0
+  tagSelectTempItems.value.push(...tagSelectItems.value)
+}
+
+const closedTagEdit = () => {
+  tagEditState.value = false
+  tagSelectItems.value.length = 0
+  tagSelectItems.value.push(...tagSelectTempItems.value)
+  tagSelectCount.value = 5 - tagSelectItems.value.length
+}
 
 const getUser = async () => {
   try {
@@ -201,6 +217,7 @@ const onSubmit = async (values) => {
     }
 
     await apiAuth.patch('/user/profile', fd)
+    userData.setTags(tags)
 
     createSnackbar({
       text: t('member.tagEditSuccess'),
