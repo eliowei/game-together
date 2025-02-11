@@ -10,6 +10,7 @@ export const useGroupStore = defineStore(
       description: '',
       type: '',
       member_limit: 0,
+      contact_method: '',
       contact_info: '',
       city: '',
       region: '',
@@ -31,6 +32,7 @@ export const useGroupStore = defineStore(
       step1.value.name = value.name
       step1.value.description = value.description
       step1.value.type = value.type
+      step1.value.contact_method = value.contact_method
       step1.value.member_limit = value.member_limit
       step1.value.contact_info = value.contact_info
       step1.value.city = value.city
@@ -41,12 +43,37 @@ export const useGroupStore = defineStore(
     }
 
     const setStep2 = (value) => {
-      step2.value.tags = value.tags
+      console.log(value)
+      step2.value.tags = value
     }
 
     const setStep3 = (value) => {
-      step3.value.content = value.content
-      step3.value.image = value.image
+      console.log(value)
+      step3.value.content = value[0].content
+      step3.value.image = value[0].image
+    }
+
+    const restData = () => {
+      step1.value = {
+        name: '',
+        description: '',
+        type: '',
+        member_limit: 0,
+        contact_method: '',
+        contact_info: '',
+        city: '',
+        region: '',
+        address: '',
+        date: '',
+        time: '',
+      }
+      step2.value = {
+        tags: [],
+      }
+      step3.value = {
+        content: '',
+        image: '',
+      }
     }
 
     return {
@@ -56,6 +83,7 @@ export const useGroupStore = defineStore(
       setStep1,
       setStep2,
       setStep3,
+      restData,
     }
   },
   {

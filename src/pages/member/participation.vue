@@ -97,7 +97,6 @@ const getFilteredGroups = computed(() => {
       }
     })
     .sort((a, b) => {
-      console.log(a.date, b.date)
       new Date(a.date) - new Date(b.date)
     })
 

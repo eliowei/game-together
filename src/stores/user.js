@@ -8,6 +8,7 @@ export const useUserStore = defineStore(
   () => {
     const token = ref('')
     const id = ref('')
+    const nickname = ref('')
     const account = ref('')
     const email = ref('')
     const role = ref(UserRole)
@@ -45,6 +46,7 @@ export const useUserStore = defineStore(
         token.value = data.token
       }
       id.value = data.id
+      nickname.value = data.name
       account.value = data.account
       email.value = data.email
       role.value = data.role
@@ -55,6 +57,7 @@ export const useUserStore = defineStore(
 
     const logout = () => {
       token.value = ''
+      nickname.value = ''
       id.value = ''
       account.value = ''
       email.value = ''
@@ -77,6 +80,7 @@ export const useUserStore = defineStore(
     return {
       token,
       id,
+      nickname,
       account,
       email,
       role,

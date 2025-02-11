@@ -81,7 +81,7 @@ const getFilteredGroups = computed(() => {
   const groupedArray = Object.entries(grouped)
     .map(([date, groups]) => ({
       date,
-      groups,
+      groups: groups.sort((a, b) => new Date(a.group_id.time) - new Date(b.group_id.time)),
     }))
     .filter((group) => {
       const groupDate = new Date(group.date)
