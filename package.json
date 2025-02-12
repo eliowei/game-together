@@ -22,6 +22,7 @@
     "quill": "^2.0.3",
     "quill-blot-formatter": "^1.0.5",
     "roboto-fontface": "*",
+    "swiper": "^11.2.2",
     "validator": "^13.12.0",
     "vee-validate": "^4.15.0",
     "vue": "^3.4.31",

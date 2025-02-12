@@ -107,6 +107,7 @@ import { useUserStore } from '@/stores/user'
 import { useAxios } from '@/composables/axios'
 import { useSnackbar } from 'vuetify-use-dialog'
 import { useRouter } from 'vue-router'
+import { useDate } from 'vuetify'
 
 const { t } = useI18n()
 const user = useUserStore()
@@ -114,6 +115,7 @@ const { apiAuth } = useAxios()
 const createSnackbar = useSnackbar()
 const router = useRouter()
 const group = ref([])
+const date = useDate()
 
 const userTags = computed(() => {
   return user.tags
@@ -129,7 +131,7 @@ const navs = computed(() => {
       show: user.isLoggedIn || !user.isLoggedIn,
     },
     {
-      to: '/creategroup/setp1',
+      to: '/creategroup/step1',
       text: t('nav.groupCreate'),
       icon: 'mdi-flag-outline',
       show: user.isLoggedIn || !user.isLoggedIn,
@@ -210,11 +212,18 @@ const getGroup = async () => {
 getGroup()
 
 const groupFilter = computed(() => {
+  const startOfWeek = date.startOfWeek(new Date())
+  const endOfWeek = date.endOfWeek(new Date())
+
   return group.value
     .filter((item) => {
-      const date = new Date(item.group_id.time).toLocaleString()
-      const now = new Date().toLocaleString()
-      return date > now
+      const groupDate = new Date(item.group_id.time)
+
+      const isInCurrentWeek = groupDate >= startOfWeek && groupDate <= endOfWeek
+
+      const isInFuture = groupDate >= new Date()
+
+      return isInCurrentWeek && isInFuture
     })
     .sort((a, b) => new Date(a.group_id.time) - new Date(b.group_id.time))
     .slice(0, 3)

@@ -264,7 +264,6 @@ const dateVuetify = useDate()
 const fileRecords = ref([])
 const rawFileRecords = ref([])
 const fileAgent = ref(null)
-const organizer = reactive([])
 const router = useRouter()
 
 const editorContent = ref('')
@@ -716,7 +715,7 @@ const onSubmit = handleSubmit(async (values) => {
     // 如果有id代表是編輯揪團，就用patch
     // 沒有id代表是新增揪團，就用post
     if (dialog.value.id.length > 0) {
-      await apiAuth.patch('/group/' + dialog.value.id, fd)
+      await apiAuth.patch('/user/organizerGroup/' + dialog.value.id, fd)
     } else {
       await apiAuth.post('/group', fd)
     }

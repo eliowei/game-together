@@ -2,7 +2,7 @@
   <v-container fluid>
     <v-row>
       <v-col cols="12"
-        ><h2 class="text-center mb-2 mt-2">{{ $t('group.createSetp3') }}</h2>
+        ><h2 class="text-center mb-2 mt-2">{{ $t('group.createStep3') }}</h2>
         <v-progress-linear model-value="60" height="10" color="green-accent-4"></v-progress-linear>
       </v-col>
     </v-row>
@@ -67,14 +67,20 @@
         <v-divider class="border-opacity-100 my-12"></v-divider>
       </v-col>
       <v-col offset="3">
-        <v-btn width="100" append-icon="mdi-arrow-left" to="/creategroup/setp2">{{
+        <v-btn width="100" append-icon="mdi-arrow-left" to="/creategroup/step2">{{
           t('group.previous')
         }}</v-btn>
       </v-col>
       <v-col offset="1">
-        <v-btn type="submit" width="100" append-icon="mdi-arrow-right" @click="onSubmit">{{
-          t('group.next')
-        }}</v-btn>
+        <v-btn
+          type="submit"
+          width="100"
+          append-icon="mdi-arrow-right"
+          @click="onSubmit"
+          :loading="isSubmitting"
+          :disabled="isSubmitting"
+          >{{ t('group.next') }}</v-btn
+        >
       </v-col>
     </v-row>
   </v-container>
@@ -93,12 +99,11 @@
 </style>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 import BlotFormatter from 'quill-blot-formatter'
 import { useI18n } from 'vue-i18n'
 import { useGroupStore } from '@/stores/group'
 import { useSnackbar } from 'vuetify-use-dialog'
-import { useAxios } from '@/composables/axios'
 import { useRouter } from 'vue-router'
 
 const fileRecords = ref([])
@@ -107,8 +112,8 @@ const fileAgent = ref(null)
 const { t } = useI18n()
 const group = useGroupStore()
 const createSnackbar = useSnackbar()
-const { apiAuth } = useAxios()
 const router = useRouter()
+const isSubmitting = ref(false)
 
 const editorContent = ref('')
 const editorOptions = {
@@ -149,40 +154,132 @@ const editorOptions = {
   placeholder: '請輸入內容...',
 }
 
-const onSubmit = async () => {
-  const fd = new FormData()
-  const data = []
-
-  if (editorContent.value === '') {
-    createSnackbar({
-      text: '請輸入內容',
-      snackbarProps: {
-        color: 'red',
-      },
-    })
-    return
+const fileToBase64 = async (file) => {
+  // 先做基本驗證
+  if (!file) {
+    throw new Error('沒有選擇檔案')
   }
 
-  if (fileRecords.value.length === 0) {
-    createSnackbar({
-      text: '請上傳相片',
-      snackbarProps: {
-        color: 'red',
-      },
-    })
-    return
+  if (!file.type.match(/image\/(jpeg|png)/)) {
+    throw new Error('檔案格式不支援')
   }
-  fd.append('image', fileRecords.value[0].file)
 
-  const result = await apiAuth.post('/api/upload', fd)
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader()
 
-  data.push({
-    content: editorContent.value,
-    image: result.data.url,
+    // 成功讀取
+    reader.onload = () => resolve(reader.result)
+
+    // 讀取失敗
+    reader.onerror = () => reject(new Error('檔案讀取發生錯誤'))
+
+    // 開始讀取檔案
+    reader.readAsDataURL(file)
   })
-  group.setStep3(data)
-  router.push('/creategroup/setp4')
 }
+
+const onSubmit = async () => {
+  if (isSubmitting.value) return
+
+  try {
+    isSubmitting.value = true
+
+    const data = []
+
+    if (editorContent.value === '') {
+      createSnackbar({
+        text: '請輸入內容',
+        snackbarProps: {
+          color: 'red',
+        },
+      })
+      return
+    }
+
+    if (fileRecords.value.length === 0) {
+      createSnackbar({
+        text: '請上傳相片',
+        snackbarProps: {
+          color: 'red',
+        },
+      })
+      return
+    }
+
+    const allowedTypes = ['image/jpeg', 'image/png']
+    if (!allowedTypes.includes(fileRecords.value[0].file.type)) {
+      throw new Error('檔案格式必須是 JPG 或 PNG')
+    }
+
+    // 檢查檔案大小（1MB = 1024 * 1024 bytes）
+    const maxSize = 1024 * 1024 // 1MB
+    if (fileRecords.value[0].file.size > maxSize) {
+      throw new Error('檔案大小不能超過 1MB')
+    }
+
+    // 將圖片轉為 base64
+    const base64 = await fileToBase64(fileRecords.value[0].file)
+
+    data.push({
+      content: editorContent.value,
+      image: base64,
+    })
+    group.setStep3(data)
+    router.push('/creategroup/step4')
+  } catch (error) {
+    console.log(error)
+    if (error.message === '檔案格式必須是 JPG 或 PNG') {
+      createSnackbar({
+        text: '檔案格式必須是 JPG 或 PNG',
+        snackbarProps: {
+          color: 'red',
+        },
+      })
+    } else if (error.message === '檔案大小不能超過 1MB') {
+      createSnackbar({
+        text: '檔案大小不能超過 1MB',
+        snackbarProps: {
+          color: 'red',
+        },
+      })
+    } else {
+      createSnackbar({
+        text: '上傳失敗',
+        snackbarProps: {
+          color: 'red',
+        },
+      })
+    }
+  } finally {
+    isSubmitting.value = false
+  }
+}
+
+// 將 base64 轉為 File 物件
+const base64ToFile = (base64String, filename) => {
+  // 1. 移除 base64 的前綴（例如：data:image/jpeg;base64,）
+  const arr = base64String.split(',')
+  const mime = arr[0].match(/:(.*?);/)[1]
+  const bstr = atob(arr[1])
+  let n = bstr.length
+  const u8arr = new Uint8Array(n)
+
+  // 2. 轉換為 ArrayBuffer
+  while (n--) {
+    u8arr[n] = bstr.charCodeAt(n)
+  }
+
+  // 3. 建立 File 物件
+  return new File([u8arr], filename, { type: mime })
+}
+
+onMounted(() => {
+  if (group.hasData.resotre.step3) {
+    const fileImage = base64ToFile(group.step3.image, 'image.jpg')
+    editorContent.value = group.step3.content
+    rawFileRecords.value = [{ file: fileImage }]
+  }
+})
 </script>
 
 <route lang="yaml">

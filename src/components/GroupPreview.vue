@@ -4,7 +4,7 @@
       <v-col cols="12">
         <h2>{{ props.name }}</h2>
         <!-- 主辦者 -->
-        <div class="d-flex d-wrap align-center" style="border: 1px solid blue">
+        <div class="d-flex d-wrap align-center">
           <v-avatar>
             <v-img :src="user.image" />
           </v-avatar>
@@ -14,7 +14,7 @@
           </div>
         </div>
         <!-- 揪團內容 -->
-        <div class="group-content" style="border: 1px solid red">
+        <div class="group-content">
           <div class="d-flex">
             <v-col cols="5">
               <v-img

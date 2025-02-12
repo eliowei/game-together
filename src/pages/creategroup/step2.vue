@@ -2,7 +2,7 @@
   <v-container fluid>
     <v-row>
       <v-col cols="12"
-        ><h2 class="text-center mb-2 mt-2">{{ $t('group.createSetp2') }}</h2>
+        ><h2 class="text-center mb-2 mt-2">{{ $t('group.createStep2') }}</h2>
         <v-progress-linear model-value="40" height="10" color="green-accent-4"></v-progress-linear>
       </v-col>
     </v-row>
@@ -50,7 +50,7 @@
         <v-divider class="border-opacity-100 my-12"></v-divider>
       </v-col>
       <v-col offset="3">
-        <v-btn width="100" append-icon="mdi-arrow-left" to="/creategroup/setp1">{{
+        <v-btn width="100" append-icon="mdi-arrow-left" to="/creategroup/step1">{{
           t('group.previous')
         }}</v-btn>
       </v-col>
@@ -64,7 +64,7 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useRouter } from 'vue-router'
 import { useSnackbar } from 'vuetify-use-dialog'
@@ -164,7 +164,9 @@ const tagSelectItemsSplice = (item) => {
 }
 // 過濾標籤
 const tagItemsFiltered = computed(() => {
-  return tagItems.filter((item) => !tagSelectItems.value.includes(item))
+  return tagItems.filter(
+    (item) => !tagSelectItems.value.some((selected) => selected.value === item.value),
+  )
 })
 
 const onSubmit = () => {
@@ -179,8 +181,22 @@ const onSubmit = () => {
   }
   const tag = tagSelectItems.value.map((item) => item.value)
   group.setStep2(tag)
-  router.push('/creategroup/setp3')
+  router.push('/creategroup/step3')
 }
+
+onMounted(() => {
+  if (group.hasData.resotre.step2) {
+    const step2Data = group.step2.tags.map((item) => ({
+      text: item,
+      value: item,
+    }))
+
+    tagSelectItems.value = step2Data
+    console.log(group.step2.tags)
+    console.log(tagSelectItems.value)
+    tagSelectCount.value = 5 - group.step2.tags.length
+  }
+})
 </script>
 
 <route lang="yaml">

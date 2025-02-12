@@ -76,6 +76,30 @@ export const useGroupStore = defineStore(
       }
     }
 
+    const hasData = computed(() => {
+      // 嚴格檢查：所有欄位都必須有值
+      const strictCheck = (stepData) => Object.values(stepData).every(Boolean)
+
+      // 寬鬆檢查：只要有任何欄位有值
+      const looseCheck = (stepData) => Object.values(stepData).some(Boolean)
+
+      return {
+        // 預覽頁面用的
+        preview: {
+          step1: strictCheck(step1.value),
+          step2: strictCheck(step2.value),
+          step3: strictCheck(step3.value),
+          all: strictCheck(step1.value) && strictCheck(step2.value) && strictCheck(step3.value),
+        },
+        // 資料恢復用的
+        resotre: {
+          step1: looseCheck(step1.value),
+          step2: looseCheck(step2.value),
+          step3: looseCheck(step3.value),
+        },
+      }
+    })
+
     return {
       step1,
       step2,
@@ -84,6 +108,7 @@ export const useGroupStore = defineStore(
       setStep2,
       setStep3,
       restData,
+      hasData,
     }
   },
   {

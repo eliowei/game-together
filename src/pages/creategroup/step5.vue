@@ -2,7 +2,7 @@
   <v-container fluid>
     <v-row>
       <v-col cols="12"
-        ><h2 class="text-center mb-2 mt-2">{{ $t('group.createSetp5') }}</h2>
+        ><h2 class="text-center mb-2 mt-2">{{ $t('group.createStep5') }}</h2>
         <v-progress-linear model-value="100" height="10" color="green-accent-4"></v-progress-linear>
       </v-col>
     </v-row>

@@ -2,7 +2,7 @@
   <v-container fluid>
     <v-row>
       <v-col cols="12"
-        ><h2 class="text-center mb-2 mt-2">{{ $t('group.createSetp1') }}</h2>
+        ><h2 class="text-center mb-2 mt-2">{{ $t('group.createStep1') }}</h2>
         <v-progress-linear model-value="20" height="10" color="green-accent-4"></v-progress-linear>
       </v-col>
     </v-row>
@@ -139,46 +139,15 @@ import '@vuepic/vue-datepicker/dist/main.css'
 import { zhTW } from 'date-fns/locale'
 import { useGroupStore } from '@/stores/group'
 import { useRouter } from 'vue-router'
+import { computed, onMounted } from 'vue'
 
 const { t } = useI18n()
 const format = "yyyy'-'MM'-'dd'"
 const formatTime = "HH':'mm'"
 const group = useGroupStore()
-const area_data = useAreaData()
+const { area_data } = useAreaData()
 const router = useRouter()
 
-// 台灣縣市選項
-const cityItems = computed(() => [
-  { text: t('area.taipei'), value: 'taipei' },
-  { text: t('area.newTaipei'), value: 'newTaipei' },
-  { text: t('area.keeLung'), value: 'keeLung' },
-  { text: t('area.taoyuan'), value: 'taoyuan' },
-  { text: t('area.hsinchuCounty'), value: 'hsinchuCounty' },
-  { text: t('area.hsinchu'), value: 'hsinchu' },
-  { text: t('area.miaoli'), value: 'miaoli' },
-  { text: t('area.taichung'), value: 'taichung' },
-  { text: t('area.nantou'), value: 'nantou' },
-  { text: t('area.changhua'), value: 'changhua' },
-  { text: t('area.yunlin'), value: 'yunlin' },
-  { text: t('area.chiayi'), value: 'chiayi' },
-  { text: t('area.chiayiCounty'), value: 'chiayiCounty' },
-  { text: t('area.tainan'), value: 'tainan' },
-  { text: t('area.kaohsiung'), value: 'kaohsiung' },
-  { text: t('area.pingtung'), value: 'pingtung' },
-  { text: t('area.yilan'), value: 'yilan' },
-  { text: t('area.hualien'), value: 'hualien' },
-  { text: t('area.taitung'), value: 'taitung' },
-  { text: t('area.penghu'), value: 'penghu' },
-  { text: t('area.kinmen'), value: 'kinmen' },
-  { text: t('area.lienchiang'), value: 'lienchiang' },
-])
-const regionItems = computed(() => {
-  if (!city.value.value || !area_data[city.value.value]) return []
-  return area_data[city.value.value].map((item) => ({
-    text: item,
-    value: item,
-  }))
-})
 // 揪團人數限制選項
 const memberLimitItems = Array.from({ length: 19 }, (_, i) => ({
   text: String(i + 2),
@@ -258,7 +227,67 @@ const time = useField('time')
 const onSubmit = handleSubmit((values) => {
   group.setStep1(values)
   console.log(values)
-  router.push('/creategroup/setp2')
+  router.push('/creategroup/step2')
+})
+
+onMounted(() => {
+  console.log(group.step1)
+  if (group.hasData.resotre.step1) {
+    name.value.value = group.step1.name
+    description.value.value = group.step1.description
+    type.value.value = group.step1.type
+    member_limit.value.value = group.step1.member_limit
+    contact_method.value.value = group.step1.contact_method
+    contact_info.value.value = group.step1.contact_info
+    city.value.value = group.step1.city
+    region.value.value = group.step1.region
+    address.value.value = group.step1.address
+    date.value.value = new Date(group.step1.date)
+    time.value.value = group.step1.time
+  }
+})
+
+// 台灣縣市選項
+const cityItems = computed(() => [
+  { text: t('area.taipei'), value: 'taipei' },
+  { text: t('area.newTaipei'), value: 'newTaipei' },
+  { text: t('area.keeLung'), value: 'keeLung' },
+  { text: t('area.taoyuan'), value: 'taoyuan' },
+  { text: t('area.hsinchuCounty'), value: 'hsinchuCounty' },
+  { text: t('area.hsinchu'), value: 'hsinchu' },
+  { text: t('area.miaoli'), value: 'miaoli' },
+  { text: t('area.taichung'), value: 'taichung' },
+  { text: t('area.nantou'), value: 'nantou' },
+  { text: t('area.changhua'), value: 'changhua' },
+  { text: t('area.yunlin'), value: 'yunlin' },
+  { text: t('area.chiayi'), value: 'chiayi' },
+  { text: t('area.chiayiCounty'), value: 'chiayiCounty' },
+  { text: t('area.tainan'), value: 'tainan' },
+  { text: t('area.kaohsiung'), value: 'kaohsiung' },
+  { text: t('area.pingtung'), value: 'pingtung' },
+  { text: t('area.yilan'), value: 'yilan' },
+  { text: t('area.hualien'), value: 'hualien' },
+  { text: t('area.taitung'), value: 'taitung' },
+  { text: t('area.penghu'), value: 'penghu' },
+  { text: t('area.kinmen'), value: 'kinmen' },
+  { text: t('area.lienchiang'), value: 'lienchiang' },
+])
+// 監聽縣市變更
+watch(
+  () => city.value.value,
+  (newCity) => {
+    // 當縣市改變時，清空地區選擇
+    region.value.value = ''
+  },
+)
+const regionItems = computed(() => {
+  console.log(city.value.value)
+  console.log(area_data.taipei)
+  if (!city.value.value || !area_data[city.value.value]) return []
+  return area_data[city.value.value].map((item) => ({
+    text: item,
+    value: item,
+  }))
 })
 </script>
 

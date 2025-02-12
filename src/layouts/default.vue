@@ -42,7 +42,7 @@ const navs = computed(() => {
       show: user.isLoggedIn || !user.isLoggedIn,
     },
     {
-      to: '/creategroup/setp1',
+      to: '/creategroup/step1',
       text: t('nav.groupCreate'),
       icon: 'mdi-flag-outline',
       show: user.isLoggedIn || !user.isLoggedIn,
