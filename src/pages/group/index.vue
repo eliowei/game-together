@@ -12,11 +12,13 @@
       </v-col>
     </v-row>
   </v-container>
+  <group-footer></group-footer>
 </template>
 
 <script setup>
 import { useAxios } from '@/composables/axios'
 import GroupCard from '@/components/GroupCard.vue'
+import GroupFooter from '@/components/GroupFooter.vue'
 
 const { api } = useAxios()
 

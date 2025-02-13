@@ -127,6 +127,7 @@
       </v-row>
     </v-form>
   </v-container>
+  <group-footer></group-footer>
 </template>
 
 <script setup>
@@ -140,6 +141,7 @@ import { zhTW } from 'date-fns/locale'
 import { useGroupStore } from '@/stores/group'
 import { useRouter } from 'vue-router'
 import { computed, onMounted } from 'vue'
+import GroupFooter from '@/components/GroupFooter.vue'
 
 const { t } = useI18n()
 const format = "yyyy'-'MM'-'dd'"

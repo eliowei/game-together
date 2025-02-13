@@ -28,21 +28,24 @@
             no-resize
             :error-messages="description.errorMessage.value"
           ></v-textarea>
-          <v-btn type="submit" :loading="isSubmitting" append-icon="mdi-arrow-right">送出</v-btn>
+          <v-btn class="mb-15" type="submit" :loading="isSubmitting" append-icon="mdi-arrow-right"
+            >送出</v-btn
+          >
         </v-form>
       </v-col>
     </v-row>
   </v-container>
+  <group-footer class="mt-15"></group-footer>
 </template>
 
 <script setup>
 import { useI18n } from 'vue-i18n'
-import { ref } from 'vue'
 import { useForm, useField } from 'vee-validate'
 import * as yup from 'yup'
 import { useAxios } from '@/composables/axios'
 import { useSnackbar } from 'vuetify-use-dialog'
 import validator from 'validator'
+import GroupFooter from '@/components/GroupFooter.vue'
 
 const { t } = useI18n()
 const { api } = useAxios()

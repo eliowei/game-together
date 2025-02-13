@@ -26,6 +26,7 @@
       >
     </v-col>
   </v-container>
+  <group-footer></group-footer>
 </template>
 
 <script setup>
@@ -40,6 +41,7 @@ import { useSnackbar } from 'vuetify-use-dialog'
 import { useAxios } from '@/composables/axios'
 import { useForm, useField } from 'vee-validate'
 import * as yup from 'yup'
+import GroupFooter from '@/components/GroupFooter.vue'
 
 const userStore = useUserStore()
 const groupStore = useGroupStore()

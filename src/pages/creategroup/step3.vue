@@ -84,6 +84,7 @@
       </v-col>
     </v-row>
   </v-container>
+  <group-footer></group-footer>
 </template>
 
 <style>
@@ -105,6 +106,7 @@ import { useI18n } from 'vue-i18n'
 import { useGroupStore } from '@/stores/group'
 import { useSnackbar } from 'vuetify-use-dialog'
 import { useRouter } from 'vue-router'
+import GroupFooter from '@/components/GroupFooter.vue'
 
 const fileRecords = ref([])
 const rawFileRecords = ref([])

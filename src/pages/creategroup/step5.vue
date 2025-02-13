@@ -20,7 +20,12 @@
       </div>
     </v-col>
   </v-container>
+  <group-footer></group-footer>
 </template>
+
+<script setup>
+import GroupFooter from '@/components/GroupFooter.vue'
+</script>
 
 <route lang="yaml">
 meta:

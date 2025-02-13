@@ -61,6 +61,7 @@
       </v-col>
     </v-row>
   </v-container>
+  <group-footer></group-footer>
 </template>
 
 <script setup>
@@ -69,6 +70,7 @@ import { useI18n } from 'vue-i18n'
 import { useRouter } from 'vue-router'
 import { useSnackbar } from 'vuetify-use-dialog'
 import { useGroupStore } from '@/stores/group'
+import GroupFooter from '@/components/GroupFooter.vue'
 
 const router = useRouter()
 const createSnackbar = useSnackbar()
