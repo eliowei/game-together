@@ -22,8 +22,8 @@
         </swiper>
       </div>
 
-      <div class="content-overlay d-flex flex-column justify-center align-center text-white">
-        <div class="d-flex flex-column" style="width: 720px">
+      <div class="content-overlay d-flex flex-column align-center text-white">
+        <div class="d-flex flex-column" style="width: 720px; margin-top: 150px">
           <span style="font-size: 32px">Game Togeter</span>
           <span style="font-size: 40px">遊戲揪團平台</span>
           <span style="font-size: 40px">找到一起玩遊戲的夥伴</span>
@@ -41,7 +41,7 @@
             :height="60"
             style="font-size: 20px"
             class="rounded-0 custom-button"
-            @click="dialog.open = true"
+            @click="clickDialog(1)"
             >按縣市搜尋</v-btn
           >
           <v-btn
@@ -50,26 +50,41 @@
             :height="60"
             style="font-size: 20px"
             class="rounded-0 custom-button"
+            @click="clickDialog(2)"
             >按標籤搜尋</v-btn
           >
-          <v-btn
-            variant="outlined"
-            :width="180"
-            :height="60"
-            style="font-size: 20px"
-            class="rounded-s-0 custom-button"
-            >按日期搜尋</v-btn
-          >
+          <v-menu v-model="datePickerOpen" :close-on-content-click="false">
+            <template v-slot:activator="{ props }">
+              <v-btn
+                v-bind="props"
+                variant="outlined"
+                :width="180"
+                :height="60"
+                style="font-size: 20px"
+                class="rounded-s-0 custom-button"
+                >按日期搜尋</v-btn
+              >
+            </template>
+
+            <v-date-picker
+              v-model="selectDate"
+              show-adjacent-months
+              @update:model-value="handleDateSelect"
+              landscape
+              hide-header
+            ></v-date-picker>
+          </v-menu>
         </div>
         <div class="d-flex">
           <div style="width: 600px; height: 80px">
             <v-text-field
               placeholder="搜尋關鍵字/縣市區/遊戲類型"
-              variant="outlined"
+              variant="solo"
               class="custom-placeholer-color"
               color="black"
               base-color="black"
               bg-color="white"
+              v-model="search"
             ></v-text-field>
           </div>
 
@@ -79,6 +94,7 @@
             style="font-size: 20px"
             class="rounded-s-0"
             base-color="orange"
+            :to="searchRouteParams"
             >搜尋</v-btn
           >
         </div>
@@ -253,22 +269,21 @@
     </section>
   </v-container>
   <group-footer></group-footer>
-
-  <v-dialog v-model="dialog.open" width="1000" scrollable>
-    <v-card>
+  <v-dialog v-model="dialog.open" width="1000" scrollable eager>
+    <v-card v-show="dialog.type === 1">
       <v-card-title class="d-flex mb-0 pb-0">
         <div class="d-flex w-100 justify-center align-center">
           <span class="font-weight-bold" style="font-size: 20px">按縣市搜尋</span>
         </div>
-        <v-btn icon="mdi-close" variant="text" @click="dialog.open = false"></v-btn>
+        <v-btn icon="mdi-close" variant="text" @click="closedDialog"></v-btn>
       </v-card-title>
       <v-divider class="mt-3"></v-divider>
 
       <v-card-text class="d-flex flex-column align-center pt-0 mb-2 font-weight-bold">
-        <template v-for="([city, districts], index) of Object.entries(area_data)">
+        <template v-for="([city, districts], index) of Object.entries(area_data)" :key="city">
           <div class="d-flex" style="width: 850px">
             <span class="mt-3 mr-3" style="font-size: 18px">{{
-              cityItems.find((item) => item.value === city).text
+              cityItems.find((item) => item.value === city)?.text || city
             }}</span>
             <div class="d-flex flex-wrap custom-input" style="width: 750px">
               <template v-for="district of districts" :key="`${city}-${district}`">
@@ -278,6 +293,8 @@
                     v-model="selectRegion"
                     :label="district"
                     :value="{ city, district }"
+                    hide-details
+                    density="compact"
                     :false-icon="
                       isHovering ? ' mdi-checkbox-outline' : 'mdi-checkbox-blank-outline'
                     "
@@ -295,7 +312,52 @@
         </template>
       </v-card-text>
       <v-card-actions class="bg-orange pa-0">
-        <v-btn :to="'/group/'" class="w-100 font-weight-bold" style="height: 54px" color="white"
+        <v-btn
+          :to="searchRouteParams"
+          class="w-100 font-weight-bold"
+          style="height: 54px"
+          color="white"
+          >搜尋</v-btn
+        >
+      </v-card-actions>
+    </v-card>
+
+    <v-card v-show="dialog.type === 2" width="1000">
+      <v-card-title class="d-flex mb-0 pb-0">
+        <div class="d-flex w-100 justify-center align-center">
+          <span class="font-weight-bold" style="font-size: 20px">按標籤搜尋</span>
+        </div>
+        <v-btn icon="mdi-close" variant="text" @click="dialog.open = false"></v-btn>
+      </v-card-title>
+      <v-divider class="mt-3"></v-divider>
+
+      <v-card-text class="d-flex flex-column align-center pt-0 mb-2 font-weight-bold">
+        <div class="d-flex flex-wrap" style="width: 750px">
+          <template v-for="(item, index) of tagItems" :key="index">
+            <div style="width: 170px; height: 30px">
+              <v-hover v-slot:default="{ isHovering, props }">
+                <v-checkbox
+                  v-bind="props"
+                  v-model="selectTag"
+                  :label="item.text"
+                  :value="item.value"
+                  hide-details
+                  density="compact"
+                  :false-icon="isHovering ? ' mdi-checkbox-outline' : 'mdi-checkbox-blank-outline'"
+                  true-icon="mdi-checkbox-marked"
+                  color="orange"
+                ></v-checkbox>
+              </v-hover>
+            </div>
+          </template>
+        </div>
+      </v-card-text>
+      <v-card-actions class="bg-orange pa-0">
+        <v-btn
+          :to="searchRouteParams"
+          class="w-100 font-weight-bold"
+          style="height: 54px"
+          color="white"
           >搜尋</v-btn
         >
       </v-card-actions>
@@ -357,6 +419,11 @@
   color: black;
   border: 0;
 }
+
+.custom-input {
+  transform: translateZ(0);
+  transition: opacity 0.2s ease;
+}
 </style>
 
 <script setup>
@@ -370,9 +437,29 @@ import { useAreaData } from '@/composables/areaData'
 import { useI18n } from 'vue-i18n'
 
 import { EffectFade, Pagination, Autoplay } from 'swiper/modules'
+import { useRouter } from 'vue-router'
 
 const { area_data } = useAreaData()
 const { t } = useI18n()
+const router = useRouter()
+const search = ref('')
+
+const searchRouteParams = computed(() => {
+  const city = selectRegion.value.map((item) => t('area.' + item.city) + item.district)
+
+  return {
+    path: '/group',
+    query: {
+      search: search.value ? encodeURIComponent(JSON.stringify(search.value)) : undefined,
+      city: city.length ? encodeURIComponent(JSON.stringify(city.join(','))) : undefined,
+      region: city.length ? encodeURIComponent(JSON.stringify(city.join(','))) : undefined,
+      tags: selectTag.value.length
+        ? encodeURIComponent(JSON.stringify(selectTag.value))
+        : undefined,
+      time: selectDate.value ? selectDate.value : undefined,
+    },
+  }
+})
 
 // 台灣縣市選項
 const cityItems = computed(() => [
@@ -400,6 +487,73 @@ const cityItems = computed(() => [
   { text: t('area.lienchiang'), value: 'lienchiang' },
 ])
 
+const tagItems = [
+  {
+    text: t('tag.computer'),
+    value: t('tag.computer'),
+  },
+  {
+    text: t('tag.mobile'),
+    value: t('tag.mobile'),
+  },
+  {
+    text: t('tag.console'),
+    value: t('tag.console'),
+  },
+  {
+    text: t('tag.virtualReality'),
+    value: t('tag.virtualReality'),
+  },
+  {
+    text: t('tag.augmentedReality'),
+    value: t('tag.augmentedReality'),
+  },
+  {
+    text: t('tag.webGame'),
+    value: t('tag.webGame'),
+  },
+  {
+    text: t('tag.Adventure'),
+    value: t('tag.Adventure'),
+  },
+  {
+    text: t('tag.RPG'),
+    value: t('tag.RPG'),
+  },
+  {
+    text: t('tag.simulation'),
+    value: t('tag.simulation'),
+  },
+  {
+    text: t('tag.sportsAndRacing'),
+    value: t('tag.sportsAndRacing'),
+  },
+  {
+    text: t('tag.puzzleAndParty'),
+    value: t('tag.puzzleAndParty'),
+  },
+  {
+    text: t('tag.musicAndRhythm'),
+    value: t('tag.musicAndRhythm'),
+  },
+  {
+    text: t('tag.sandboxAndOpenWorld'),
+    value: t('tag.sandboxAndOpenWorld'),
+  },
+  {
+    text: t('tag.scienceFictionAndFantasy'),
+    value: t('tag.scienceFictionAndFantasy'),
+  },
+  {
+    text: t('tag.EducationAndExperimental'),
+    value: t('tag.EducationAndExperimental'),
+  },
+  {
+    text: t('tag.massiveMultiplayer'),
+    value: t('tag.massiveMultiplayer'),
+  },
+]
+
 const { api } = useAxios()
 const group = ref([])
 const modules = [EffectFade, Pagination, Autoplay]
@@ -423,7 +577,19 @@ const slides = ref([
 
 const dialog = ref({
   open: false,
+  type: 1,
 })
+
+const clickDialog = async (type) => {
+  dialog.value.type = type
+  dialog.value.open = true
+}
+
+const closedDialog = () => {
+  dialog.value.open = false
+  selectRegion.value = []
+  selectTag.value = []
+}
 
 const getGroup = async () => {
   try {
@@ -443,7 +609,7 @@ const newestGroup = computed(() => {
       return date > now
     })
     .sort((a, b) => {
-      return new Date(a.createdAt) - new Date(b.createdAt)
+      return new Date(b.createdAt) - new Date(a.createdAt)
     })
     .splice(0, 3)
 })
@@ -462,6 +628,30 @@ const upcomingGroup = computed(() => {
 })
 
 const selectRegion = ref([])
+const selectTag = ref([])
+const datePickerOpen = ref(false)
+const selectDate = ref(null)
+
+const handleDateSelect = (date) => {
+  try {
+    if (!date) return
+
+    selectDate.value = date
+    datePickerOpen.value = false
+
+    const displayDate = new Date(date).toLocaleDateString()
+    console.log(displayDate)
+
+    router.push({
+      path: '/group',
+      query: {
+        time: displayDate,
+      },
+    })
+  } catch (error) {
+    console.log('日期格式錯誤:', error)
+  }
+}
 </script>
 
 <route lang="yaml">

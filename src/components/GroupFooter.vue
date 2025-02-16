@@ -44,6 +44,18 @@
           </div>
         </v-col>
       </v-row>
+
+      <v-btn
+        icon="mdi-chevron-up"
+        rounded="48px"
+        :width="48"
+        height="48"
+        base-color="orange"
+        style="font-size: 22px; right: 50px; bottom: 30px"
+        @click="scrollToTop"
+        class="position-absolute back-to-top-button text-white"
+      >
+      </v-btn>
     </v-container>
   </v-footer>
 </template>
@@ -53,15 +65,21 @@
   background: black;
   color: white;
 }
+
+.back-to-top-button:hover {
+  box-shadow: 0 0 40px 0 orange;
+}
 </style>
 
 <script setup>
 import { ref } from 'vue'
 import { useUserStore } from '@/stores/user'
 import { useI18n } from 'vue-i18n'
+import { useGoTo } from 'vuetify'
 
 const user = useUserStore()
 const { t } = useI18n()
+const goTo = useGoTo()
 
 const navs = ref([
   { text: t('nav.groupList'), to: '/group', show: user.isLoggedIn || !user.isLoggedIn },
@@ -70,4 +88,8 @@ const navs = ref([
   { text: t('nav.adminSection'), to: '/admin', show: user.isLoggedIn && user.isAdmin },
   { text: t('nav.contactUs'), to: '/contact', show: user.isLoggedIn || !user.isLoggedIn },
 ])
+
+const scrollToTop = () => {
+  goTo(0, { duration: 700, offset: 0, easing: 'easeOutQuint' })
+}
 </script>

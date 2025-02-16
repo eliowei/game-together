@@ -20,7 +20,7 @@
         <div class="d-flex">
           <v-avatar :image="user.avatar" size="50"> </v-avatar>
           <div class="d-flex flex-column ml-3 justify-center">
-            <span class="mr-3">{{ user.account }}</span
+            <span class="mr-3">{{ user.nickname }}</span
             ><span>{{ user.email }}</span>
           </div>
         </div>

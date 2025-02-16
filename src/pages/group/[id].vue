@@ -45,7 +45,7 @@
                     >
                     <span class="mb-1" v-if="group.type === '線下'"
                       ><v-icon icon="mdi-map-marker-outline"></v-icon>
-                      {{ group.city + group.region }}</span
+                      {{ t('area.' + group.city) + group.region }}</span
                     >
                     <span
                       ><v-icon icon="mdi-account-multiple-outline"></v-icon>

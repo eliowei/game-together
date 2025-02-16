@@ -181,7 +181,6 @@ export const useAreaData = () => {
       t('area.changhua_ershui'),
       t('area.changhua_tianwei'),
       t('area.changhua_bitou'),
-      t('area.changhua_fuxing'),
       t('area.changhua_xizhou'),
     ],
     yunlin: [
