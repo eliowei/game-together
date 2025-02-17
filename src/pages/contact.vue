@@ -10,16 +10,19 @@
             v-model="nickname.value.value"
             :placeholder="t('contact.nickname')"
             :error-messages="nickname.errorMessage.value"
+            variant="outlined"
           ></v-text-field>
           <v-text-field
             v-model="email.value.value"
             :placeholder="t('contact.email')"
             :error-messages="email.errorMessage.value"
+            variant="outlined"
           ></v-text-field>
           <v-text-field
             v-model="title.value.value"
             :placeholder="t('contact.title')"
             :error-messages="title.errorMessage.value"
+            variant="outlined"
           ></v-text-field>
           <v-textarea
             v-model="description.value.value"
@@ -28,9 +31,18 @@
             no-resize
             :error-messages="description.errorMessage.value"
           ></v-textarea>
-          <v-btn class="mb-15" type="submit" :loading="isSubmitting" append-icon="mdi-arrow-right"
-            >送出</v-btn
-          >
+          <v-col offset="9">
+            <v-btn
+              class="mb-15 text-white"
+              type="submit"
+              :loading="isSubmitting"
+              append-icon="mdi-arrow-right"
+              width="120"
+              height="40"
+              color="orange"
+              >送出</v-btn
+            >
+          </v-col>
         </v-form>
       </v-col>
     </v-row>

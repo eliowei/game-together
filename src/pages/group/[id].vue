@@ -1,31 +1,38 @@
 <template>
   <v-container>
     <v-row>
-      <v-col cols="12">
+      <v-col cols="10" offset="2">
         <h2>{{ group.name }}</h2>
         <!-- 主辦者 -->
-        <div class="d-flex d-wrap align-center">
+        <div class="d-flex d-wrap align-center mb-10">
           <v-avatar>
             <v-img :src="group.organizer_id.image" />
           </v-avatar>
-          <div class="d-flex flex-column">
+          <div class="d-flex flex-column pl-3 align-center">
             <span>主辦者</span>
             <span>{{ group.organizer_id.name }}</span>
           </div>
         </div>
+      </v-col>
+    </v-row>
+  </v-container>
+
+  <v-container fluid class="bg-orange-lighten-5">
+    <v-row>
+      <v-col cols="10" offset="2">
         <!-- 揪團內容 -->
-        <div class="group-content">
+        <div class="group-content mt-15" style="margin-bottom: 100px">
           <div class="d-flex">
             <v-col cols="5">
               <v-img
                 :src="group.image"
-                max-height="400"
-                max-width="628"
+                min-height="400"
+                min-width="628"
                 aspect-ratio="16/9"
                 cover
               ></v-img>
             </v-col>
-            <v-col cols="3">
+            <v-col cols="4" offset="2">
               <v-chip
                 v-for="tag of group.tags"
                 class="mb-2 mt-1 mr-1"
@@ -65,61 +72,78 @@
               </div>
             </v-col>
           </div>
-          <div v-dompurify-html="group.content" class="ml-6 mt-5 mb-5"></div>
-          <v-divider class="border-opacity-100"></v-divider>
-          <!-- 分頁 -->
-          <v-tabs v-model="tabSelect" align-tabs="star" color="deep-purple accent-4">
-            <v-tab v-for="tab in tabs" :key="tab.id">{{ tab.title }}</v-tab>
-          </v-tabs>
-          <v-tabs-window v-model="tabSelect" class="my-8">
-            <v-tabs-window-item :value="0">
-              <div class="d-flex">
-                <template v-for="number in group.groupMembers">
-                  <div class="d-flex flex-column mr-5">
-                    <v-avatar>
-                      <v-img :src="number.user_id.image" />
-                    </v-avatar>
-                    <span class="mt-1 ml-1"> {{ number.user_id.name }}</span>
-                    <span class="mt-1">{{
-                      group.organizer_id._id === number.user_id._id ? '主辦者' : '成員'
-                    }}</span>
+          <v-col cols="10">
+            <div v-dompurify-html="group.content" class="ml-6 mt-5 mb-5"></div>
+            <v-divider class="border-opacity-100"></v-divider>
+            <!-- 分頁 -->
+            <v-tabs
+              v-model="tabSelect"
+              align-tabs="star"
+              color="deep-purple accent-4"
+              style="border-bottom: 1px solid #eeeeee"
+              class="mt-8"
+            >
+              <v-tab v-for="tab in tabs" :key="tab.id">{{ tab.title }}</v-tab>
+            </v-tabs>
+            <v-tabs-window v-model="tabSelect" class="my-8">
+              <v-tabs-window-item :value="0">
+                <div class="d-flex">
+                  <template v-for="number in group.groupMembers">
+                    <div class="d-flex flex-column mr-9 align-center">
+                      <v-avatar size="50">
+                        <v-img :src="number.user_id.image" />
+                      </v-avatar>
+                      <span class="mt-3 ml-1"> {{ number.user_id.name }}</span>
+                      <span class="mt-1">{{
+                        group.organizer_id._id === number.user_id._id ? '主辦者' : '成員'
+                      }}</span>
+                    </div>
+                  </template>
+                </div>
+              </v-tabs-window-item>
+              <v-tabs-window-item :value="1">
+                <template v-for="(comment, keys) of group.comments">
+                  <div :class="['d-flex', 'mb-5', 'mt-3', 'w-100']">
+                    <div class="d-flex flex-column mr-3 ml-5 order-1">
+                      <v-avatar>
+                        <v-img :src="comment.user_id.image"></v-img>
+                      </v-avatar>
+                      <span class="mt-1 ml-1">{{ comment.user_id.name }}</span>
+                    </div>
+                    <v-card class="order-2" style="width: 600px">
+                      <v-card-text>{{ comment.content }}</v-card-text>
+                      <v-card-actions>B{{ keys }} </v-card-actions>
+                    </v-card>
                   </div>
                 </template>
-              </div>
-            </v-tabs-window-item>
-            <v-tabs-window-item :value="1">
-              <template v-for="(comment, keys) of group.comments">
-                <div :class="['d-flex', 'mb-5', 'mt-3', 'w-100']">
-                  <div class="d-flex flex-column mr-3 ml-5 order-1">
-                    <v-avatar>
-                      <v-img :src="comment.user_id.image"></v-img>
-                    </v-avatar>
-                    <span class="mt-1 ml-1">{{ comment.user_id.name }}</span>
-                  </div>
-                  <v-card class="order-2" style="width: 600px">
-                    <v-card-text>{{ comment.content }}</v-card-text>
-                    <v-card-actions>B{{ keys }} </v-card-actions>
-                  </v-card>
+                <p class="font-weight-bold ml-5 mb-3">發佈留言</p>
+                <v-textarea
+                  v-model="commentMessage"
+                  :placeholder="commentPlaceholder"
+                  variant="outlined"
+                  max-width="600"
+                  no-resize
+                  class="ml-5"
+                  :disabled="commentState"
+                ></v-textarea>
+                <div class="d-flex justify-end mb-5" style="max-width: 600px">
+                  <v-btn height="50" @click="commentAction" :disabled="commentState"
+                    >確定送出</v-btn
+                  >
                 </div>
-              </template>
-              <p class="font-weight-bold ml-5 mb-3">發佈留言</p>
-              <v-textarea
-                v-model="commentMessage"
-                :placeholder="commentPlaceholder"
-                variant="outlined"
-                max-width="600"
-                no-resize
-                class="ml-5"
-                :disabled="commentState"
-              ></v-textarea>
-              <div class="d-flex justify-end mb-5" style="max-width: 600px">
-                <v-btn height="50" @click="commentAction" :disabled="commentState">確定送出</v-btn>
-              </div>
-            </v-tabs-window-item>
-          </v-tabs-window>
-          <v-divider class="border-opacity-100"></v-divider>
+              </v-tabs-window-item>
+            </v-tabs-window>
+            <v-divider class="border-opacity-100"></v-divider>
+          </v-col>
         </div>
-        <div class="d-flex justify-space-between mt-5">
+      </v-col>
+    </v-row>
+  </v-container>
+
+  <v-container>
+    <v-row>
+      <v-col>
+        <div class="d-flex justify-space-between mb-13 mt-4">
           <div class="d-flex flex-column">
             <span>
               {{ group.time }}

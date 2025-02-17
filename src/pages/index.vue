@@ -4,17 +4,14 @@
     <div class="position-relative">
       <div class="swiper-background">
         <swiper
-          :spaceBetween="30"
           :effect="'fade'"
-          :pagination="{
-            clickable: true,
-          }"
           :modules="modules"
           class="mySwiper"
           :autoplay="{
-            delay: 1000,
+            delay: 2500,
+            disableOnInteraction: false,
           }"
-          :loop="true"
+          :crossFade="true"
         >
           <swiper-slide v-for="slide in slides" :key="slide.id">
             <v-img :src="slide.url" :height="900" cover></v-img>
@@ -430,13 +427,14 @@
 import { ref, computed } from 'vue'
 import { Swiper, SwiperSlide } from 'swiper/vue'
 import 'swiper/css'
+import 'swiper/css/effect-fade'
 import 'swiper/css/navigation'
 import { useAxios } from '@/composables/axios'
 import GroupFooter from '@/components/GroupFooter.vue'
 import { useAreaData } from '@/composables/areaData'
 import { useI18n } from 'vue-i18n'
 
-import { EffectFade, Pagination, Autoplay } from 'swiper/modules'
+import { EffectFade, Autoplay } from 'swiper/modules'
 import { useRouter } from 'vue-router'
 
 const { area_data } = useAreaData()
@@ -444,6 +442,7 @@ const { t } = useI18n()
 const router = useRouter()
 const search = ref('')
 
+// 搜尋導向的路由參數
 const searchRouteParams = computed(() => {
   const city = selectRegion.value.map((item) => t('area.' + item.city) + item.district)
 
@@ -556,7 +555,7 @@ const tagItems = [
 
 const { api } = useAxios()
 const group = ref([])
-const modules = [EffectFade, Pagination, Autoplay]
+const modules = [EffectFade, Autoplay]
 const slides = ref([
   {
     id: 1,
