@@ -30,7 +30,7 @@
 </template>
 
 <script setup>
-import { onMounted, ref, watch } from 'vue'
+import { onMounted, ref } from 'vue'
 import { useUserStore } from '@/stores/user'
 import { useGroupStore } from '@/stores/group'
 import GroupPreview from '@/components/GroupPreview.vue'
@@ -83,7 +83,7 @@ const schema = yup.object({
   content: yup.string().required(t('group.contentRequired')),
 })
 
-const { handleSubmit, isSubmitting, errors } = useForm({
+const { handleSubmit, isSubmitting } = useForm({
   validationSchema: schema,
   initialValues: {
     organizer_id: userStore.id,

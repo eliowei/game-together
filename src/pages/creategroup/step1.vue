@@ -9,87 +9,111 @@
   </v-container>
 
   <v-container>
+    <h1 class="text-center mb-15">{{ $t('group.step1Title') }}</h1>
     <v-form :disabled="isSubmitting" @submit.prevent="onSubmit">
       <v-row>
         <v-col cols="6" offset="3">
-          <v-text-field
-            v-model="name.value.value"
-            :label="$t('group.name')"
-            :error-messages="name.errorMessage.value"
-            minLength="1"
-          ></v-text-field>
+          <div class="d-flex align-center mb-8">
+            <span class="mr-12">{{ $t('group.name') }}</span>
+            <v-text-field
+              v-model="name.value.value"
+              :placeholder="$t('group.namePlaceholder')"
+              :error-messages="name.errorMessage.value"
+              minLength="1"
+              variant="outlined"
+              class="custom-input"
+            ></v-text-field>
+          </div>
 
-          <v-text-field
-            v-model="description.value.value"
-            :label="$t('group.description')"
-            :error-messages="description.errorMessage.value"
-            minLength="1"
-          ></v-text-field>
+          <div class="d-flex align-center mb-8">
+            <span class="mr-12">{{ $t('group.description') }}</span>
+            <v-text-field
+              v-model="description.value.value"
+              :placeholder="$t('group.descriptionPlaceholder')"
+              :error-messages="description.errorMessage.value"
+              minLength="1"
+              variant="outlined"
+              class="custom-input"
+            ></v-text-field>
+          </div>
 
-          <v-select
-            v-model="type.value.value"
-            :label="$t('group.type')"
-            :items="typeItems"
-            :error-messages="type.errorMessage.value"
-            item-title="text"
-            item-value="value"
-            variant="solo"
-          ></v-select>
+          <div class="d-flex align-center mb-8">
+            <span class="mr-12">{{ $t('group.createdType') }}</span>
+            <v-select
+              v-model="type.value.value"
+              :items="typeItems"
+              :error-messages="type.errorMessage.value"
+              item-title="text"
+              item-value="value"
+              variant="outlined"
+              class="custom-input"
+            ></v-select>
+            <span class="ml-5 mr-6">{{ $t('group.memberLimit') }}</span>
+            <v-select
+              v-model="member_limit.value.value"
+              :items="memberLimitItems"
+              :error-messages="member_limit.errorMessage.value"
+              item-title="text"
+              item-value="value"
+              variant="outlined"
+              class="custom-input"
+            ></v-select>
+          </div>
 
-          <v-select
-            v-model="member_limit.value.value"
-            :label="$t('group.memberLimit')"
-            :items="memberLimitItems"
-            :error-messages="member_limit.errorMessage.value"
-            item-title="text"
-            item-value="value"
-          ></v-select>
+          <div class="d-flex align-center mb-8">
+            <span class="mr-12">{{ $t('group.contactInfo') }}</span>
+            <v-select
+              v-model="contact_method.value.value"
+              :items="['Line', 'Discord', 'Facebook']"
+              :error-messages="contact_method.errorMessage.value"
+              variant="outlined"
+              class="custom-input"
+            ></v-select>
+            <v-text-field
+              v-model="contact_info.value.value"
+              :placeholder="$t('group.contactInfoPlaceholder')"
+              :error-messages="contact_info.errorMessage.value"
+              variant="outlined"
+              class="custom-input ml-5"
+            ></v-text-field>
+          </div>
 
-          <v-select
-            v-model="contact_method.value.value"
-            :label="$t('group.contactMethod')"
-            :items="['Line', 'Discord', 'Facebook']"
-            :error-messages="contact_method.errorMessage.value"
-            variant="solo"
-          ></v-select>
+          <div class="d-flex align-center mb-8" v-if="type.value.value === typeItems[1].value">
+            <span class="mr-12">{{ $t('group.createdRegion') }}</span>
+            <v-select
+              v-model="city.value.value"
+              :error-messages="city.errorMessage.value"
+              :items="cityItems"
+              item-title="text"
+              item-value="value"
+              class="custom-input mr-4"
+              variant="outlined"
+            ></v-select>
+            <v-select
+              v-model="region.value.value"
+              :error-messages="region.errorMessage.value"
+              :items="regionItems"
+              item-title="text"
+              item-value="value"
+              class="custom-input"
+              variant="outlined"
+            ></v-select>
+          </div>
 
-          <v-text-field
-            v-model="contact_info.value.value"
-            :label="$t('group.contactInfo')"
-            :error-messages="contact_info.errorMessage.value"
-          ></v-text-field>
+          <div class="d-flex align-center mb-8" v-if="type.value.value === typeItems[1].value">
+            <span class="mr-12">{{ $t('group.address') }}</span>
+            <v-text-field
+              v-model="address.value.value"
+              :placeholder="$t('group.addressPlaceholder')"
+              :error-messages="address.errorMessage.value"
+              v-show="type.value.value === typeItems[1].value"
+              class="custom-input"
+              variant="outlined"
+            ></v-text-field>
+          </div>
 
-          <v-select
-            v-model="city.value.value"
-            :label="$t('group.city')"
-            :error-messages="city.errorMessage.value"
-            v-show="type.value.value === typeItems[1].value"
-            :items="cityItems"
-            item-title="text"
-            item-value="value"
-          ></v-select>
-
-          <v-select
-            v-model="region.value.value"
-            :label="$t('group.region')"
-            :error-messages="region.errorMessage.value"
-            v-show="type.value.value === typeItems[1].value"
-            :items="regionItems"
-            item-title="text"
-            item-value="value"
-          ></v-select>
-
-          <v-text-field
-            v-model="address.value.value"
-            :label="$t('group.address')"
-            :error-messages="address.errorMessage.value"
-            v-show="type.value.value === typeItems[1].value"
-          ></v-text-field>
-
-          <div class="d-flex align-center">
-            <v-col cols="2">
-              <span>{{ $t('group.time') }}</span>
-            </v-col>
+          <div class="d-flex align-center mb-8">
+            <span>{{ $t('group.date') }}</span>
 
             <v-col cols="5">
               <VueDatePicker
@@ -100,10 +124,11 @@
                 hide-input-icon
                 :format="format"
                 :min-date="new Date()"
+                class="ml-9"
               ></VueDatePicker
             ></v-col>
             <v-col cols="2" offset="1">
-              <span>{{ $t('group.startTime') }}</span>
+              <span>{{ $t('group.time') }}</span>
             </v-col>
             <v-col cols="2">
               <VueDatePicker
@@ -129,6 +154,12 @@
   </v-container>
   <group-footer></group-footer>
 </template>
+
+<style>
+.custom-input .v-input__details {
+  display: none;
+}
+</style>
 
 <script setup>
 import { useI18n } from 'vue-i18n'

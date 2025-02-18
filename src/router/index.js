@@ -36,16 +36,32 @@ router.beforeEach(async (to, from, next) => {
       user.logout()
     }
   }
-
+  // 如果是登入，跳頁到/login或 /register 則導向首頁
   if (user.isLoggedIn && ['/login', '/register'].includes(to.path)) {
     next({ path: '/' })
-  } else if (to.meta.login && !user.isLoggedIn) {
-    next('/login')
-  } else if (to.meta.admin && !user.isAdmin) {
-    next('/')
-  } else {
-    next()
   }
+  // 如果是設定需要登入的頁面，並且沒有登入，則導向登入頁面
+  if (to.meta.login && !user.isLoggedIn) {
+    next('/login')
+  }
+  // 如果是設定需要管理員的頁面，並且不是管理員，則導向首頁
+  if (to.meta.admin && !user.isAdmin) {
+    next('/')
+  }
+  // 如果是主辦揪團頁面，並未依照指定的路徑進入，則導向第一步
+  if (user.isLoggedIn && to.path.startsWith('/creategroup/')) {
+    const step = to.path.split('/').pop()
+    const validPaths = {
+      step2: ['/creategroup/step1', '/creategroup/step3', '/creategroup/step4'],
+      step3: ['/creategroup/step2', '/creategroup/step4'],
+      step4: ['/creategroup/step3'],
+      step5: ['/creategroup/step4'],
+    }
+    if (validPaths[step] && !validPaths[step].includes(from.path)) {
+      return next('/creategroup/step1')
+    }
+  }
+  next()
 })
 // 進到每頁之後執行function
 router.afterEach((to) => {

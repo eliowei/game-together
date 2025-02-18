@@ -40,7 +40,7 @@
         </v-card>
       </v-col>
       <v-col cols="12" offset="7"
-        ><a href="https://chatgpt.com/" class="link"
+        ><a href="https://chatgpt.com/" class="chatgpt-link"
           >詢問ChatGPT <v-icon icon="mdi-open-in-new"></v-icon
         ></a>
       </v-col>
@@ -88,7 +88,7 @@
 </template>
 
 <style>
-.link {
+.chatgpt-link {
   text-decoration: none;
   &:visited {
     color: black;

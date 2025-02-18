@@ -1,60 +1,243 @@
 <template>
-  <v-container>
-    <v-row justify="center">
-      <v-col cols="12">
-        <h1 class="text-center">{{ $t('nav.register') }}</h1>
+  <v-container fluid class="px-0" style="max-width: 1440px">
+    <v-row>
+      <v-col cols="6" class="pa-0 mt-16 pt-16">
+        <v-img src="@/assets/swiper-2.jpg" :width="720" :height="744" cover></v-img>
       </v-col>
-      <v-divider></v-divider>
-      <v-col cols="6">
-        <v-form :disabled="isSubmitting" @submit.prevent="submit">
-          <v-text-field
-            v-model="name.value.value"
-            :error-messages="name.errorMessage.value"
-            :label="$t('user.name')"
-            counter
-          ></v-text-field>
-          <v-text-field
-            v-model="account.value.value"
-            :error-messages="account.errorMessage.value"
-            :label="$t('user.account')"
-            minlength="4"
-            maxlength="20"
-            counter
-          ></v-text-field>
-          <v-text-field
-            v-model="email.value.value"
-            :error-messages="email.errorMessage.value"
-            :label="$t('user.email')"
-            counter
-          ></v-text-field>
-          <v-text-field
-            v-model="password.value.value"
-            type="password"
-            :error-messages="password.errorMessage.value"
-            :label="$t('user.password')"
-            minlength="4"
-            maxlength="20"
-            counter
-          ></v-text-field>
-          <v-text-field
-            v-model="passwordConfirm.value.value"
-            type="password"
-            :error-messages="passwordConfirm.errorMessage.value"
-            :label="$t('user.passwordConfirm')"
-            minlength="4"
-            maxlength="20"
-            counter
-          ></v-text-field>
-          <div class="text-center">
-            <v-btn :loading="isSubmitting" type="submit" color="primary">{{
-              t('register.submit')
-            }}</v-btn>
+      <v-col cols="6" class="pa-0 mt-16 pt-3 mb-16 pb-9">
+        <v-sheet
+          :height="850"
+          :width="650"
+          :elevation="9"
+          rounded
+          :class="[
+            'd-flex',
+            'flex-column',
+            'justify-center',
+            'bg-black',
+            {
+              'align-center': complateState,
+            },
+          ]"
+        >
+          <v-form
+            :disabled="isSubmitting"
+            @submit.prevent="submit"
+            class="px-12"
+            v-if="!complateState"
+          >
+            <h1 class="mb-4">{{ $t('nav.register') }}</h1>
+            <span style="font-size: 20px; font-weight: bold">Nickname</span>
+            <v-text-field
+              v-model="name.value.value"
+              :error-messages="name.errorMessage.value"
+              :placeholder="$t('user.namePlaceholder')"
+              counter
+              variant="outlined"
+              class="mt-3"
+            ></v-text-field>
+            <span style="font-size: 20px; font-weight: bold">Account</span>
+            <v-text-field
+              v-model="account.value.value"
+              :error-messages="account.errorMessage.value"
+              :placeholder="$t('user.accountPlaceholder')"
+              minlength="4"
+              maxlength="20"
+              counter
+              variant="outlined"
+              class="mt-3"
+            ></v-text-field>
+            <span style="font-size: 20px; font-weight: bold">Email</span>
+            <v-text-field
+              v-model="email.value.value"
+              :error-messages="email.errorMessage.value"
+              :placeholder="$t('user.loginPlaceholder')"
+              counter
+              variant="outlined"
+              class="mt-3"
+            ></v-text-field>
+            <span style="font-size: 20px; font-weight: bold">Password</span>
+            <v-text-field
+              v-model="password.value.value"
+              type="password"
+              :error-messages="password.errorMessage.value"
+              :placeholder="$t('user.passwordPlaceholder')"
+              minlength="4"
+              maxlength="20"
+              counter
+              variant="outlined"
+              class="mt-3"
+            ></v-text-field>
+            <span style="font-size: 20px; font-weight: bold">Confrim Password</span>
+            <v-text-field
+              v-model="passwordConfirm.value.value"
+              type="password"
+              :error-messages="passwordConfirm.errorMessage.value"
+              :placeholder="$t('user.passwordConfirmPlaceholder')"
+              minlength="4"
+              maxlength="20"
+              counter
+              variant="outlined"
+              class="mb-5 mt-3"
+            ></v-text-field>
+            <v-btn
+              :loading="isSubmitting"
+              type="submit"
+              color="orange"
+              class="w-100 register-button"
+              variant="outlined"
+              height="58"
+              >{{ t('register.submit') }}</v-btn
+            >
+          </v-form>
+          <div v-if="complateState" class="register-success">
+            <h1 class="mb-9">{{ $t('register.success') }}</h1>
+            <v-icon
+              class="mb-5 success-icon"
+              color="success"
+              icon="mdi-check-circle"
+              size="112"
+            ></v-icon>
           </div>
-        </v-form>
+        </v-sheet>
       </v-col>
     </v-row>
   </v-container>
+  <group-footer></group-footer>
 </template>
+
+<style>
+.register-button:hover {
+  background-color: orange;
+  .v-btn__content {
+    color: white !important;
+  }
+}
+
+.register-success {
+  animation: fadeInUp 0.5s ease-out;
+}
+
+.success-icon {
+  -webkit-animation: bounce-in-fwd 1.1s both;
+  animation: bounce-in-fwd 1.1s both;
+}
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@-webkit-keyframes bounce-in-fwd {
+  0% {
+    -webkit-transform: scale(0);
+    transform: scale(0);
+    -webkit-animation-timing-function: ease-in;
+    animation-timing-function: ease-in;
+    opacity: 0;
+  }
+  38% {
+    -webkit-transform: scale(1);
+    transform: scale(1);
+    -webkit-animation-timing-function: ease-out;
+    animation-timing-function: ease-out;
+    opacity: 1;
+  }
+  55% {
+    -webkit-transform: scale(0.7);
+    transform: scale(0.7);
+    -webkit-animation-timing-function: ease-in;
+    animation-timing-function: ease-in;
+  }
+  72% {
+    -webkit-transform: scale(1);
+    transform: scale(1);
+    -webkit-animation-timing-function: ease-out;
+    animation-timing-function: ease-out;
+  }
+  81% {
+    -webkit-transform: scale(0.84);
+    transform: scale(0.84);
+    -webkit-animation-timing-function: ease-in;
+    animation-timing-function: ease-in;
+  }
+  89% {
+    -webkit-transform: scale(1);
+    transform: scale(1);
+    -webkit-animation-timing-function: ease-out;
+    animation-timing-function: ease-out;
+  }
+  95% {
+    -webkit-transform: scale(0.95);
+    transform: scale(0.95);
+    -webkit-animation-timing-function: ease-in;
+    animation-timing-function: ease-in;
+  }
+  100% {
+    -webkit-transform: scale(1);
+    transform: scale(1);
+    -webkit-animation-timing-function: ease-out;
+    animation-timing-function: ease-out;
+  }
+}
+@keyframes bounce-in-fwd {
+  0% {
+    -webkit-transform: scale(0);
+    transform: scale(0);
+    -webkit-animation-timing-function: ease-in;
+    animation-timing-function: ease-in;
+    opacity: 0;
+  }
+  38% {
+    -webkit-transform: scale(1);
+    transform: scale(1);
+    -webkit-animation-timing-function: ease-out;
+    animation-timing-function: ease-out;
+    opacity: 1;
+  }
+  55% {
+    -webkit-transform: scale(0.7);
+    transform: scale(0.7);
+    -webkit-animation-timing-function: ease-in;
+    animation-timing-function: ease-in;
+  }
+  72% {
+    -webkit-transform: scale(1);
+    transform: scale(1);
+    -webkit-animation-timing-function: ease-out;
+    animation-timing-function: ease-out;
+  }
+  81% {
+    -webkit-transform: scale(0.84);
+    transform: scale(0.84);
+    -webkit-animation-timing-function: ease-in;
+    animation-timing-function: ease-in;
+  }
+  89% {
+    -webkit-transform: scale(1);
+    transform: scale(1);
+    -webkit-animation-timing-function: ease-out;
+    animation-timing-function: ease-out;
+  }
+  95% {
+    -webkit-transform: scale(0.95);
+    transform: scale(0.95);
+    -webkit-animation-timing-function: ease-in;
+    animation-timing-function: ease-in;
+  }
+  100% {
+    -webkit-transform: scale(1);
+    transform: scale(1);
+    -webkit-animation-timing-function: ease-out;
+    animation-timing-function: ease-out;
+  }
+}
+</style>
 
 <script setup>
 import { useForm, useField } from 'vee-validate'
@@ -64,11 +247,14 @@ import { useI18n } from 'vue-i18n'
 import { useAxios } from '@/composables/axios'
 import { useSnackbar } from 'vuetify-use-dialog'
 import { useRouter } from 'vue-router'
+import { ref } from 'vue'
+import GroupFooter from '@/components/GroupFooter.vue'
 
 const { t } = useI18n()
 const { api } = useAxios()
 const createSnackbar = useSnackbar()
 const router = useRouter()
+const complateState = ref(false)
 
 const schema = yup.object({
   name: yup
@@ -137,7 +323,11 @@ const submit = handleSubmit(async (values) => {
         color: 'green',
       },
     })
-    router.push('/login')
+
+    complateState.value = true
+    setTimeout(() => {
+      router.push('/login')
+    }, 1000)
   } catch (error) {
     console.log(error)
     createSnackbar({

@@ -103,7 +103,7 @@
           v-model="currentPage"
           :length="totalPage"
           @update:model-value="changePage"
-          class="mt-8 mb-8"
+          class="mt-8 mb-8 custom-pagination"
         ></v-pagination>
       </v-col>
     </v-row>
@@ -240,30 +240,30 @@
   font-size: 20px;
 }
 /* prefix */
-.v-text-field__prefix {
+.custom-search-input .v-text-field__prefix {
   font-size: 12px;
   font-weight: bold;
   color: orange;
 }
 
-.v-pagination__prev {
+.custom-pagination .v-pagination__prev {
   background: white;
   color: black;
 }
 
-.v-pagination__next {
+.custom-pagination .v-pagination__next {
   background: white;
   color: black;
 }
 
-.v-pagination__item {
+.custom-pagination .v-pagination__item {
   background: white;
   color: black;
 }
 
-.v-pagination__prev,
-.v-pagination__next,
-.v-pagination__item {
+.custom-pagination .v-pagination__prev,
+.custom-pagination .v-pagination__next,
+.custom-pagination .v-pagination__item {
   border-radius: 4px;
   box-shadow:
     0 1px 1px rgba(170, 164, 164, 0.8),
@@ -271,7 +271,7 @@
     0 1px 5px rgba(170, 164, 164, 0.88);
 }
 
-.v-pagination__item--is-active {
+.custom-pagination .v-pagination__item--is-active {
   background: black;
   color: white;
   border-radius: 4px;

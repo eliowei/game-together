@@ -79,7 +79,7 @@
             <v-tabs
               v-model="tabSelect"
               align-tabs="star"
-              color="deep-purple accent-4"
+              color="orange"
               style="border-bottom: 1px solid #eeeeee"
               class="mt-8"
             >
@@ -295,7 +295,7 @@ const groupAction = async () => {
   try {
     if (date.date(group.value.time) < date.date()) throw new Error('END')
     if (group.value.member_count === group.value.member_limit) throw new Error('Full')
-    if (!user.id) new Error('LOGIN')
+    if (!user.id) throw new Error('LOGIN')
 
     if (group.value.organizer_id._id === user.id) {
       // 取消揪團

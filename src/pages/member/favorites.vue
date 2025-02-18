@@ -41,7 +41,11 @@
       </v-col>
 
       <v-col cols="12">
-        <v-pagination v-model="currentPage" :length="totalPage"></v-pagination>
+        <v-pagination
+          v-model="currentPage"
+          :length="totalPage"
+          class="custom-pagination"
+        ></v-pagination>
       </v-col>
     </v-row>
   </v-container>

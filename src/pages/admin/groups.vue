@@ -37,11 +37,16 @@
   </v-container>
 
   <v-dialog v-model="dialog.open" width="800" persistent>
-    <v-form :disable="isSubmitting" @submit.prevent="onSubmit">
+    <v-form :disable="isSubmitting">
       <v-card>
         <v-card-title>{{ $t(dialog.id ? 'adminGroup.edit' : 'adminGroup.new') }}</v-card-title>
         <v-card-text>
-          <v-tabs v-model="tabSelect" align-tabs="star" color="deep-purple accent-4">
+          <v-tabs
+            v-model="tabSelect"
+            align-tabs="star"
+            color="orange"
+            style="border-bottom: 1px solid #eeeeee"
+          >
             <v-tab v-for="tab in tabs" :key="tab.id">{{ tab.title }}</v-tab>
           </v-tabs>
           <v-tabs-window v-model="tabSelect" class="my-8">
@@ -241,7 +246,9 @@
         </v-card-text>
         <v-card-actions>
           <v-btn @click="closeDialog">{{ $t('adminGroup.cancel') }}</v-btn>
-          <v-btn type="submit" :loading="isSubmitting">{{ $t('adminGroup.submit') }}</v-btn>
+          <v-btn type="button" :loading="isSubmitting" @click="onSubmit">{{
+            $t('adminGroup.submit')
+          }}</v-btn>
         </v-card-actions>
       </v-card>
     </v-form>

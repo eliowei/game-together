@@ -33,7 +33,7 @@
   </v-container>
 
   <v-dialog v-model="dialog.open" width="500">
-    <v-form :disabled="isSubmitting" @submit.prevent="onSubmit">
+    <v-form :disabled="isSubmitting">
       <v-card>
         <v-card-title>{{ $t(dialog.id ? 'admin.userEdit' : 'admin.userNew') }}</v-card-title>
         <v-card-text>
@@ -100,7 +100,9 @@
         </v-card-text>
         <v-card-actions>
           <v-btn @click="closeDialog">{{ $t('user.cancel') }}</v-btn>
-          <v-btn type="submit" :loading="isSubmitting">{{ $t('user.submit') }}</v-btn>
+          <v-btn type="button" :loading="isSubmitting" @click="onSubmit">{{
+            $t('user.submit')
+          }}</v-btn>
         </v-card-actions>
       </v-card>
     </v-form>

@@ -20,81 +20,85 @@
       </div>
 
       <div class="content-overlay d-flex flex-column align-center text-white">
-        <div class="d-flex flex-column" style="width: 720px; margin-top: 150px">
-          <span style="font-size: 32px">Game Togeter</span>
-          <span style="font-size: 40px">遊戲揪團平台</span>
-          <span style="font-size: 40px">找到一起玩遊戲的夥伴</span>
-          <p class="text-h6 mt-6 mb-6" style="width: 525px">
-            無論想要玩什麼遊戲，MOBA、射擊還是生存建築，這裡有數萬位玩家隨時等待加入揪團。加入我們，每天都有各式各樣的遊戲揪團等著你來探索，一起暢玩、共創樂趣！
-          </p>
-        </div>
-        <div class="d-flex mb-10">
-          <v-btn :width="180" :height="60" style="font-size: 20px" class="rounded-e-0"
-            >按關鍵字搜尋</v-btn
-          >
-          <v-btn
-            variant="outlined"
-            :width="180"
-            :height="60"
-            style="font-size: 20px"
-            class="rounded-0 custom-button"
-            @click="clickDialog(1)"
-            >按縣市搜尋</v-btn
-          >
-          <v-btn
-            variant="outlined"
-            :width="180"
-            :height="60"
-            style="font-size: 20px"
-            class="rounded-0 custom-button"
-            @click="clickDialog(2)"
-            >按標籤搜尋</v-btn
-          >
-          <v-menu v-model="datePickerOpen" :close-on-content-click="false">
-            <template v-slot:activator="{ props }">
+        <v-row>
+          <v-col cols="12">
+            <div class="d-flex flex-column" style="width: 720px; margin-top: 150px">
+              <span style="font-size: 32px">Game Togeter</span>
+              <span style="font-size: 40px">遊戲揪團平台</span>
+              <span style="font-size: 40px">找到一起玩遊戲的夥伴</span>
+              <p class="text-h6 mt-6 mb-6" style="width: 525px">
+                無論想要玩什麼遊戲，MOBA、射擊還是生存建築，這裡有數萬位玩家隨時等待加入揪團。加入我們，每天都有各式各樣的遊戲揪團等著你來探索，一起暢玩、共創樂趣！
+              </p>
+            </div>
+            <div class="d-flex mb-10">
+              <v-btn :width="180" :height="60" style="font-size: 20px" class="rounded-e-0"
+                >按關鍵字搜尋</v-btn
+              >
               <v-btn
-                v-bind="props"
                 variant="outlined"
                 :width="180"
                 :height="60"
                 style="font-size: 20px"
-                class="rounded-s-0 custom-button"
-                >按日期搜尋</v-btn
+                class="rounded-0 custom-button"
+                @click="clickDialog(1)"
+                >按縣市搜尋</v-btn
               >
-            </template>
+              <v-btn
+                variant="outlined"
+                :width="180"
+                :height="60"
+                style="font-size: 20px"
+                class="rounded-0 custom-button"
+                @click="clickDialog(2)"
+                >按標籤搜尋</v-btn
+              >
+              <v-menu v-model="datePickerOpen" :close-on-content-click="false">
+                <template v-slot:activator="{ props }">
+                  <v-btn
+                    v-bind="props"
+                    variant="outlined"
+                    :width="180"
+                    :height="60"
+                    style="font-size: 20px"
+                    class="rounded-s-0 custom-button"
+                    >按日期搜尋</v-btn
+                  >
+                </template>
 
-            <v-date-picker
-              v-model="selectDate"
-              show-adjacent-months
-              @update:model-value="handleDateSelect"
-              landscape
-              hide-header
-            ></v-date-picker>
-          </v-menu>
-        </div>
-        <div class="d-flex">
-          <div style="width: 600px; height: 80px">
-            <v-text-field
-              placeholder="搜尋關鍵字/縣市區/遊戲類型"
-              variant="solo"
-              class="custom-placeholer-color"
-              color="black"
-              base-color="black"
-              bg-color="white"
-              v-model="search"
-            ></v-text-field>
-          </div>
+                <v-date-picker
+                  v-model="selectDate"
+                  show-adjacent-months
+                  @update:model-value="handleDateSelect"
+                  landscape
+                  hide-header
+                ></v-date-picker>
+              </v-menu>
+            </div>
+            <div class="d-flex">
+              <div style="width: 600px; height: 80px">
+                <v-text-field
+                  placeholder="搜尋關鍵字/縣市區/遊戲類型"
+                  variant="solo"
+                  class="custom-placeholer-color"
+                  color="black"
+                  base-color="black"
+                  bg-color="white"
+                  v-model="search"
+                ></v-text-field>
+              </div>
 
-          <v-btn
-            :height="80"
-            :width="120"
-            style="font-size: 20px"
-            class="rounded-s-0"
-            base-color="orange"
-            :to="searchRouteParams"
-            >搜尋</v-btn
-          >
-        </div>
+              <v-btn
+                :height="80"
+                :width="120"
+                style="font-size: 20px"
+                class="rounded-s-0"
+                base-color="orange"
+                :to="searchRouteParams"
+                >搜尋</v-btn
+              >
+            </div>
+          </v-col>
+        </v-row>
       </div>
     </div>
   </v-container>
@@ -266,6 +270,8 @@
     </section>
   </v-container>
   <group-footer></group-footer>
+
+  <!-- 搜尋彈出視窗 -->
   <v-dialog v-model="dialog.open" width="1000" scrollable eager>
     <v-card v-show="dialog.type === 1">
       <v-card-title class="d-flex mb-0 pb-0">
@@ -400,8 +406,9 @@
   height: 100%;
   background: rgba(0, 0, 0, 0.7);
 }
-.v-field,
-.v-field__input {
+
+.custom-placeholer-color .v-field,
+.custom-placeholer-color .v-field__input {
   border-bottom-right-radius: 0;
   border-top-right-radius: 0;
   height: 80px;

@@ -1,20 +1,27 @@
 <template>
   <v-container>
     <v-row>
-      <v-col cols="12">
+      <v-col cols="10">
         <h2>{{ props.name }}</h2>
         <!-- 主辦者 -->
         <div class="d-flex d-wrap align-center">
           <v-avatar>
             <v-img :src="user.image" />
           </v-avatar>
-          <div class="d-flex flex-column">
+          <div class="d-flex flex-column pl-3 align-center">
             <span>主辦者</span>
             <span>{{ user.nickname }}</span>
           </div>
         </div>
+      </v-col>
+    </v-row>
+  </v-container>
+
+  <v-container class="bg-orange-lighten-5">
+    <v-row>
+      <v-col cols="10" offset="1">
         <!-- 揪團內容 -->
-        <div class="group-content">
+        <div class="group-content mt-15" style="margin-bottom: 100px">
           <div class="d-flex">
             <v-col cols="5">
               <v-img
@@ -25,7 +32,7 @@
                 cover
               ></v-img>
             </v-col>
-            <v-col cols="3">
+            <v-col cols="4" offset="2">
               <v-chip
                 v-for="tag of props.tags"
                 class="mb-2 mt-1 mr-1"
@@ -68,17 +75,22 @@
           <div v-dompurify-html="props.content" class="ml-6 mt-5 mb-5"></div>
           <v-divider class="border-opacity-100"></v-divider>
           <!-- 分頁 -->
-          <v-tabs v-model="tabSelect" align-tabs="star" color="deep-purple accent-4">
+          <v-tabs
+            v-model="tabSelect"
+            align-tabs="star"
+            color="orange"
+            style="border-bottom: 1px solid #eeeeee"
+          >
             <v-tab v-for="tab in tabs" :key="tab.id">{{ tab.title }}</v-tab>
           </v-tabs>
           <v-tabs-window v-model="tabSelect" class="my-8">
             <v-tabs-window-item :value="0">
               <div class="d-flex">
-                <div class="d-flex flex-column mr-5">
-                  <v-avatar>
+                <div class="d-flex flex-column mr-9 align-center">
+                  <v-avatar size="50">
                     <v-img :src="user.image" />
                   </v-avatar>
-                  <span class="mt-1 ml-1"> {{ user.nickname }}</span>
+                  <span class="mt-3 ml-1"> {{ user.nickname }}</span>
                   <span class="mt-1">
                     {{ props.organizer_id === user.id ? '主辦者' : '成員' }}</span
                   >
@@ -89,7 +101,7 @@
           <v-divider class="border-opacity-100"></v-divider>
         </div>
 
-        <div class="d-flex justify-space-between mt-5">
+        <div class="d-flex justify-space-between mb-13 mt-4">
           <div class="d-flex flex-column">
             <span>
               {{ props.time }}

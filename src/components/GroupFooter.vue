@@ -83,7 +83,11 @@ const goTo = useGoTo()
 
 const navs = ref([
   { text: t('nav.groupList'), to: '/group', show: user.isLoggedIn || !user.isLoggedIn },
-  { text: t('nav.groupCreate'), to: '/group/create', show: user.isLoggedIn || !user.isLoggedIn },
+  {
+    text: t('nav.groupCreate'),
+    to: '/creategroup/step1',
+    show: user.isLoggedIn || !user.isLoggedIn,
+  },
   { text: t('nav.membersSection'), to: '/member', show: user.isLoggedIn },
   { text: t('nav.adminSection'), to: '/admin', show: user.isLoggedIn && user.isAdmin },
   { text: t('nav.contactUs'), to: '/contact', show: user.isLoggedIn || !user.isLoggedIn },

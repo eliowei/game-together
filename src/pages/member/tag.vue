@@ -33,7 +33,7 @@
           class="mr-2 mb-2"
           variant="outlined"
           :closable="tagEditState"
-          link
+          :link="tagEditState"
           @click:close="tagSelectItemsSplice(tags)"
           >{{ tags.text }}
         </v-chip>
