@@ -40,7 +40,7 @@
         </v-card>
       </v-col>
       <v-col cols="12" offset="7"
-        ><a href="https://chatgpt.com/" class="chatgpt-link"
+        ><a href="https://chatgpt.com/" class="creategroup__step3-chatgpt-link"
           >詢問ChatGPT <v-icon icon="mdi-open-in-new"></v-icon
         ></a>
       </v-col>
@@ -86,18 +86,6 @@
   </v-container>
   <group-footer></group-footer>
 </template>
-
-<style>
-.chatgpt-link {
-  text-decoration: none;
-  &:visited {
-    color: black;
-  }
-  &:hover {
-    color: orange;
-  }
-}
-</style>
 
 <script setup>
 import { ref, onMounted } from 'vue'

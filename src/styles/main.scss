@@ -1,0 +1,363 @@
+@use 'vuetify/settings';
+
+// swiper
+.swiper {
+  width: 100%;
+  height: 900px;
+}
+// text editor
+.ql-editor {
+  min-height: 150px;
+}
+
+// 首頁
+.index {
+  &__background {
+    &-content {
+      position: relative;
+      width: 100%;
+      height: 900px;
+
+      &-swiper {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 1;
+      }
+
+      &-overlay {
+        position: relative;
+        z-index: 2;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.7);
+      }
+
+      &-text {
+        width: 720px;
+        margin-top: 150px;
+      }
+    }
+  }
+
+  &__search {
+    &-container {
+      width: 600px;
+      height: 80px;
+    }
+
+    &-input {
+      &::placeholder {
+        color: #878787 !important;
+      }
+
+      .v-field,
+      .v-field__input {
+        border-bottom-right-radius: 0;
+        border-top-right-radius: 0;
+        height: 80px;
+      }
+    }
+
+    &-button {
+      &.v-btn {
+        height: 80px;
+        width: 120px;
+        font-size: 20px;
+        border-top-left-radius: 0;
+        border-bottom-left-radius: 0;
+
+        &--outline {
+          &:hover {
+            background-color: white;
+            color: black;
+            border: 0;
+          }
+        }
+      }
+    }
+
+    &-dialog {
+      transform: translateZ(0);
+      transition: opacity 0.2s ease;
+
+      .v-input__control {
+        width: 150px;
+      }
+
+      .v-input__details {
+        display: none;
+      }
+
+      i {
+        font-size: 30px;
+      }
+    }
+  }
+}
+// 佔位符-按鈕hover
+%form-button-hover {
+  &:hover {
+    background-color: orange;
+    .v-btn__content {
+      color: white;
+    }
+  }
+}
+// 登入
+.login {
+  &__form {
+    &-button {
+      @extend %form-button-hover;
+    }
+  }
+
+  &__content {
+    &-success {
+      animation: fadeInUp 0.5s ease-out;
+
+      &-icon {
+        -webkit-animation: bounce-in-fwd 1.1s both;
+        animation: bounce-in-fwd 1.1s both;
+      }
+    }
+  }
+}
+// 註冊
+.register {
+  &__form {
+    &-button {
+      @extend %form-button-hover;
+    }
+  }
+
+  &__content {
+    &-success {
+      animation: fadeInUp 0.5s ease-out;
+
+      &-icon {
+        -webkit-animation: bounce-in-fwd 1.1s both;
+        animation: bounce-in-fwd 1.1s both;
+      }
+    }
+  }
+}
+
+.group {
+  &__search {
+    &-input {
+      .v-input__details {
+        display: none;
+      }
+
+      .v-field {
+        border-radius: 8px;
+        height: 50px;
+        font-size: 16px;
+        font-weight: bold;
+        outline: 3px solid #eeeeee;
+
+        .v-field__append-inner {
+          font-size: 20px;
+        }
+      }
+
+      .v-text-field__prefix {
+        font-size: 12px;
+        font-weight: bold;
+        color: orange;
+      }
+
+      &-click:hover {
+        .v-field__input,
+        .v-text-field__prefix,
+        .v-field__append-inner {
+          cursor: pointer;
+        }
+      }
+    }
+  }
+
+  &__pagination {
+    .v-pagination__prev,
+    .v-pagination__next,
+    .v-pagination__item {
+      background: white;
+      color: black;
+
+      border-radius: 4px;
+      box-shadow:
+        0 1px 1px rgba(170, 164, 164, 0.8),
+        0 2px 2px rgba(170, 164, 164, 0.76),
+        0 1px 5px rgba(170, 164, 164, 0.88);
+    }
+
+    .v-pagination__item--is-active {
+      background: black;
+      color: white;
+      border-radius: 4px;
+      box-shadow:
+        0 5px 5px rgba(170, 164, 164, 0.8),
+        0 9px 10px rgba(170, 164, 164, 0.76),
+        0 5px 14px rgba(170, 164, 164, 0.88);
+      transition: 0.7s;
+    }
+  }
+
+  &__select {
+    .v-select__selection-text {
+      font-size: 15px;
+    }
+
+    .v-input__details {
+      display: none;
+    }
+
+    .v-field__input {
+      padding: 0;
+      padding-left: 4px;
+    }
+  }
+}
+
+// 建立揪團
+.creategroup {
+  &__step1 {
+    &-form {
+      .v-input__details {
+        display: none;
+      }
+    }
+  }
+
+  &__step3 {
+    &-chatgpt-link {
+      text-decoration: none;
+      &:visited {
+        color: black;
+      }
+      &:hover {
+        color: orange;
+      }
+    }
+  }
+}
+
+// 動畫-淡出往上
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+// 動畫-彈跳
+@-webkit-keyframes bounce-in-fwd {
+  0% {
+    -webkit-transform: scale(0);
+    transform: scale(0);
+    -webkit-animation-timing-function: ease-in;
+    animation-timing-function: ease-in;
+    opacity: 0;
+  }
+  38% {
+    -webkit-transform: scale(1);
+    transform: scale(1);
+    -webkit-animation-timing-function: ease-out;
+    animation-timing-function: ease-out;
+    opacity: 1;
+  }
+  55% {
+    -webkit-transform: scale(0.7);
+    transform: scale(0.7);
+    -webkit-animation-timing-function: ease-in;
+    animation-timing-function: ease-in;
+  }
+  72% {
+    -webkit-transform: scale(1);
+    transform: scale(1);
+    -webkit-animation-timing-function: ease-out;
+    animation-timing-function: ease-out;
+  }
+  81% {
+    -webkit-transform: scale(0.84);
+    transform: scale(0.84);
+    -webkit-animation-timing-function: ease-in;
+    animation-timing-function: ease-in;
+  }
+  89% {
+    -webkit-transform: scale(1);
+    transform: scale(1);
+    -webkit-animation-timing-function: ease-out;
+    animation-timing-function: ease-out;
+  }
+  95% {
+    -webkit-transform: scale(0.95);
+    transform: scale(0.95);
+    -webkit-animation-timing-function: ease-in;
+    animation-timing-function: ease-in;
+  }
+  100% {
+    -webkit-transform: scale(1);
+    transform: scale(1);
+    -webkit-animation-timing-function: ease-out;
+    animation-timing-function: ease-out;
+  }
+}
+// 動畫-彈跳
+@keyframes bounce-in-fwd {
+  0% {
+    -webkit-transform: scale(0);
+    transform: scale(0);
+    -webkit-animation-timing-function: ease-in;
+    animation-timing-function: ease-in;
+    opacity: 0;
+  }
+  38% {
+    -webkit-transform: scale(1);
+    transform: scale(1);
+    -webkit-animation-timing-function: ease-out;
+    animation-timing-function: ease-out;
+    opacity: 1;
+  }
+  55% {
+    -webkit-transform: scale(0.7);
+    transform: scale(0.7);
+    -webkit-animation-timing-function: ease-in;
+    animation-timing-function: ease-in;
+  }
+  72% {
+    -webkit-transform: scale(1);
+    transform: scale(1);
+    -webkit-animation-timing-function: ease-out;
+    animation-timing-function: ease-out;
+  }
+  81% {
+    -webkit-transform: scale(0.84);
+    transform: scale(0.84);
+    -webkit-animation-timing-function: ease-in;
+    animation-timing-function: ease-in;
+  }
+  89% {
+    -webkit-transform: scale(1);
+    transform: scale(1);
+    -webkit-animation-timing-function: ease-out;
+    animation-timing-function: ease-out;
+  }
+  95% {
+    -webkit-transform: scale(0.95);
+    transform: scale(0.95);
+    -webkit-animation-timing-function: ease-in;
+    animation-timing-function: ease-in;
+  }
+  100% {
+    -webkit-transform: scale(1);
+    transform: scale(1);
+    -webkit-animation-timing-function: ease-out;
+    animation-timing-function: ease-out;
+  }
+}

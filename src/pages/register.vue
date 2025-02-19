@@ -84,16 +84,16 @@
               :loading="isSubmitting"
               type="submit"
               color="orange"
-              class="w-100 register-button"
+              class="w-100 register__form-button"
               variant="outlined"
               height="58"
               >{{ t('register.submit') }}</v-btn
             >
           </v-form>
-          <div v-if="complateState" class="register-success">
+          <div v-if="complateState" class="register__content-success">
             <h1 class="mb-9">{{ $t('register.success') }}</h1>
             <v-icon
-              class="mb-5 success-icon"
+              class="mb-5 register__content-success-icon"
               color="success"
               icon="mdi-check-circle"
               size="112"
@@ -105,139 +105,6 @@
   </v-container>
   <group-footer></group-footer>
 </template>
-
-<style>
-.register-button:hover {
-  background-color: orange;
-  .v-btn__content {
-    color: white !important;
-  }
-}
-
-.register-success {
-  animation: fadeInUp 0.5s ease-out;
-}
-
-.success-icon {
-  -webkit-animation: bounce-in-fwd 1.1s both;
-  animation: bounce-in-fwd 1.1s both;
-}
-@keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@-webkit-keyframes bounce-in-fwd {
-  0% {
-    -webkit-transform: scale(0);
-    transform: scale(0);
-    -webkit-animation-timing-function: ease-in;
-    animation-timing-function: ease-in;
-    opacity: 0;
-  }
-  38% {
-    -webkit-transform: scale(1);
-    transform: scale(1);
-    -webkit-animation-timing-function: ease-out;
-    animation-timing-function: ease-out;
-    opacity: 1;
-  }
-  55% {
-    -webkit-transform: scale(0.7);
-    transform: scale(0.7);
-    -webkit-animation-timing-function: ease-in;
-    animation-timing-function: ease-in;
-  }
-  72% {
-    -webkit-transform: scale(1);
-    transform: scale(1);
-    -webkit-animation-timing-function: ease-out;
-    animation-timing-function: ease-out;
-  }
-  81% {
-    -webkit-transform: scale(0.84);
-    transform: scale(0.84);
-    -webkit-animation-timing-function: ease-in;
-    animation-timing-function: ease-in;
-  }
-  89% {
-    -webkit-transform: scale(1);
-    transform: scale(1);
-    -webkit-animation-timing-function: ease-out;
-    animation-timing-function: ease-out;
-  }
-  95% {
-    -webkit-transform: scale(0.95);
-    transform: scale(0.95);
-    -webkit-animation-timing-function: ease-in;
-    animation-timing-function: ease-in;
-  }
-  100% {
-    -webkit-transform: scale(1);
-    transform: scale(1);
-    -webkit-animation-timing-function: ease-out;
-    animation-timing-function: ease-out;
-  }
-}
-@keyframes bounce-in-fwd {
-  0% {
-    -webkit-transform: scale(0);
-    transform: scale(0);
-    -webkit-animation-timing-function: ease-in;
-    animation-timing-function: ease-in;
-    opacity: 0;
-  }
-  38% {
-    -webkit-transform: scale(1);
-    transform: scale(1);
-    -webkit-animation-timing-function: ease-out;
-    animation-timing-function: ease-out;
-    opacity: 1;
-  }
-  55% {
-    -webkit-transform: scale(0.7);
-    transform: scale(0.7);
-    -webkit-animation-timing-function: ease-in;
-    animation-timing-function: ease-in;
-  }
-  72% {
-    -webkit-transform: scale(1);
-    transform: scale(1);
-    -webkit-animation-timing-function: ease-out;
-    animation-timing-function: ease-out;
-  }
-  81% {
-    -webkit-transform: scale(0.84);
-    transform: scale(0.84);
-    -webkit-animation-timing-function: ease-in;
-    animation-timing-function: ease-in;
-  }
-  89% {
-    -webkit-transform: scale(1);
-    transform: scale(1);
-    -webkit-animation-timing-function: ease-out;
-    animation-timing-function: ease-out;
-  }
-  95% {
-    -webkit-transform: scale(0.95);
-    transform: scale(0.95);
-    -webkit-animation-timing-function: ease-in;
-    animation-timing-function: ease-in;
-  }
-  100% {
-    -webkit-transform: scale(1);
-    transform: scale(1);
-    -webkit-animation-timing-function: ease-out;
-    animation-timing-function: ease-out;
-  }
-}
-</style>
 
 <script setup>
 import { useForm, useField } from 'vee-validate'

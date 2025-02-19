@@ -6,7 +6,7 @@
           append-inner-icon="mdi-plus-circle"
           variant="solo"
           placeholder="選擇"
-          class="custom-search-input click-input"
+          class="group__search-input group__search-input-click"
           persistent-placeholder
           prefix="地區"
           readonly
@@ -18,7 +18,7 @@
           append-inner-icon="mdi-plus-circle"
           variant="solo"
           placeholder="選擇"
-          class="custom-search-input click-input"
+          class="group__search-input group__search-input-click"
           persistent-placeholder
           prefix="標籤"
           readonly
@@ -33,7 +33,7 @@
               append-inner-icon="mdi-plus-circle"
               variant="solo"
               placeholder="選擇"
-              class="custom-search-input click-input"
+              class="group__search-input group__search-input-click"
               persistent-placeholder
               prefix="日期"
               readonly
@@ -54,7 +54,7 @@
           v-model="search"
           variant="solo"
           placeholder="縣市區、遊戲類型等"
-          class="custom-search-input"
+          class="group__search-input"
           persistent-placeholder
           prefix="關鍵字"
         ></v-text-field>
@@ -82,7 +82,7 @@
             v-model="groupOrder"
             variant="solo"
             flat
-            class="custom-order-select"
+            class="group__select"
           ></v-select>
         </div>
       </v-col>
@@ -103,7 +103,7 @@
           v-model="currentPage"
           :length="totalPage"
           @update:model-value="changePage"
-          class="mt-8 mb-8 custom-pagination"
+          class="mt-8 mb-8 group__pagination"
         ></v-pagination>
       </v-col>
     </v-row>
@@ -205,95 +205,6 @@
     </v-card>
   </v-dialog>
 </template>
-
-<style>
-.custom-search-input .v-input__details {
-  display: none;
-}
-
-.custom-search-input > .v-input__control > .v-field,
-.custom-search-input > .v-input__control > .v-field > .v-field__field > .v-field__input {
-  border-radius: 8px;
-  height: 50px;
-  font-size: 16px;
-  font-weight: bold;
-}
-
-.custom-search-input > .v-input__control > .v-field {
-  outline: 3px solid #eeeeee;
-}
-
-.click-input > .v-input__control > .v-field {
-  .v-field__field {
-    .v-field__input,
-    .v-text-field__prefix {
-      cursor: pointer;
-    }
-  }
-
-  .v-field__append-inner {
-    cursor: pointer;
-  }
-}
-/* icon */
-.custom-search-input > .v-input__control > .v-field > .v-field__append-inner {
-  font-size: 20px;
-}
-/* prefix */
-.custom-search-input .v-text-field__prefix {
-  font-size: 12px;
-  font-weight: bold;
-  color: orange;
-}
-
-.custom-pagination .v-pagination__prev {
-  background: white;
-  color: black;
-}
-
-.custom-pagination .v-pagination__next {
-  background: white;
-  color: black;
-}
-
-.custom-pagination .v-pagination__item {
-  background: white;
-  color: black;
-}
-
-.custom-pagination .v-pagination__prev,
-.custom-pagination .v-pagination__next,
-.custom-pagination .v-pagination__item {
-  border-radius: 4px;
-  box-shadow:
-    0 1px 1px rgba(170, 164, 164, 0.8),
-    0 2px 2px rgba(170, 164, 164, 0.76),
-    0 1px 5px rgba(170, 164, 164, 0.88);
-}
-
-.custom-pagination .v-pagination__item--is-active {
-  background: black;
-  color: white;
-  border-radius: 4px;
-  box-shadow:
-    0 5px 5px rgba(170, 164, 164, 0.8),
-    0 9px 10px rgba(170, 164, 164, 0.76),
-    0 5px 14px rgba(170, 164, 164, 0.88);
-  transition: 0.7s;
-}
-
-.custom-order-select .v-select__selection-text {
-  font-size: 15px;
-}
-
-.custom-order-select .v-input__details {
-  display: none;
-}
-.custom-order-select .v-field__input {
-  padding: 0;
-  padding-left: 4px;
-}
-</style>
 
 <script setup>
 import { useAxios } from '@/composables/axios'

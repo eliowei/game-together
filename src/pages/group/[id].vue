@@ -110,12 +110,131 @@
                       </v-avatar>
                       <span class="mt-1 ml-1">{{ comment.user_id.name }}</span>
                     </div>
-                    <v-card class="order-2" style="width: 600px">
-                      <v-card-text>{{ comment.content }}</v-card-text>
-                      <v-card-actions>B{{ keys }} </v-card-actions>
+                    <v-card class="order-2 pl-7" style="width: 600px">
+                      <v-card-text class="pb-0 pl-2" style="font-size: 16px"
+                        >{{ comment.content }}
+                      </v-card-text>
+                      <v-card-actions>
+                        <span> B{{ keys }} </span>
+                        <v-btn v-if="!comment.reply" @click="commentReplyAction(keys)">回覆</v-btn>
+                        <span v-if="comment.reply" class="text-grey-lighten-1">已回覆</span>
+                        <v-btn
+                          v-if="group.organizer_id._id === user.id"
+                          @click="commentDelete(keys, group)"
+                          :isLoading="commentLoading"
+                          >刪除</v-btn
+                        >
+                      </v-card-actions>
                     </v-card>
                   </div>
+                  <!-- 回覆留言 -->
+                  <div
+                    v-if="commentReply.open && commentReply.id === keys && !commentReplyEditState"
+                  >
+                    <v-textarea
+                      v-model="commentReplyMessage"
+                      :placeholder="commentPlaceholder"
+                      variant="outlined"
+                      max-width="600"
+                      no-resize
+                      class="ml-5"
+                      :disabled="commentState"
+                      @keydown.esc="commentReplyCancel"
+                    ></v-textarea>
+                    <div class="d-flex justify-end mb-5" style="max-width: 600px">
+                      <v-btn
+                        height="50"
+                        @click="commentReplyCancel"
+                        :disabled="commentState"
+                        class="mr-3"
+                        >取消</v-btn
+                      >
+                      <v-btn
+                        height="50"
+                        @click="commentReplySubmit(group)"
+                        :disabled="commentState"
+                        :loading="commentLoading"
+                        >確定送出</v-btn
+                      >
+                    </div>
+                  </div>
+                  <!-- 已回覆顯示 -->
+                  <div :class="['d-flex', 'mb-5', 'mt-3', 'w-100', 'ml-16']" v-if="comment.reply">
+                    <div class="d-flex flex-column mr-3 ml-5 order-2">
+                      <v-avatar>
+                        <v-img :src="comment.reply.author.image"></v-img>
+                      </v-avatar>
+                      <span class="mt-1 ml-1">{{ comment.reply.author.name }}</span>
+                    </div>
+                    <div class="d-flex">
+                      <v-icon
+                        icon="mdi-reply"
+                        class="mr-5 ml-2 mt-10"
+                        style="transform: rotate(180deg)"
+                      ></v-icon>
+                      <!-- 編輯留言 -->
+                      <div
+                        v-if="
+                          commentReply.open && commentReply.id === keys && commentReplyEditState
+                        "
+                        style="width: 600px"
+                      >
+                        <v-textarea
+                          v-model="commentReplyMessage"
+                          :placeholder="commentPlaceholder"
+                          variant="solo"
+                          max-width="600"
+                          no-resize
+                          :disabled="commentState"
+                          @keydown.esc="commentReplyCancel"
+                          rows="3"
+                          class="custom-textarea"
+                        ></v-textarea>
+                        <div class="d-flex justify-end mb-5" style="max-width: 600px">
+                          <v-btn
+                            height="50"
+                            @click="commentReplyCancel"
+                            :disabled="commentState"
+                            class="mr-3"
+                            >取消</v-btn
+                          >
+                          <v-btn
+                            height="50"
+                            @click="commentReplySubmit(group)"
+                            :disabled="commentState"
+                            :loading="commentLoading"
+                            >確定送出</v-btn
+                          >
+                          <v-btn
+                            height="50"
+                            @click="commentReplyDelete(group)"
+                            :disabled="commentState"
+                            :loading="commentLoading"
+                            >刪除</v-btn
+                          >
+                        </div>
+                      </div>
+
+                      <v-card
+                        class="order-1 pl-7"
+                        style="width: 600px"
+                        @click="commentReplyEdit(keys, comment)"
+                        v-if="
+                          !commentReplyEditState ||
+                          (commentReply.open && commentReply.id !== keys && commentReplyEditState)
+                        "
+                      >
+                        <v-card-text class="d-flex flex-column px-0">
+                          <span class="mt-1 mb-3" style="font-size: 14px"
+                            >主辦者 回覆B{{ keys }}</span
+                          >
+                          <span style="font-size: 16px">{{ comment.reply.message }}</span>
+                        </v-card-text>
+                      </v-card>
+                    </div>
+                  </div>
                 </template>
+                <!-- 留言 -->
                 <p class="font-weight-bold ml-5 mb-3">發佈留言</p>
                 <v-textarea
                   v-model="commentMessage"
@@ -127,7 +246,11 @@
                   :disabled="commentState"
                 ></v-textarea>
                 <div class="d-flex justify-end mb-5" style="max-width: 600px">
-                  <v-btn height="50" @click="commentAction" :disabled="commentState"
+                  <v-btn
+                    height="50"
+                    @click="commentAction"
+                    :disabled="commentState"
+                    :loading="commentLoading"
                     >確定送出</v-btn
                   >
                 </div>
@@ -188,8 +311,14 @@
   <group-footer></group-footer>
 </template>
 
+<style>
+.custom-textarea .v-field__input {
+  padding-left: 28px;
+}
+</style>
+
 <script setup>
-import { ref, computed } from 'vue'
+import { ref, computed, reactive } from 'vue'
 import { useAxios } from '@/composables/axios'
 import { useRoute, useRouter } from 'vue-router'
 import GroupFooter from '@/components/GroupFooter.vue'
@@ -231,6 +360,143 @@ const commentPlaceholder = computed(() => {
       ? '請先登入'
       : 'Write a comment...'
 })
+const commentReply = reactive({
+  id: '',
+  open: false,
+})
+const commentReplyMessage = ref('')
+const commentReplyEditState = ref(false)
+const commentLoading = ref(false)
+
+const commentReplyAction = (key) => {
+  commentReply.id = key
+  commentReply.open = true
+  commentReplyEditState.value = false
+  commentReplyMessage.value = ''
+}
+
+const commentDelete = async (key, values) => {
+  try {
+    if (!user.id) throw new Error('LOGIN')
+    commentLoading.value = true
+    await apiAuth.delete('/group/' + values._id + '/comment', {
+      data: {
+        comment_id: values.comments[key]._id,
+      },
+    })
+
+    await getGroup()
+    createSnackbar({
+      text: '刪除留言成功',
+      snackbarProps: {
+        color: 'green',
+      },
+    })
+    commentLoading.value = false
+  } catch (error) {
+    console.log(error)
+    if (error.message === 'LOGIN') {
+      createSnackbar({
+        text: '請先登入',
+        snackbarProps: {
+          color: 'red',
+        },
+      })
+      router.push('/login')
+    }
+  }
+}
+const commentReplyDelete = async (values) => {
+  try {
+    if (!user.id) throw new Error('LOGIN')
+    commentLoading.value = true
+    await apiAuth.delete('/group/' + values._id + '/replayComment', {
+      data: {
+        comment_id: values.comments[commentReply.id]._id,
+      },
+    })
+    await getGroup()
+    createSnackbar({
+      text: '刪除回覆留言成功',
+      snackbarProps: {
+        color: 'green',
+      },
+    })
+    commentLoading.value = false
+    commentReply.open = false
+    commentReply.id = ''
+    commentReplyMessage.value = ''
+    commentReplyEditState.value = false
+  } catch (erorr) {
+    console.log(error)
+    if (error.message === 'LOGIN') {
+      createSnackbar({
+        text: '請先登入',
+        snackbarProps: {
+          color: 'red',
+        },
+      })
+      router.push('/login')
+    }
+  }
+}
+
+const commentReplyCancel = () => {
+  commentReply.open = false
+  commentReply.id = ''
+  commentReplyMessage.value = ''
+  commentReplyEditState.value = false
+}
+
+const commentReplyEdit = (key, value) => {
+  console.log(value)
+  commentReplyEditState.value = true
+  commentReply.id = key
+  commentReply.open = true
+  commentReplyMessage.value = value.reply.message
+}
+
+const commentReplySubmit = async (values) => {
+  try {
+    if (!commentReplyMessage.value.trim()) throw new Error('EMPTY')
+    if (!user.id) throw new Error('LOGIN')
+    commentLoading.value = true
+    await apiAuth.patch('/group/' + values._id + '/replayComment', {
+      comment_id: values.comments[commentReply.id]._id,
+      message: commentReplyMessage.value,
+    })
+    commentLoading.value = false
+    commentReplyEditState.value = false
+    commentReply.open = false
+    commentReply.id = ''
+    commentReplyMessage.value = ''
+    await getGroup()
+    createSnackbar({
+      text: '留言成功',
+      snackbarProps: {
+        color: 'green',
+      },
+    })
+  } catch (error) {
+    console.log(error)
+    if (error.message === 'EMPTY') {
+      createSnackbar({
+        text: '留言不可為空',
+        snackbarProps: {
+          color: 'red',
+        },
+      })
+    } else if (error.message === 'LOGIN') {
+      createSnackbar({
+        text: '請先登入',
+        snackbarProps: {
+          color: 'red',
+        },
+      })
+      router.push('/login')
+    }
+  }
+}
 
 const isUserInGroup = computed(() => {
   return group.value.groupMembers.some((users) => users.user_id._id === user.id)

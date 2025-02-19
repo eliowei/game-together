@@ -1,8 +1,8 @@
 <template>
   <!-- 第一區塊 - 輪播圖 -->
   <v-container fluid class="pa-0">
-    <div class="position-relative">
-      <div class="swiper-background">
+    <div class="index__background-content">
+      <div class="index__background-content-swiper">
         <swiper
           :effect="'fade'"
           :modules="modules"
@@ -19,10 +19,10 @@
         </swiper>
       </div>
 
-      <div class="content-overlay d-flex flex-column align-center text-white">
+      <div class="index__background-content-overlay d-flex flex-column align-center text-white">
         <v-row>
           <v-col cols="12">
-            <div class="d-flex flex-column" style="width: 720px; margin-top: 150px">
+            <div class="index__background-content-text d-flex flex-column">
               <span style="font-size: 32px">Game Togeter</span>
               <span style="font-size: 40px">遊戲揪團平台</span>
               <span style="font-size: 40px">找到一起玩遊戲的夥伴</span>
@@ -39,7 +39,7 @@
                 :width="180"
                 :height="60"
                 style="font-size: 20px"
-                class="rounded-0 custom-button"
+                class="index__search-button v-btn--outline rounded-0"
                 @click="clickDialog(1)"
                 >按縣市搜尋</v-btn
               >
@@ -48,7 +48,7 @@
                 :width="180"
                 :height="60"
                 style="font-size: 20px"
-                class="rounded-0 custom-button"
+                class="index__search-button v-btn--outline rounded-0"
                 @click="clickDialog(2)"
                 >按標籤搜尋</v-btn
               >
@@ -60,7 +60,7 @@
                     :width="180"
                     :height="60"
                     style="font-size: 20px"
-                    class="rounded-s-0 custom-button"
+                    class="index__search-button v-btn--outline"
                     >按日期搜尋</v-btn
                   >
                 </template>
@@ -75,11 +75,11 @@
               </v-menu>
             </div>
             <div class="d-flex">
-              <div style="width: 600px; height: 80px">
+              <div class="index__search-container">
                 <v-text-field
                   placeholder="搜尋關鍵字/縣市區/遊戲類型"
                   variant="solo"
-                  class="custom-placeholer-color"
+                  class="index__search-input"
                   color="black"
                   base-color="black"
                   bg-color="white"
@@ -90,8 +90,7 @@
               <v-btn
                 :height="80"
                 :width="120"
-                style="font-size: 20px"
-                class="rounded-s-0"
+                class="index__search-button"
                 base-color="orange"
                 :to="searchRouteParams"
                 >搜尋</v-btn
@@ -288,7 +287,7 @@
             <span class="mt-3 mr-3" style="font-size: 18px">{{
               cityItems.find((item) => item.value === city)?.text || city
             }}</span>
-            <div class="d-flex flex-wrap custom-input" style="width: 750px">
+            <div class="d-flex flex-wrap index__search-dialog" style="width: 750px">
               <template v-for="district of districts" :key="`${city}-${district}`">
                 <v-hover v-slot:default="{ isHovering, props }">
                   <v-checkbox
@@ -367,68 +366,6 @@
     </v-card>
   </v-dialog>
 </template>
-
-<style>
-.custom-input .v-input__control {
-  width: 150px;
-}
-
-.custom-input .v-input__details {
-  display: none;
-}
-.custom-input i {
-  font-size: 30px;
-}
-
-.position-relative {
-  position: relative;
-  width: 100%;
-  height: 900px;
-}
-
-.swiper {
-  width: 100%;
-  height: 900px;
-}
-
-.swiper-background {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 1;
-}
-
-.content-overlay {
-  position: relative;
-  z-index: 2;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.7);
-}
-
-.custom-placeholer-color .v-field,
-.custom-placeholer-color .v-field__input {
-  border-bottom-right-radius: 0;
-  border-top-right-radius: 0;
-  height: 80px;
-}
-
-.custom-placeholer-color input::placeholder {
-  color: #878787 !important;
-}
-
-.custom-button:hover {
-  background-color: white;
-  color: black;
-  border: 0;
-}
-
-.custom-input {
-  transform: translateZ(0);
-  transition: opacity 0.2s ease;
-}
-</style>
 
 <script setup>
 import { ref, computed } from 'vue'

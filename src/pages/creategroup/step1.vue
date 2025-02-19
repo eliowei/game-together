@@ -21,7 +21,7 @@
               :error-messages="name.errorMessage.value"
               minLength="1"
               variant="outlined"
-              class="custom-input"
+              class="creategroup__step1-form"
             ></v-text-field>
           </div>
 
@@ -33,7 +33,7 @@
               :error-messages="description.errorMessage.value"
               minLength="1"
               variant="outlined"
-              class="custom-input"
+              class="creategroup__step1-form"
             ></v-text-field>
           </div>
 
@@ -46,7 +46,7 @@
               item-title="text"
               item-value="value"
               variant="outlined"
-              class="custom-input"
+              class="creategroup__step1-form"
             ></v-select>
             <span class="ml-5 mr-6">{{ $t('group.memberLimit') }}</span>
             <v-select
@@ -56,7 +56,7 @@
               item-title="text"
               item-value="value"
               variant="outlined"
-              class="custom-input"
+              class="creategroup__step1-form"
             ></v-select>
           </div>
 
@@ -67,14 +67,14 @@
               :items="['Line', 'Discord', 'Facebook']"
               :error-messages="contact_method.errorMessage.value"
               variant="outlined"
-              class="custom-input"
+              class="creategroup__step1-form"
             ></v-select>
             <v-text-field
               v-model="contact_info.value.value"
               :placeholder="$t('group.contactInfoPlaceholder')"
               :error-messages="contact_info.errorMessage.value"
               variant="outlined"
-              class="custom-input ml-5"
+              class="creategroup__step1-form ml-5"
             ></v-text-field>
           </div>
 
@@ -95,7 +95,7 @@
               :items="regionItems"
               item-title="text"
               item-value="value"
-              class="custom-input"
+              class="creategroup__step1-form"
               variant="outlined"
             ></v-select>
           </div>
@@ -107,7 +107,7 @@
               :placeholder="$t('group.addressPlaceholder')"
               :error-messages="address.errorMessage.value"
               v-show="type.value.value === typeItems[1].value"
-              class="custom-input"
+              class="creategroup__step1-form"
               variant="outlined"
             ></v-text-field>
           </div>
@@ -154,12 +154,6 @@
   </v-container>
   <group-footer></group-footer>
 </template>
-
-<style>
-.custom-input .v-input__details {
-  display: none;
-}
-</style>
 
 <script setup>
 import { useI18n } from 'vue-i18n'

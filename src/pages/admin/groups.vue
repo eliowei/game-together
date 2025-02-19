@@ -802,12 +802,6 @@ const onSubmit = handleSubmit(async (values) => {
 })
 </script>
 
-<style>
-.ql-editor {
-  min-height: 150px;
-}
-</style>
-
 <route lang="yaml">
 meta:
   layout: admin
