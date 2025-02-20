@@ -153,6 +153,7 @@ export default {
     userPasswordTooShort: '密碼太短',
     userPasswordInvalid: '密碼錯誤',
     userPasswordNotMatch: '密碼不符',
+    samePassword: '新舊密碼相同',
     userNameRequired: '姓名必填',
     userNameInvalid: '姓名格式不符',
     userNotFound: '查無使用者',

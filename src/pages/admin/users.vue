@@ -115,6 +115,7 @@ import { useI18n } from 'vue-i18n'
 import { useAxios } from '@/composables/axios'
 import { useSnackbar } from 'vuetify-use-dialog'
 import { useForm, useField } from 'vee-validate'
+import { useUserStore } from '@/stores/user'
 import * as yup from 'yup'
 import validator from 'validator'
 
@@ -122,6 +123,7 @@ const search = ref('')
 const user = reactive([])
 const { t } = useI18n()
 const { apiAuth } = useAxios()
+const userData = useUserStore()
 const createSnackbar = useSnackbar()
 const headers = [
   { title: t('admin.userId'), key: '_id', sortable: true },
@@ -145,7 +147,7 @@ const openDialog = async (item) => {
     name.value.value = item.name
     account.value.value = item.account
     email.value.value = item.email
-    password.value.value = ''
+    password.value.value = '*****'
     age.value.value = item.age
     gender.value.value = item.gender
     userPreviewAvatar.value = item.image || `http://api.multiavatar.com/${account.value.value}.png`
@@ -212,6 +214,13 @@ const getUser = async () => {
   try {
     const { data } = await apiAuth.get('/user/all')
     user.push(...data.result)
+
+    user.find((item) => {
+      if (item._id === userData.id) {
+        userData.setAvatar(item.image)
+        userData.setNickname(item.name)
+      }
+    })
   } catch (error) {
     console.log(error)
     createSnackbar({
@@ -301,7 +310,11 @@ const onSubmit = handleSubmit(async (values) => {
     fd.append('email', values.email)
     fd.append('age', values.age)
     fd.append('gender', values.gender)
-    fd.append('password', values.password)
+    if (values.password.includes('*')) {
+      fd.append('password', '')
+    } else {
+      fd.append('password', values.password)
+    }
 
     if (image.value) {
       fd.append('image', image.value)

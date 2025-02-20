@@ -14,9 +14,47 @@
     </v-container>
   </v-app-bar>
   <v-main>
-    <router-view></router-view>
+    <Suspense>
+      <template #default>
+        <router-view />
+      </template>
+      <template #fallback>
+        <div class="loading-overlay">
+          <v-overlay
+            :model-value="true"
+            class="d-flex align-center justify-center"
+            persistent
+            scrim="black"
+          >
+            <v-card color="transparent" class="d-flex flex-column align-center" elevation="0">
+              <v-progress-circular
+                :size="70"
+                :width="7"
+                color="orange"
+                indeterminate
+              ></v-progress-circular>
+              <span class="text-h6 mt-4 text-orange">載入中...</span>
+            </v-card>
+          </v-overlay>
+        </div>
+      </template>
+    </Suspense>
   </v-main>
 </template>
+
+<style>
+.loading-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 9999;
+}
+.v-overlay__content {
+  z-index: 10000;
+}
+</style>
 
 <script setup>
 import { computed } from 'vue'

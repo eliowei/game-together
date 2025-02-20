@@ -16,7 +16,7 @@
 
   <v-navigation-drawer permanent>
     <v-list>
-      <v-list-item :prepend-avatar="user.avatar" :title="user.account"></v-list-item>
+      <v-list-item :prepend-avatar="user.avatar" :title="user.nickname"></v-list-item>
       <v-divider></v-divider>
       <v-list-item v-for="sidebar of sidebars" :key="sidebar.to" :to="sidebar.to">{{
         sidebar.text

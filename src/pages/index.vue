@@ -18,7 +18,6 @@
           </swiper-slide>
         </swiper>
       </div>
-
       <div class="index__background-content-overlay d-flex flex-column align-center text-white">
         <v-row>
           <v-col cols="12">
@@ -30,7 +29,7 @@
                 無論想要玩什麼遊戲，MOBA、射擊還是生存建築，這裡有數萬位玩家隨時等待加入揪團。加入我們，每天都有各式各樣的遊戲揪團等著你來探索，一起暢玩、共創樂趣！
               </p>
             </div>
-            <div class="d-flex mb-10">
+            <div class="d-flex mb-10 index__search-button__content">
               <v-btn :width="180" :height="60" style="font-size: 20px" class="rounded-e-0"
                 >按關鍵字搜尋</v-btn
               >
@@ -74,7 +73,7 @@
                 ></v-date-picker>
               </v-menu>
             </div>
-            <div class="d-flex">
+            <div class="d-flex index__search-button__content2">
               <div class="index__search-container">
                 <v-text-field
                   placeholder="搜尋關鍵字/縣市區/遊戲類型"
@@ -103,78 +102,82 @@
   </v-container>
   <v-container>
     <!-- 第二區塊 - 揪團 -->
-    <section class="w-100">
+    <section class="w-100 section-group">
       <v-row>
-        <div class="title w-100 d-flex mt-16 mb-12 align-center">
-          <v-col cols="3" offset="1">
-            <span class="ml-6" style="font-size: 32px; font-weight: bold">最新的揪團</span></v-col
-          >
-          <v-col cols="4" offset="2">
-            <v-divider class="border-opacity-100"></v-divider>
-          </v-col>
+        <div class="w-100 section-group-1">
+          <div class="title w-100 d-flex mt-16 mb-12 align-center section-group__title">
+            <v-col cols="3" offset="1">
+              <span class="ml-6" style="font-size: 32px; font-weight: bold">最新的揪團</span></v-col
+            >
+            <v-col cols="4" offset="2">
+              <v-divider class="border-opacity-100"></v-divider>
+            </v-col>
+          </div>
+
+          <div class="content w-100 d-flex section-group__content">
+            <v-col cols="10" offset="1">
+              <div class="d-flex justify-space-between">
+                <template v-for="group in newestGroup" :key="group._id">
+                  <div class="card d-flex flex-column section-group__content-card">
+                    <v-card width="300" :to="'/group/' + group._id">
+                      <v-card-title class="pa-0">
+                        <v-img :src="group.image" :width="300" height="260" cover></v-img>
+                      </v-card-title>
+                    </v-card>
+                    <span class="text-center mt-5" style="font-size: 18px">
+                      {{ group.name }}
+                    </span>
+                  </div>
+                </template>
+              </div>
+            </v-col>
+          </div>
+          <div class="d-flex justify-center w-100 mt-8 mb-10 section-group__button">
+            <v-btn append-icon="mdi-arrow-right" :to="'/group/'">查看最新的揪團</v-btn>
+          </div>
         </div>
 
-        <div class="content w-100 d-flex">
-          <v-col cols="10" offset="1">
-            <div class="d-flex justify-space-between">
-              <template v-for="group in newestGroup" :key="group._id">
-                <div class="card d-flex flex-column">
-                  <v-card width="300" :to="'/group/' + group._id">
-                    <v-card-title class="pa-0">
-                      <v-img :src="group.image" :width="300" height="260" cover></v-img>
-                    </v-card-title>
-                  </v-card>
-                  <span class="text-center mt-5" style="font-size: 18px">
-                    {{ group.name }}
-                  </span>
-                </div>
-              </template>
-            </div>
-          </v-col>
-        </div>
-        <div class="d-flex justify-center w-100 mt-8 mb-10">
-          <v-btn append-icon="mdi-arrow-right" :to="'/group/'">查看最新的揪團</v-btn>
-        </div>
+        <div class="w-100 section-group-2">
+          <div class="title w-100 d-flex mt-16 mb-12 align-center section-group2__title">
+            <v-col cols="3" offset="1">
+              <span class="ml-6" style="font-size: 32px; font-weight: bold"
+                >即將到來的揪團</span
+              ></v-col
+            >
+            <v-col cols="4" offset="2">
+              <v-divider class="border-opacity-100"></v-divider>
+            </v-col>
+          </div>
 
-        <div class="title w-100 d-flex mt-16 mb-12 align-center">
-          <v-col cols="3" offset="1">
-            <span class="ml-6" style="font-size: 32px; font-weight: bold"
-              >即將到來的揪團</span
-            ></v-col
-          >
-          <v-col cols="4" offset="2">
-            <v-divider class="border-opacity-100"></v-divider>
-          </v-col>
-        </div>
-
-        <div class="content w-100 d-flex">
-          <v-col cols="10" offset="1">
-            <div class="d-flex justify-space-between">
-              <template v-for="group in upcomingGroup" :key="group._id">
-                <div class="card d-flex flex-column">
-                  <v-card width="300" :to="'/group/' + group._id">
-                    <v-card-title class="pa-0">
-                      <v-img :src="group.image" :width="300" height="260" cover></v-img>
-                    </v-card-title>
-                  </v-card>
-                  <span class="text-center mt-3" style="font-size: 18px">
-                    {{ group.name }}
-                  </span>
-                </div>
-              </template>
-            </div>
-          </v-col>
-        </div>
-        <div class="d-flex justify-center w-100 mt-8 mb-15">
-          <v-btn append-icon="mdi-arrow-right" :to="'/group/'">查看即將到來的揪團</v-btn>
+          <div class="content w-100 d-flex">
+            <v-col cols="10" offset="1">
+              <div class="d-flex justify-space-between">
+                <template v-for="group in upcomingGroup" :key="group._id">
+                  <div class="card d-flex flex-column section-group2__content-card">
+                    <v-card width="300" :to="'/group/' + group._id">
+                      <v-card-title class="pa-0">
+                        <v-img :src="group.image" :width="300" height="260" cover></v-img>
+                      </v-card-title>
+                    </v-card>
+                    <span class="text-center mt-3" style="font-size: 18px">
+                      {{ group.name }}
+                    </span>
+                  </div>
+                </template>
+              </div>
+            </v-col>
+          </div>
+          <div class="d-flex justify-center w-100 mt-8 mb-15 section-group2__button">
+            <v-btn append-icon="mdi-arrow-right" :to="'/group/'">查看即將到來的揪團</v-btn>
+          </div>
         </div>
       </v-row>
     </section>
     <!-- 第三區塊 - 說明 -->
-    <section class="w-100 mt-10" style="height: 570px">
+    <section class="w-100 mt-10 section-info" style="height: 570px">
       <v-row>
         <v-col cols="12">
-          <p class="text-center mb-3 font-weight-bold" style="font-size: 32px">
+          <p class="text-center mb-3 font-weight-bold section-info-title" style="font-size: 32px">
             想找人一起玩遊戲嗎? 在遊戲揪團平台，你可以.......
           </p>
         </v-col>
@@ -184,7 +187,7 @@
               <v-card
                 width="480"
                 height="370"
-                class="d-flex flex-column align-center justify-center"
+                class="d-flex flex-column align-center justify-center section-info-card-left"
               >
                 <p class="font-weight-bold mb-5" style="font-size: 24px">主辦揪團</p>
                 <v-icon icon="mdi-flag-outline" style="font-size: 50px"></v-icon>
@@ -198,7 +201,7 @@
               <v-card
                 width="480"
                 height="370"
-                class="d-flex flex-column align-center justify-center"
+                class="d-flex flex-column align-center justify-center section-info-card-right"
               >
                 <p class="font-weight-bold mb-5" style="font-size: 24px">加入揪團</p>
                 <v-icon icon="mdi-account-group" style="font-size: 50px"></v-icon>
@@ -212,11 +215,11 @@
         </v-col>
       </v-row>
     </section>
-    <section class="w-100" style="height: 830px">
+    <section class="w-100 section-step" style="height: 830px">
       <v-row>
         <v-col offset="1">
-          <div class="info d-flex flex-column font-weight-bold">
-            <p style="font-size: 32px">五步驟，立刻主辦揪團</p>
+          <div class="info d-flex flex-column font-weight-bold section-step__info">
+            <p class="section-step__info" style="font-size: 32px">五步驟，立刻主辦揪團</p>
             <div class="d-flex flex-column align-center mt-5" style="width: 320px">
               <p style="font-size: 20px">Step.1 填寫揪團資料</p>
               <div class="divider">
@@ -264,7 +267,12 @@
             </v-col>
           </div>
         </v-col>
-        <v-img src="@/assets/section-image.jpg" width="700" height="700"></v-img>
+        <v-img
+          src="@/assets/section-image.jpg"
+          width="700"
+          height="700"
+          class="section-step__img"
+        ></v-img>
       </v-row>
     </section>
   </v-container>
@@ -368,7 +376,12 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue'
+// const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms))
+
+// // 頂層非同步操作
+// await delay(2000)
+
+import { ref, computed, onMounted, onBeforeUnmount } from 'vue'
 import { Swiper, SwiperSlide } from 'swiper/vue'
 import 'swiper/css'
 import 'swiper/css/effect-fade'
@@ -380,6 +393,11 @@ import { useI18n } from 'vue-i18n'
 
 import { EffectFade, Autoplay } from 'swiper/modules'
 import { useRouter } from 'vue-router'
+
+import gsap from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
+
+gsap.registerPlugin(ScrollTrigger)
 
 const { area_data } = useAreaData()
 const { t } = useI18n()
@@ -430,6 +448,7 @@ const cityItems = computed(() => [
   { text: t('area.lienchiang'), value: 'lienchiang' },
 ])
 
+// 標籤選項
 const tagItems = [
   {
     text: t('tag.computer'),
@@ -500,6 +519,7 @@ const tagItems = [
 const { api } = useAxios()
 const group = ref([])
 const modules = [EffectFade, Autoplay]
+// 輪播圖片
 const slides = ref([
   {
     id: 1,
@@ -522,18 +542,18 @@ const dialog = ref({
   open: false,
   type: 1,
 })
-
+// 點擊彈出視窗
 const clickDialog = async (type) => {
   dialog.value.type = type
   dialog.value.open = true
 }
-
+// 關閉彈出視窗
 const closedDialog = () => {
   dialog.value.open = false
   selectRegion.value = []
   selectTag.value = []
 }
-
+// 取得揪團資料
 const getGroup = async () => {
   try {
     const { data } = await api.get('/group')
@@ -543,7 +563,7 @@ const getGroup = async () => {
   }
 }
 getGroup()
-
+// 最新的揪團
 const newestGroup = computed(() => {
   return group.value
     .filter((item) => {
@@ -556,7 +576,7 @@ const newestGroup = computed(() => {
     })
     .splice(0, 3)
 })
-
+// 即將到來的揪團
 const upcomingGroup = computed(() => {
   return group.value
     .filter((item) => {
@@ -574,7 +594,7 @@ const selectRegion = ref([])
 const selectTag = ref([])
 const datePickerOpen = ref(false)
 const selectDate = ref(null)
-
+// 選擇日期
 const handleDateSelect = (date) => {
   try {
     if (!date) return
@@ -595,6 +615,181 @@ const handleDateSelect = (date) => {
     console.log('日期格式錯誤:', error)
   }
 }
+
+onMounted(() => {
+  nextTick()
+  // 首頁標題動畫
+  gsap.from('.index__background-content-text span, .index__background-content-text p', {
+    duration: 1,
+    y: 50,
+    opacity: 0,
+    stagger: 0.2,
+    ease: 'power2.out',
+  })
+  gsap.from('.index__search-button__content', {
+    delay: 0.5,
+    opacity: 0,
+    duration: 1,
+    y: 50,
+    ease: 'power2.out',
+  })
+  gsap.from('.index__search-button__content2', {
+    delay: 0.7,
+    opacity: 0,
+    duration: 1,
+    y: 50,
+    ease: 'power2.out',
+  })
+
+  // 使用 ScrollTrigger.create 來設定滾動觸發
+  ScrollTrigger.create({
+    trigger: '.section-group-1',
+    start: '-80% center',
+    markers: false,
+    onEnter: () => {
+      // 第一區塊動畫
+      const groupTl = gsap.timeline()
+
+      groupTl
+        .from('.section-group__title', {
+          x: -50,
+          opacity: 0,
+          duration: 1,
+          ease: 'power2.out',
+        })
+        .from(
+          '.section-group__content-card',
+          {
+            x: -100,
+            opacity: 0,
+            duration: 0.8,
+            ease: 'power2.out',
+            stagger: 0.2,
+          },
+          '-=0.5',
+        )
+        .from(
+          '.section-group__button',
+          {
+            x: -100,
+            opacity: 0,
+            duration: 1,
+            ease: 'power2.out',
+          },
+          '-=0.5',
+        )
+    },
+  })
+
+  // 第二區塊動畫
+  ScrollTrigger.create({
+    trigger: '.section-group-2',
+    start: '5% center',
+    markers: false,
+    onEnter: () => {
+      const groupTl2 = gsap.timeline()
+
+      groupTl2
+        .from('.section-group2__title', {
+          x: 100,
+          opacity: 0,
+          duration: 1,
+          ease: 'power2.out',
+        })
+        .from(
+          '.section-group2__content-card',
+          {
+            x: 100,
+            opacity: 0,
+            duration: 0.8,
+            ease: 'power2.out',
+            stagger: 0.2,
+          },
+          '-=0.5',
+        )
+        .from(
+          '.section-group2__button',
+          {
+            x: 100,
+            opacity: 0,
+            duration: 1,
+            ease: 'power2.out',
+          },
+          '-=0.5',
+        )
+    },
+  })
+
+  // 第三區塊動畫
+  ScrollTrigger.create({
+    trigger: '.section-info',
+    start: 'center center',
+    markers: false,
+    onEnter: () => {
+      const cardTl = gsap.timeline()
+      cardTl
+        .from('.section-info-title', {
+          y: 100,
+          opacity: 0,
+          duration: 1,
+          ease: 'power2.out',
+        })
+        .from(
+          '.section-info-card-left',
+          {
+            scale: 0,
+            opacity: 1,
+            duration: 0.5,
+            ease: 'power2.out',
+          },
+          '-=0.5',
+        )
+        .from(
+          '.section-info-card-right',
+          {
+            scale: 0,
+            opacity: 1,
+            duration: 0.5,
+            ease: 'power2.out',
+          },
+          '-=0.5',
+        )
+    },
+  })
+
+  // 第四區塊動畫
+  ScrollTrigger.create({
+    trigger: '.section-step',
+    start: '31% center',
+    markers: false,
+    onEnter: () => {
+      const cardTl = gsap.timeline()
+      cardTl
+        .from('.section-step__info', {
+          x: -100,
+          opacity: 0,
+          duration: 1,
+          ease: 'power2.out',
+        })
+        .from(
+          '.section-step__img',
+          {
+            x: 100,
+            opacity: 0,
+            duration: 1,
+            ease: 'power2.out',
+          },
+          '-=0.5',
+        )
+    },
+  })
+})
+
+// 添加頁面離開時的清理
+onBeforeUnmount(() => {
+  // 清除所有 ScrollTrigger 實例
+  ScrollTrigger.getAll().forEach((trigger) => trigger.kill())
+})
 </script>
 
 <route lang="yaml">

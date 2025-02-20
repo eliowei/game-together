@@ -89,7 +89,15 @@
               <v-tabs-window-item :value="0">
                 <div class="d-flex">
                   <template v-for="number in group.groupMembers">
-                    <div class="d-flex flex-column mr-9 align-center">
+                    <div
+                      class="d-flex flex-column mr-9 align-center"
+                      :class="{ 'cursor-pointer': group.organizer_id._id !== number.user_id._id }"
+                      @click="
+                        group.organizer_id._id !== number.user_id._id
+                          ? groupMembersAction(number)
+                          : null
+                      "
+                    >
                       <v-avatar size="50">
                         <v-img :src="number.user_id.image" />
                       </v-avatar>
@@ -116,14 +124,15 @@
                       </v-card-text>
                       <v-card-actions>
                         <span> B{{ keys }} </span>
-                        <v-btn v-if="!comment.reply" @click="commentReplyAction(keys)">回覆</v-btn>
-                        <span v-if="comment.reply" class="text-grey-lighten-1">已回覆</span>
-                        <v-btn
-                          v-if="group.organizer_id._id === user.id"
-                          @click="commentDelete(keys, group)"
-                          :isLoading="commentLoading"
-                          >刪除</v-btn
-                        >
+                        <div v-if="group.organizer_id._id === user.id">
+                          <v-btn v-if="!comment.reply" @click="commentReplyAction(keys)"
+                            >回覆</v-btn
+                          >
+                          <span v-if="comment.reply" class="text-grey-lighten-1">已回覆</span>
+                          <v-btn @click="commentDelete(keys, group)" :isLoading="commentLoading"
+                            >刪除</v-btn
+                          >
+                        </div>
                       </v-card-actions>
                     </v-card>
                   </div>
@@ -203,6 +212,7 @@
                             @click="commentReplySubmit(group)"
                             :disabled="commentState"
                             :loading="commentLoading"
+                            class="mr-3"
                             >確定送出</v-btn
                           >
                           <v-btn
@@ -214,11 +224,9 @@
                           >
                         </div>
                       </div>
-
                       <v-card
                         class="order-1 pl-7"
                         style="width: 600px"
-                        @click="commentReplyEdit(keys, comment)"
                         v-if="
                           !commentReplyEditState ||
                           (commentReply.open && commentReply.id !== keys && commentReplyEditState)
@@ -226,7 +234,17 @@
                       >
                         <v-card-text class="d-flex flex-column px-0">
                           <span class="mt-1 mb-3" style="font-size: 14px"
-                            >主辦者 回覆B{{ keys }}</span
+                            >主辦者 回覆B{{ keys }}
+                            <v-btn
+                              variant="text"
+                              @click="
+                                group.organizer_id._id === user.id
+                                  ? commentReplyEdit(keys, comment)
+                                  : ''
+                              "
+                              v-if="group.organizer_id._id === user.id"
+                              >編輯</v-btn
+                            ></span
                           >
                           <span style="font-size: 16px">{{ comment.reply.message }}</span>
                         </v-card-text>
@@ -283,9 +301,13 @@
               ></v-btn>
             </div>
             <v-btn class="mr-5" height="50" width="200" :disabled="true">{{ groupRole }}</v-btn>
-            <v-btn height="50" width="200" :disabled="groupButtonState" @click="groupAction">{{
-              groupState
-            }}</v-btn>
+            <v-btn
+              height="50"
+              width="200"
+              :disabled="groupButtonState || isUserInGroup"
+              @click="groupAction"
+              >{{ groupState }}</v-btn
+            >
           </div>
         </div>
       </v-col>
@@ -499,7 +521,9 @@ const commentReplySubmit = async (values) => {
 }
 
 const isUserInGroup = computed(() => {
-  return group.value.groupMembers.some((users) => users.user_id._id === user.id)
+  return group.value.groupMembers.some(
+    (users) => group.value.organizer_id._id !== user.id && users.user_id._id === user.id,
+  )
 })
 const groupRole = computed(() => {
   return group.value.organizer_id._id === user.id
@@ -514,7 +538,7 @@ const groupState = computed(() => {
     : group.value.organizer_id._id === user.id
       ? '取消揪團'
       : isUserInGroup.value
-        ? '取消參加揪團'
+        ? '已參加揪團'
         : group.value.member_count === group.value.member_limit
           ? '揪團已滿'
           : '參加揪團'
@@ -579,15 +603,6 @@ const groupAction = async () => {
       await apiAuth.post('/user/joinGroup/' + group.value._id)
       createSnackbar({
         text: '參加揪團成功',
-        snackbarProps: {
-          color: 'green',
-        },
-      })
-    } else if (isUserInGroup.value) {
-      // 取消參加揪團
-      await apiAuth.delete('/user/joinGroup/' + group.value._id)
-      createSnackbar({
-        text: '取消參加揪團成功',
         snackbarProps: {
           color: 'green',
         },
@@ -694,6 +709,42 @@ const favoriteAction = async () => {
         },
       })
       router.push('/login')
+    }
+  }
+}
+
+const groupMembersAction = async (member) => {
+  try {
+    console.log(group.value._id)
+    if (group.value.organizer_id._id !== user.id) throw new Error('NOT_ORGANIZER')
+    if (group.value.organizer_id._id === member.user_id._id) throw new Error('ORGANIZER')
+
+    await apiAuth.patch('user/organizerGroup/' + group.value._id + '/kick', {
+      user_id: member.user_id._id,
+    })
+    createSnackbar({
+      text: '踢除成功',
+      snackbarProps: {
+        color: 'green',
+      },
+    })
+    getGroup()
+  } catch (error) {
+    console.log(error)
+    if (error.message === 'NOT_ORGANIZER') {
+      createSnackbar({
+        text: '您不是主辦者',
+        snackbarProps: {
+          color: 'red',
+        },
+      })
+    } else if (error.message === 'ORGANIZER') {
+      createSnackbar({
+        text: '無法踢除主辦者',
+        snackbarProps: {
+          color: 'red',
+        },
+      })
     }
   }
 }

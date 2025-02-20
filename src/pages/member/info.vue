@@ -184,6 +184,7 @@ const getUser = async () => {
     age.value.value = user.value.age
     gender.value.value = user.value.gender
     userData.setAvatar(data.result.image)
+    userData.setNickname(data.result.name)
   } catch (error) {
     console.log(error)
     createSnackbar({

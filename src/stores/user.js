@@ -33,8 +33,15 @@ export const useUserStore = defineStore(
     })
 
     const setAvatar = (value) => {
-      console.log(value)
       image.value = value
+    }
+
+    const setNickname = (value) => {
+      nickname.value = value
+    }
+
+    const setAccount = (value) => {
+      account.value = value
     }
 
     const setTags = (value) => {
@@ -95,6 +102,8 @@ export const useUserStore = defineStore(
       setAvatar,
       setTags,
       updateFavoriteGroups,
+      setNickname,
+      setAccount,
     }
   },
   {
