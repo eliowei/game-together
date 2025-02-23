@@ -28,7 +28,7 @@
               <v-btn @click="openDialog(item)">{{ $t('admin.groupEdit') }}</v-btn>
             </template>
             <template #[`item.delete`]="{ item }">
-              <v-btn @click="deleteGroup(item)">{{ $t('admin.groupDelete') }}</v-btn>
+              <v-btn @click="openDeleteDialog(item)">{{ $t('admin.groupDelete') }}</v-btn>
             </template>
           </v-data-table>
         </v-col>
@@ -252,6 +252,15 @@
         </v-card-actions>
       </v-card>
     </v-form>
+  </v-dialog>
+  <v-dialog v-model="deleteDialog.open" width="350">
+    <v-card>
+      <v-card-text>確定要刪除揪團嗎?</v-card-text>
+      <v-card-actions>
+        <v-btn @click="deleteDialogAction('cancel')">取消</v-btn>
+        <v-btn @click="deleteDialogAction('confirm')">確定</v-btn>
+      </v-card-actions>
+    </v-card>
   </v-dialog>
 </template>
 
@@ -477,11 +486,29 @@ const getGroups = async () => {
 }
 getGroups()
 
-// dialog 狀態
+// 分頁 dialog 狀態
 const dialog = ref({
   open: false,
   id: '',
 })
+
+const deleteDialog = ref({
+  open: false,
+  data: '',
+})
+const openDeleteDialog = (item) => {
+  deleteDialog.value.open = true
+  deleteDialog.value.data = item
+}
+const deleteDialogAction = (type) => {
+  if (type === 'cancel') {
+    deleteDialog.value.open = false
+  } else if (type === 'confirm') {
+    deleteGroup(deleteDialog.value.data)
+    deleteDialog.value.open = false
+  }
+}
+
 // 開啟dialog
 const openDialog = async (item) => {
   // 有傳入item代表是編輯揪團

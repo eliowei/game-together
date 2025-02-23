@@ -31,11 +31,12 @@
         position: relative;
         z-index: 2;
         height: 100%;
+        max-width: 1440px;
         background: rgba(0, 0, 0, 0.7);
       }
 
       &-text {
-        width: 720px;
+        max-width: 720px;
         margin-top: 150px;
       }
     }
@@ -43,8 +44,10 @@
 
   &__search {
     &-container {
-      width: 600px;
+      max-width: 600px;
+      min-width: 292px;
       height: 80px;
+      flex: 0 1 600px;
     }
 
     &-input {
@@ -62,8 +65,6 @@
 
     &-button {
       &.v-btn {
-        height: 80px;
-        width: 120px;
         font-size: 20px;
         border-top-left-radius: 0;
         border-bottom-left-radius: 0;
@@ -72,8 +73,24 @@
           &:hover {
             background-color: white;
             color: black;
-            border: 0;
+            border-color: transparent;
           }
+        }
+      }
+      &__content {
+        max-width: 720px;
+        min-width: 350px;
+
+        .v-btn {
+          flex: 0 1 180px;
+        }
+      }
+      &__content2 {
+        max-width: 720px;
+        min-width: 350px;
+
+        .v-btn {
+          flex: 0 1 120px;
         }
       }
     }
@@ -96,6 +113,20 @@
     }
   }
 }
+
+.section-group__content-card,
+.section-group2__content-card {
+  flex: 0 1 300px;
+}
+
+.section-group__button .v-btn {
+  flex: 0 1 200px;
+}
+
+.section-group2__button .v-btn {
+  flex: 0 1 200px;
+}
+
 // 佔位符-按鈕hover
 %form-button-hover {
   &:hover {

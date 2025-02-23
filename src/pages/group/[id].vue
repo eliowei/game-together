@@ -66,7 +66,7 @@
                   class="mt-3"
                   prepend-icon="mdi-clipboard-list"
                   style="width: 160px; height: 40px"
-                  @click="contactDialog = true"
+                  @click="openDialog('contact')"
                   >聯絡資訊</v-btn
                 >
               </div>
@@ -90,11 +90,19 @@
                 <div class="d-flex">
                   <template v-for="number in group.groupMembers">
                     <div
-                      class="d-flex flex-column mr-9 align-center"
-                      :class="{ 'cursor-pointer': group.organizer_id._id !== number.user_id._id }"
+                      class="d-flex flex-column mr-9 align-center pa-5"
+                      :class="{
+                        'cursor-pointer':
+                          group.organizer_id._id === user.id &&
+                          group.organizer_id._id !== number.user_id._id,
+                        'member-card':
+                          group.organizer_id._id === user.id &&
+                          group.organizer_id._id !== number.user_id._id,
+                      }"
                       @click="
+                        group.organizer_id._id === user.id &&
                         group.organizer_id._id !== number.user_id._id
-                          ? groupMembersAction(number)
+                          ? openDialog('kick', number)
                           : null
                       "
                     >
@@ -129,7 +137,9 @@
                             >回覆</v-btn
                           >
                           <span v-if="comment.reply" class="text-grey-lighten-1">已回覆</span>
-                          <v-btn @click="commentDelete(keys, group)" :isLoading="commentLoading"
+                          <v-btn
+                            @click="openDialog('commentsDelete', group, keys)"
+                            :isLoading="commentLoading"
                             >刪除</v-btn
                           >
                         </div>
@@ -217,7 +227,7 @@
                           >
                           <v-btn
                             height="50"
-                            @click="commentReplyDelete(group)"
+                            @click="openDialog('commentsReplyDelete', group)"
                             :disabled="commentState"
                             :loading="commentLoading"
                             >刪除</v-btn
@@ -314,12 +324,12 @@
     </v-row>
   </v-container>
 
-  <v-dialog v-model="contactDialog" width="350" opacity="0">
-    <v-card>
+  <v-dialog v-model="dialogState.open" width="350" opacity="0">
+    <v-card v-if="dialogState.type === 'contact'">
       <v-card-title class="d-flex align-center mb-0 pb-0">
         <span>{{ t('group.contactInfo') }}</span>
         <v-spacer></v-spacer>
-        <v-btn icon="mdi-close" variant="text" @click="contactDialog = false"></v-btn>
+        <v-btn icon="mdi-close" variant="text" @click="dialogState.open = false"></v-btn>
       </v-card-title>
       <v-card-text class="pt-0">
         <v-list class="py-0">
@@ -329,6 +339,24 @@
         </v-list>
       </v-card-text>
     </v-card>
+
+    <v-card v-if="dialogState.type !== 'contact'">
+      <v-card-text>{{
+        dialogState.type === 'kick'
+          ? '確定要踢除該成員嗎?'
+          : dialogState.type === 'commentsDelete'
+            ? '確定要刪除留言嗎?'
+            : dialogState.type === 'commentsReplyDelete'
+              ? '確定要刪除回覆留言嗎?'
+              : dialogState.type === 'cancelsGroup'
+                ? '確定要取消揪團嗎?'
+                : ''
+      }}</v-card-text>
+      <v-card-actions>
+        <v-btn @click="DialogAction('cancel')">取消</v-btn>
+        <v-btn @click="DialogAction('confirm')">確定</v-btn>
+      </v-card-actions>
+    </v-card>
   </v-dialog>
   <group-footer></group-footer>
 </template>
@@ -336,6 +364,15 @@
 <style>
 .custom-textarea .v-field__input {
   padding-left: 28px;
+}
+
+.member-card {
+  transition: 0.4s ease;
+}
+
+.member-card:hover {
+  border-radius: 4px;
+  background-color: #ffe0b2;
 }
 </style>
 
@@ -357,7 +394,12 @@ const tabs = [
   { id: 0, title: '參與者' },
   { id: 1, title: '留言' },
 ]
-const contactDialog = ref(false)
+const dialogState = reactive({
+  open: false,
+  type: '',
+  data: {},
+  key: 0,
+})
 const { t } = useI18n()
 const user = useUserStore()
 const date = useDate()
@@ -571,6 +613,47 @@ const contactDialogItems = computed(() => [
   { title: '聯絡資訊', icon: '', value: group.value.contact_info },
 ])
 
+const openDialog = (type, data, key) => {
+  dialogState.open = true
+  dialogState.type = type
+  dialogState.data = data
+  dialogState.key = key
+  console.log(dialogState.data)
+}
+
+const DialogAction = (type) => {
+  if (type === 'cancel') {
+    dialogState.open = false
+  } else if (type === 'confirm') {
+    dialogState.open = false
+    if (dialogState.type === 'kick') {
+      groupMembersAction(dialogState.data)
+    } else if (dialogState.type === 'commentsDelete') {
+      commentDelete(dialogState.key, dialogState.data)
+    } else if (dialogState.type === 'commentsReplyDelete') {
+      commentReplyDelete(dialogState.data)
+    } else if (dialogState.type === 'cancelsGroup') {
+      cancelGroup()
+    }
+  }
+}
+
+const cancelGroup = async () => {
+  try {
+    // 取消主辦揪團
+    await apiAuth.delete('/user/organizerGroup/' + group.value._id)
+    router.push('/group')
+    createSnackbar({
+      text: '取消揪團成功',
+      snackbarProps: {
+        color: 'green',
+      },
+    })
+  } catch (error) {
+    console.log(error)
+  }
+}
+
 const getGroup = async () => {
   try {
     const { data } = await api.get('/group/' + route.params.id)
@@ -588,16 +671,7 @@ const groupAction = async () => {
     if (!user.id) throw new Error('LOGIN')
 
     if (group.value.organizer_id._id === user.id) {
-      // 取消揪團
-      await apiAuth.delete('/user/organizerGroup/' + group.value._id)
-      router.push('/group')
-      createSnackbar({
-        text: '取消揪團成功',
-        snackbarProps: {
-          color: 'green',
-        },
-      })
-      return
+      openDialog('cancelsGroup')
     } else if (!isUserInGroup.value) {
       // 參加揪團
       await apiAuth.post('/user/joinGroup/' + group.value._id)

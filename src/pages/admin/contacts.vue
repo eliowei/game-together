@@ -27,7 +27,7 @@
             <v-btn @click="openDialog(item)">{{ $t('admin.contactView') }}</v-btn>
           </template>
           <template #[`item.delete`]="{ item }">
-            <v-btn @click="deleteContact(item)">{{ $t('admin.contactDelete') }}</v-btn>
+            <v-btn @click="openDeleteDialog(item)">{{ $t('admin.contactDelete') }}</v-btn>
           </template>
         </v-data-table>
       </v-col>
@@ -48,6 +48,16 @@
           </v-list-item>
         </v-list>
       </v-card-text>
+    </v-card>
+  </v-dialog>
+
+  <v-dialog v-model="deleteDialog.open" width="350">
+    <v-card>
+      <v-card-text>確定要刪除揪團嗎?</v-card-text>
+      <v-card-actions>
+        <v-btn @click="deleteDialogAction('cancel')">取消</v-btn>
+        <v-btn @click="deleteDialogAction('confirm')">確定</v-btn>
+      </v-card-actions>
     </v-card>
   </v-dialog>
 </template>
@@ -121,6 +131,23 @@ const dialog = ref({
   title: '',
   description: '',
 })
+
+const deleteDialog = ref({
+  open: false,
+  data: '',
+})
+const openDeleteDialog = (item) => {
+  deleteDialog.value.open = true
+  deleteDialog.value.data = item
+}
+const deleteDialogAction = (type) => {
+  if (type === 'cancel') {
+    deleteDialog.value.open = false
+  } else if (type === 'confirm') {
+    deleteContact(deleteDialog.value.data)
+    deleteDialog.value.open = false
+  }
+}
 
 const openDialog = (item) => {
   dialog.value.id = item._id

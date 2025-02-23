@@ -1,18 +1,49 @@
 <template>
   <v-app-bar>
-    <v-container class="d-flex align-center">
-      <v-btn to="/" :active="false">Game Together</v-btn>
-      <v-spacer></v-spacer>
-      <template v-for="nav of navs" :key="nav.to">
-        <v-btn v-if="nav.show" :to="nav.to" :prepend-icon="nav.icon">{{ nav.text }} </v-btn>
-      </template>
-      <v-btn v-if="user.isLoggedIn" prepend-icon="mdi-account-arrow-right" @click="logout">{{
-        $t('nav.logout')
-      }}</v-btn>
-
-      <v-avatar border="xs" :image="user.avatar"></v-avatar>
-    </v-container>
+    <!-- 桌面板型 MD 960px -->
+    <template v-if="mdAndUp">
+      <v-container class="d-flex justify-space-between align-center" fluid>
+        <v-btn to="/" :active="false" class="ml-2">Game Together</v-btn>
+        <div class="d-flex mr-6">
+          <template v-for="nav of navs" :key="nav.to">
+            <v-btn v-if="nav.show" :to="nav.to" :prepend-icon="nav.icon">{{ nav.text }} </v-btn>
+          </template>
+          <v-btn v-if="user.isLoggedIn" prepend-icon="mdi-account-arrow-right" @click="logout">{{
+            $t('nav.logout')
+          }}</v-btn>
+          <v-avatar border="xs" :image="user.avatar"></v-avatar>
+        </div>
+      </v-container>
+    </template>
+    <!-- 手機板型 -->
+    <template v-else-if="!mdAndUp">
+      <v-container class="d-flex justify-space-between align-center" fluid>
+        <v-btn to="/" :active="false" class="ml-2">Game Together</v-btn>
+        <v-app-bar-nav-icon @click="dialog = !dialog" class="mr-6"></v-app-bar-nav-icon>
+      </v-container>
+    </template>
   </v-app-bar>
+  <!-- 手機板型展開選單 -->
+  <v-navigation-drawer v-model="dialog" temporary location="top" v-if="!mdAndUp">
+    <v-list>
+      <template v-for="nav of navs">
+        <v-list-item v-if="nav.show" :to="nav.to" :prepend-icon="nav.icon">{{
+          nav.text
+        }}</v-list-item>
+      </template>
+      <v-list-item
+        v-if="user.isLoggedIn"
+        @click="
+          () => {
+            logout()
+            dialog = false
+          }
+        "
+        prepend-icon="mdi-account-arrow-right"
+        >{{ $t('nav.logout') }}</v-list-item
+      >
+    </v-list>
+  </v-navigation-drawer>
 
   <v-navigation-drawer permanent>
     <v-list>
@@ -94,6 +125,7 @@
       </v-list-item>
     </template>
     <v-divider></v-divider>
+    <v-list-item v-if="groupFilter.length === 0">本周無揪團</v-list-item>
   </v-navigation-drawer>
   <v-main>
     <router-view></router-view>
@@ -108,6 +140,7 @@ import { useAxios } from '@/composables/axios'
 import { useSnackbar } from 'vuetify-use-dialog'
 import { useRouter } from 'vue-router'
 import { useDate } from 'vuetify'
+import { useDisplay } from 'vuetify'
 
 const { t } = useI18n()
 const user = useUserStore()
@@ -116,10 +149,13 @@ const createSnackbar = useSnackbar()
 const router = useRouter()
 const group = ref([])
 const date = useDate()
+const { mdAndUp } = useDisplay()
 
 const userTags = computed(() => {
   return user.tags
 })
+
+const dialog = ref(false)
 
 // 導覽列項目
 const navs = computed(() => {
@@ -192,6 +228,7 @@ const logout = async () => {
       color: 'green',
     },
   })
+  dialog.value = false
   router.push('/')
 }
 
@@ -227,5 +264,11 @@ const groupFilter = computed(() => {
     })
     .sort((a, b) => new Date(a.group_id.time) - new Date(b.group_id.time))
     .slice(0, 3)
+})
+// 如果超過960px，則關閉手機板型的導覽列
+watch(mdAndUp, () => {
+  if (mdAndUp && dialog) {
+    dialog.value = false
+  }
 })
 </script>

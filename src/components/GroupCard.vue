@@ -1,6 +1,6 @@
 <template>
-  <v-card class="d-flex" :to="'/group/' + _id" style="box-shadow: none">
-    <v-img :src="image" height="200" max-width="200" cover>
+  <v-card class="d-flex" :to="'/group/' + _id" style="box-shadow: none" :max-width="1440">
+    <v-img :src="image" height="200" width="200" max-width="200" min-width="200" cover>
       <div class="d-flex flex-column align-start">
         <v-chip
           v-for="tag of tags"
@@ -10,6 +10,7 @@
         >
       </div>
     </v-img>
+
     <div class="card-content">
       <v-card-title>
         {{ name }}

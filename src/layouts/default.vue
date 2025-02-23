@@ -1,74 +1,67 @@
 <template>
   <v-app-bar>
-    <v-container class="d-flex align-center">
-      <v-btn to="/" :active="false">Game Together</v-btn>
-      <v-spacer></v-spacer>
-      <template v-for="nav of navs" :key="nav.to">
-        <v-btn v-if="nav.show" :to="nav.to" :prepend-icon="nav.icon">{{ nav.text }} </v-btn>
-      </template>
-      <v-btn v-if="user.isLoggedIn" prepend-icon="mdi-account-arrow-right" @click="logout">{{
-        $t('nav.logout')
-      }}</v-btn>
-
-      <v-avatar border="xs" :image="user.avatar"> </v-avatar>
-    </v-container>
-  </v-app-bar>
-  <v-main>
-    <Suspense>
-      <template #default>
-        <router-view />
-      </template>
-      <template #fallback>
-        <div class="loading-overlay">
-          <v-overlay
-            :model-value="true"
-            class="d-flex align-center justify-center"
-            persistent
-            scrim="black"
-          >
-            <v-card color="transparent" class="d-flex flex-column align-center" elevation="0">
-              <v-progress-circular
-                :size="70"
-                :width="7"
-                color="orange"
-                indeterminate
-              ></v-progress-circular>
-              <span class="text-h6 mt-4 text-orange">載入中...</span>
-            </v-card>
-          </v-overlay>
+    <!-- 桌面板型 MD 960px -->
+    <template v-if="mdAndUp">
+      <v-container class="d-flex justify-space-between align-center" fluid>
+        <v-btn to="/" :active="false" class="ml-2">Game Together</v-btn>
+        <div class="d-flex mr-6">
+          <template v-for="nav of navs" :key="nav.to">
+            <v-btn v-if="nav.show" :to="nav.to" :prepend-icon="nav.icon">{{ nav.text }} </v-btn>
+          </template>
+          <v-btn v-if="user.isLoggedIn" prepend-icon="mdi-account-arrow-right" @click="logout">{{
+            $t('nav.logout')
+          }}</v-btn>
+          <v-avatar border="xs" :image="user.avatar"> </v-avatar>
         </div>
+      </v-container>
+    </template>
+    <!-- 手機板型 -->
+    <template v-else-if="!mdAndUp">
+      <v-container class="d-flex justify-space-between align-center" fluid>
+        <v-btn to="/" :active="false" class="ml-2">Game Together</v-btn>
+        <v-app-bar-nav-icon @click="dialog = !dialog" class="mr-6"></v-app-bar-nav-icon>
+      </v-container>
+    </template>
+  </v-app-bar>
+  <!-- 手機板型展開選單 -->
+  <v-navigation-drawer v-model="dialog" temporary location="top" v-if="!mdAndUp">
+    <v-list>
+      <template v-for="nav of navs">
+        <v-list-item
+          :key="nav.to"
+          :to="nav.to"
+          :prepend-icon="nav.icon"
+          @click="dialog = false"
+          v-if="nav.show"
+          >{{ nav.text }}
+        </v-list-item>
       </template>
-    </Suspense>
+      <v-list-item v-if="user.isLoggedIn" prepend-icon="mdi-account-arrow-right" @click="logout">{{
+        $t('nav.logout')
+      }}</v-list-item>
+    </v-list>
+  </v-navigation-drawer>
+
+  <v-main>
+    <router-view />
   </v-main>
 </template>
 
-<style>
-.loading-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  z-index: 9999;
-}
-.v-overlay__content {
-  z-index: 10000;
-}
-</style>
-
 <script setup>
-import { computed } from 'vue'
+import { computed, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useUserStore } from '@/stores/user'
 import { useAxios } from '@/composables/axios'
 import { useSnackbar } from 'vuetify-use-dialog'
 import { useRouter } from 'vue-router'
+import { useDisplay } from 'vuetify'
 
 const { t } = useI18n()
 const user = useUserStore()
 const { apiAuth } = useAxios()
 const createSnackbar = useSnackbar()
 const router = useRouter()
+const { mdAndUp } = useDisplay()
 
 // 導覽列項目
 const navs = computed(() => {
@@ -108,6 +101,8 @@ const navs = computed(() => {
   ]
 })
 
+const dialog = ref(false)
+
 const logout = async () => {
   try {
     await apiAuth.delete('/user/logout')
@@ -119,6 +114,13 @@ const logout = async () => {
     text: t('logout.success'),
     snackbarProps: { color: 'green' },
   })
+  dialog.value = false
   router.push('/')
 }
+// 如果超過960px，則關閉手機板型的導覽列
+watch(mdAndUp, () => {
+  if (mdAndUp && dialog) {
+    dialog.value = false
+  }
+})
 </script>
