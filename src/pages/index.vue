@@ -18,25 +18,34 @@
           </swiper-slide>
         </swiper>
       </div>
-      <div class="index__background-content-overlay d-flex flex-column align-center text-white">
-        <v-row>
-          <v-col cols="12">
+      <div
+        class="index__background-content-overlay d-flex flex-column align-center text-white"
+        style="max-width: 1440px"
+      >
+        <v-row class="w-100">
+          <v-col cols="9" offset-md="3" offset-sm="2" offset="1">
             <div class="index__background-content-text d-flex flex-column">
               <span style="font-size: 32px">Game Togeter</span>
               <span style="font-size: 40px">遊戲揪團平台</span>
               <span style="font-size: 40px">找到一起玩遊戲的夥伴</span>
-              <p class="text-h6 mt-6 mb-6" style="width: 525px">
+              <p class="text-h6 mt-6 mb-6" style="max-width: 525px">
                 無論想要玩什麼遊戲，MOBA、射擊還是生存建築，這裡有數萬位玩家隨時等待加入揪團。加入我們，每天都有各式各樣的遊戲揪團等著你來探索，一起暢玩、共創樂趣！
               </p>
             </div>
             <div class="d-flex mb-10 index__search-button__content">
-              <v-btn :width="180" :height="60" style="font-size: 20px" class="rounded-e-0"
+              <v-btn
+                height="60"
+                max-width="180"
+                min-width="87.5"
+                style="font-size: 20px"
+                class="rounded-e-0"
                 >按關鍵字搜尋</v-btn
               >
               <v-btn
                 variant="outlined"
-                :width="180"
-                :height="60"
+                height="60"
+                max-width="180"
+                min-width="87.5"
                 style="font-size: 20px"
                 class="index__search-button v-btn--outline rounded-0"
                 @click="clickDialog(1)"
@@ -44,8 +53,9 @@
               >
               <v-btn
                 variant="outlined"
-                :width="180"
-                :height="60"
+                height="60"
+                max-width="180"
+                min-width="87.5"
                 style="font-size: 20px"
                 class="index__search-button v-btn--outline rounded-0"
                 @click="clickDialog(2)"
@@ -56,8 +66,9 @@
                   <v-btn
                     v-bind="props"
                     variant="outlined"
-                    :width="180"
-                    :height="60"
+                    height="60"
+                    max-width="180"
+                    min-width="87.5"
                     style="font-size: 20px"
                     class="index__search-button v-btn--outline"
                     >按日期搜尋</v-btn
@@ -88,8 +99,10 @@
 
               <v-btn
                 :height="80"
-                :width="120"
+                :max-width="120"
+                :min-width="58"
                 class="index__search-button"
+                style="flex: 0 1 120px"
                 base-color="orange"
                 :to="searchRouteParams"
                 >搜尋</v-btn
@@ -100,12 +113,12 @@
       </div>
     </div>
   </v-container>
-  <v-container>
-    <!-- 第二區塊 - 揪團 -->
+  <!-- 第二區塊 - 揪團 -->
+  <v-container fluid style="max-width: 1440px">
     <section class="w-100 section-group">
       <v-row>
         <div class="w-100 section-group-1">
-          <div class="title w-100 d-flex mt-16 mb-12 align-center section-group__title">
+          <div class="title d-flex mt-16 mb-12 align-center section-group__title">
             <v-col cols="3" offset="1">
               <span class="ml-6" style="font-size: 32px; font-weight: bold">最新的揪團</span></v-col
             >
@@ -115,13 +128,24 @@
           </div>
 
           <div class="content w-100 d-flex section-group__content">
-            <v-col cols="10" offset="1">
-              <div class="d-flex justify-space-between">
+            <v-col cols="10" offset="2" offset-md="1" offset-sm="2" md="10" sm="10" xs="6">
+              <div class="d-flex justify-space-between flex-wrap">
                 <template v-for="group in newestGroup" :key="group._id">
                   <div class="card d-flex flex-column section-group__content-card">
-                    <v-card width="300" :to="'/group/' + group._id">
+                    <v-card
+                      max-width="300"
+                      min-width="250"
+                      height="260"
+                      :to="'/group/' + group._id"
+                    >
                       <v-card-title class="pa-0">
-                        <v-img :src="group.image" :width="300" height="260" cover></v-img>
+                        <v-img
+                          :src="group.image"
+                          max-width="300"
+                          min-width="250"
+                          height="260"
+                          cover
+                        ></v-img>
                       </v-card-title>
                     </v-card>
                     <span class="text-center mt-5" style="font-size: 18px">
@@ -133,7 +157,15 @@
             </v-col>
           </div>
           <div class="d-flex justify-center w-100 mt-8 mb-10 section-group__button">
-            <v-btn append-icon="mdi-arrow-right" :to="'/group/'">查看最新的揪團</v-btn>
+            <v-btn
+              append-icon="mdi-arrow-right"
+              :to="'/group/'"
+              max-width="200"
+              min-width="125"
+              max-height="50"
+              min-height="40"
+              >查看最新的揪團</v-btn
+            >
           </div>
         </div>
 
@@ -150,13 +182,24 @@
           </div>
 
           <div class="content w-100 d-flex">
-            <v-col cols="10" offset="1">
-              <div class="d-flex justify-space-between">
+            <v-col cols="10" offset="2" offset-md="1" offset-sm="2" md="10" sm="10" xs="6">
+              <div class="d-flex justify-space-between flex-wrap">
                 <template v-for="group in upcomingGroup" :key="group._id">
                   <div class="card d-flex flex-column section-group2__content-card">
-                    <v-card width="300" :to="'/group/' + group._id">
+                    <v-card
+                      max-width="300"
+                      min-width="250"
+                      height="260"
+                      :to="'/group/' + group._id"
+                    >
                       <v-card-title class="pa-0">
-                        <v-img :src="group.image" :width="300" height="260" cover></v-img>
+                        <v-img
+                          :src="group.image"
+                          max-width="300"
+                          min-width="250"
+                          height="260"
+                          cover
+                        ></v-img>
                       </v-card-title>
                     </v-card>
                     <span class="text-center mt-3" style="font-size: 18px">
