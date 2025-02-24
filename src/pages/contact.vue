@@ -1,5 +1,5 @@
 <template>
-  <v-container>
+  <v-container fluid style="max-width: 1440px">
     <v-row>
       <v-col cols="12">
         <h1 class="text-center">{{ $t('nav.contactUs') }}</h1>

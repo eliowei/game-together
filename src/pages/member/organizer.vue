@@ -16,7 +16,7 @@
             </div>
           </div>
 
-          <v-data-table :items="group" :headers="headers" :search="search">
+          <v-data-table :items="group" :headers="headers" :search="search" hide-default-footer>
             <template #[`item.group_id.address`]="{ value }">
               {{ value ? value : '無' }}
             </template>

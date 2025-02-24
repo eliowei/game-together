@@ -2,7 +2,11 @@
   <v-app-bar>
     <!-- 桌面板型 MD 960px -->
     <template v-if="mdAndUp">
-      <v-container class="d-flex justify-space-between align-center" fluid>
+      <v-container
+        class="d-flex justify-space-between align-center"
+        fluid
+        style="max-width: 1440px"
+      >
         <v-btn to="/" :active="false" class="ml-2">Game Together</v-btn>
         <div class="d-flex mr-6">
           <template v-for="nav of navs" :key="nav.to">

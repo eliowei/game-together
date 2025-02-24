@@ -1,4 +1,4 @@
-import { zhHant } from 'vuetify/locale'
+import { fa, zhHant } from 'vuetify/locale'
 
 export default {
   $vuetify: zhHant,
@@ -58,6 +58,7 @@ export default {
     groupView: '頁面',
     contactUs: '聯絡我們',
     participant: '參加的揪團',
+    favorite: '收藏的揪團',
     userEdit: '編輯個人資訊',
     cancelEdit: '取消變更',
     submitEdit: '確認變更',

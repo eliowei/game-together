@@ -1,15 +1,16 @@
 <template>
   <v-container fluid class="px-0" style="max-width: 1440px">
     <v-row>
-      <v-col cols="6" class="pa-0 mt-16 pt-16">
-        <v-img src="@/assets/swiper-2.jpg" :width="720" :height="744" cover></v-img>
+      <v-col class="pa-0 mt-16 pt-16" sm="6" md="6" lg="6" xl="6">
+        <v-img src="@/assets/swiper-2.jpg" :max-width="744" :height="744" cover></v-img>
       </v-col>
-      <v-col cols="6" class="pa-0 mt-16 pt-3 mb-16 pb-9">
+      <v-col cols="9" class="pa-0 mt-16 pt-3 mb-16 pb-9" sm="6" md="6" lg="6" xl="6">
         <v-sheet
           :height="850"
-          :width="650"
+          :max-width="650"
           :elevation="9"
           rounded
+          class="login__content"
           :class="[
             'd-flex',
             'flex-column',

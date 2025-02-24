@@ -1,17 +1,18 @@
 <template>
   <v-container>
     <v-row>
-      <v-col cols="12">
-        <h1 class="text-center">{{ $t('member.participant') }}</h1>
-        <v-text-field v-model="search" prepend-inner-icon="mdi-magnify"></v-text-field>
+      <v-col cols="11" offset="1">
+        <h1>{{ $t('member.participant') }}</h1>
       </v-col>
-      <v-btn @click="isFilterOver = 1" class="mr-3">將要開始</v-btn>
-      <v-btn @click="isFilterOver = 2">已結束</v-btn>
+      <v-col cols="11" offset="1">
+        <v-btn @click="isFilterOver = 1" class="mr-3">將要開始</v-btn>
+        <v-btn @click="isFilterOver = 2">已結束</v-btn>
+      </v-col>
 
       <!-- 依照日期分組顯示區塊 -->
       <template v-if="getFilteredGroups.length">
         <template v-for="dateGroup in getFilteredGroups" :key="dateGroup.date">
-          <v-col cols="12">
+          <v-col cols="8" offset="1">
             <!-- 日期標題 -->
             <div class="text-h6 mb-3">
               {{
@@ -64,7 +65,6 @@ const totalPage = computed(() => Math.ceil(getFilteredGroups.value.length / ITEM
 const date = useDate()
 
 const groups = ref([])
-const search = ref('')
 const isFilterOver = ref(1)
 
 const getFilteredGroups = computed(() => {
@@ -72,15 +72,13 @@ const getFilteredGroups = computed(() => {
   const today = new Date().toLocaleDateString()
   grouped[today] = []
 
-  groups.value
-    .filter((group) => group.group_id.name.toLowerCase().includes(search.value.toLowerCase()))
-    .forEach((group) => {
-      const dateKey = new Date(group.group_id.time).toLocaleDateString()
-      if (!grouped[dateKey]) {
-        grouped[dateKey] = []
-      }
-      grouped[dateKey].push(group)
-    })
+  groups.value.forEach((group) => {
+    const dateKey = new Date(group.group_id.time).toLocaleDateString()
+    if (!grouped[dateKey]) {
+      grouped[dateKey] = []
+    }
+    grouped[dateKey].push(group)
+  })
 
   const groupedArray = Object.entries(grouped)
     .map(([date, groups]) => ({
