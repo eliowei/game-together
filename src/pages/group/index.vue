@@ -1,110 +1,133 @@
 <template>
-  <v-container style="min-height: 100vh" class="mt-13">
+  <v-container style="min-height: 100vh; max-width: 1440px" class="mt-13">
     <v-row>
-      <v-col cols="2" offset="3">
-        <v-text-field
-          append-inner-icon="mdi-plus-circle"
-          variant="solo"
-          placeholder="選擇"
-          class="group__search-input group__search-input-click"
-          persistent-placeholder
-          prefix="地區"
-          readonly
-          @click="clickDialog(1)"
-        ></v-text-field>
-      </v-col>
-      <v-col cols="2">
-        <v-text-field
-          append-inner-icon="mdi-plus-circle"
-          variant="solo"
-          placeholder="選擇"
-          class="group__search-input group__search-input-click"
-          persistent-placeholder
-          prefix="標籤"
-          readonly
-          @click="clickDialog(2)"
-        ></v-text-field>
-      </v-col>
-      <v-col cols="2">
-        <v-menu v-model="datePickerOpen" :close-on-content-click="false">
-          <template v-slot:activator="{ props }">
-            <v-text-field
-              v-bind="props"
-              append-inner-icon="mdi-plus-circle"
-              variant="solo"
-              placeholder="選擇"
-              class="group__search-input group__search-input-click"
-              persistent-placeholder
-              prefix="日期"
-              readonly
-            ></v-text-field>
-          </template>
-
-          <v-date-picker
-            v-model="selectDate"
-            show-adjacent-months
-            @update:model-value="handleDateSelect"
-            landscape
-            hide-header
-          ></v-date-picker>
-        </v-menu>
-      </v-col>
-      <v-col cols="5" offset="3">
-        <v-text-field
-          v-model="search"
-          variant="solo"
-          placeholder="縣市區、遊戲類型等"
-          class="group__search-input"
-          persistent-placeholder
-          prefix="關鍵字"
-        ></v-text-field>
-      </v-col>
-      <v-col cols="1">
-        <v-btn
-          :height="50"
-          style="font-size: 18px; border-radius: 8px"
-          class="custom-search-button"
-          base-color="orange"
-          @click="searchClick"
-          block
-          prepend-icon="mdi-magnify"
-          >搜尋</v-btn
-        >
-      </v-col>
-      <v-col cols="6" offset="3" class="d-flex justify-space-between align-center">
-        <span style="font-size: 20px">{{ searchResult }} 搜尋結果</span>
-        <div class="d-flex align-center">
-          <span class="font-weight-bold">排序:</span>
-          <v-select
-            :items="groupOrderItems"
-            item-title="title"
-            item-value="value"
-            v-model="groupOrder"
+      <v-col cols="10" offset="1" offset-sm="1" offset-md="1" offset-lg="2">
+        <div class="group__search-filters d-flex flex-wrap">
+          <v-text-field
+            append-inner-icon="mdi-plus-circle"
             variant="solo"
-            flat
-            class="group__select"
-          ></v-select>
+            placeholder="選擇"
+            class="group__search-input group__search-input-click"
+            persistent-placeholder
+            prefix="地區"
+            readonly
+            @click="clickDialog(1)"
+          ></v-text-field>
+          <v-text-field
+            append-inner-icon="mdi-plus-circle"
+            variant="solo"
+            placeholder="選擇"
+            class="group__search-input group__search-input-click"
+            persistent-placeholder
+            prefix="標籤"
+            readonly
+            @click="clickDialog(2)"
+          ></v-text-field>
+          <v-menu v-model="datePickerOpen" :close-on-content-click="false">
+            <template v-slot:activator="{ props }">
+              <v-text-field
+                v-bind="props"
+                append-inner-icon="mdi-plus-circle"
+                variant="solo"
+                placeholder="選擇"
+                class="group__search-input group__search-input-click"
+                persistent-placeholder
+                prefix="日期"
+                readonly
+              ></v-text-field>
+            </template>
+
+            <v-date-picker
+              v-model="selectDate"
+              show-adjacent-months
+              @update:model-value="handleDateSelect"
+              landscape
+              hide-header
+            ></v-date-picker>
+          </v-menu>
+        </div>
+      </v-col>
+      <v-col cols="10" offset="1" offset-sm="1" offset-md="1" offset-lg="2">
+        <div class="d-flex group__search-bar flex-wrap">
+          <v-text-field
+            v-model="search"
+            variant="solo"
+            placeholder="縣市區、遊戲類型等"
+            class="group__search-input"
+            persistent-placeholder
+            prefix="關鍵字"
+          ></v-text-field>
+          <v-btn
+            :height="50"
+            style="font-size: 18px; border-radius: 8px"
+            base-color="orange"
+            @click="searchClick"
+            block
+            >搜尋</v-btn
+          >
+        </div>
+      </v-col>
+      <v-col cols="10" offset="1" offset-sm="1" offset-md="1" offset-lg="2">
+        <div class="d-flex justify-space-between align-center group__search-select">
+          <span style="font-size: 20px">{{ searchResult }} 搜尋結果</span>
+          <div class="d-flex align-center">
+            <span class="font-weight-bold">排序:</span>
+            <v-select
+              :items="groupOrderItems"
+              item-title="title"
+              item-value="value"
+              v-model="groupOrder"
+              variant="solo"
+              flat
+              class="group__select"
+            ></v-select>
+          </div>
         </div>
       </v-col>
 
-      <v-col cols="6" offset="3" v-for="group of filteredGroups" :key="group._id">
-        <group-card v-bind="group"></group-card>
+      <v-col
+        cols="10"
+        offset="1"
+        offset-sm="1"
+        offset-md="1"
+        offset-lg="2"
+        v-for="group of filteredGroups"
+        :key="group._id"
+      >
+        <div style="max-width: 954px">
+          <group-card v-bind="group"></group-card>
+          <v-divider class="mb-3"></v-divider>
+        </div>
       </v-col>
-      <v-col cols="6" offset="3" v-if="filteredGroups.length === 0">
-        <v-card height="200" style="box-shadow: none">
-          <v-card-text width="576" class="d-flex justify-center align-center flex-column h-100">
-            <p class="font-weight-bold text-h5">未找到符合條件的搜尋</p>
-            <p class="font-weight-bold text-h5">請更改您的搜尋條件並重新搜尋</p>
-          </v-card-text>
-        </v-card>
+      <v-col
+        cols="10"
+        offset="1"
+        offset-sm="1"
+        offset-md="1"
+        offset-lg="2"
+        v-if="filteredGroups.length === 0"
+      >
+        <div style="max-width: 954px">
+          <v-card height="200" style="box-shadow: none">
+            <v-card-text
+              max-width="576"
+              class="d-flex justify-center align-center flex-column h-100"
+            >
+              <p class="font-weight-bold text-h5">未找到符合條件的搜尋</p>
+              <p class="font-weight-bold text-h5">請更改您的搜尋條件並重新搜尋</p>
+            </v-card-text>
+          </v-card>
+        </div>
       </v-col>
-      <v-col cols="12">
-        <v-pagination
-          v-model="currentPage"
-          :length="totalPage"
-          @update:model-value="changePage"
-          class="mt-8 mb-8 group__pagination"
-        ></v-pagination>
+      <v-col cols="10" offset="1" offset-sm="1" offset-md="1" offset-lg="2">
+        <div style="max-width: 954px">
+          <v-pagination
+            v-model="currentPage"
+            :length="totalPage"
+            @update:model-value="changePage"
+            class="mt-8 mb-8 group__pagination"
+          ></v-pagination>
+        </div>
       </v-col>
     </v-row>
   </v-container>

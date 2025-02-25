@@ -45,23 +45,52 @@
     </v-list>
   </v-navigation-drawer>
 
-  <v-navigation-drawer permanent>
-    <v-list>
+  <v-navigation-drawer
+    permanent
+    :rail="rail"
+    rail-width="90"
+    drawer="drawer"
+    @click="!mdAndUp ? (rail = false) : null"
+    width="260"
+    :class="{ 'cursor-pointer': rail }"
+  >
+    <v-list v-if="rail">
+      <v-list-item>
+        <v-avatar :image="user.avatar" size="50"></v-avatar>
+      </v-list-item>
+    </v-list>
+
+    <v-list v-if="!rail">
       <v-list-item>
         <div class="d-flex">
-          <v-avatar :image="user.avatar" size="50"> </v-avatar>
+          <v-avatar :image="user.avatar" size="50"></v-avatar>
           <div class="d-flex flex-column ml-3 justify-center">
             <span class="mr-3">{{ user.nickname }}</span
             ><span>{{ user.email }}</span>
           </div>
+          <v-btn
+            v-if="!mdAndUp"
+            icon="mdi-chevron-left"
+            size="40"
+            variant="text"
+            @click.stop="rail = true"
+          ></v-btn>
         </div>
       </v-list-item>
       <v-list-item>
-        <v-chip v-for="item in userTags" :key="item" class="mr-2 mb-1">{{ item }} </v-chip>
+        <v-chip
+          v-for="item in userTags"
+          prepend-icon="mdi-tag"
+          :key="item"
+          class="mr-2 mb-1 pt-1"
+          size="small"
+          variant="outlined"
+          >{{ item }}
+        </v-chip>
       </v-list-item>
     </v-list>
-    <v-divider></v-divider>
-    <v-list>
+    <v-divider v-if="!rail"></v-divider>
+    <v-list v-if="!rail">
       <v-list-group value="Numbers">
         <template #activator="{ props }">
           <v-list-item
@@ -81,7 +110,7 @@
       </v-list-group>
     </v-list>
 
-    <v-list>
+    <v-list v-if="!rail">
       <v-list-group value="Users">
         <template #activator="{ props }">
           <v-list-item
@@ -100,8 +129,8 @@
         ></v-list-item>
       </v-list-group>
     </v-list>
-    <v-divider></v-divider>
-    <v-list-item class="w-100">
+    <v-divider v-if="!rail"></v-divider>
+    <v-list-item class="w-100" v-if="!rail">
       <div class="d-flex justify-space-between align-center">
         <span class="font-weight-bold">本周揪團</span>
         <v-btn
@@ -115,7 +144,7 @@
         </v-btn>
       </div>
     </v-list-item>
-    <template v-for="group of groupFilter">
+    <template v-for="group of groupFilter" v-if="!rail">
       <v-divider></v-divider>
       <v-list-item style="font-size: 14px"
         >{{ group.group_id.name }} {{ group.group_id.type }}
@@ -124,8 +153,8 @@
         }}</v-chip>
       </v-list-item>
     </template>
-    <v-divider></v-divider>
-    <v-list-item v-if="groupFilter.length === 0">本周無揪團</v-list-item>
+    <v-divider v-if="!rail"></v-divider>
+    <v-list-item v-if="groupFilter.length === 0 && !rail">本周無揪團</v-list-item>
   </v-navigation-drawer>
   <v-main>
     <router-view></router-view>
@@ -133,7 +162,7 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue'
+import { ref, computed, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useUserStore } from '@/stores/user'
 import { useAxios } from '@/composables/axios'
@@ -156,6 +185,7 @@ const userTags = computed(() => {
 })
 
 const dialog = ref(false)
+const rail = ref(false)
 
 // 導覽列項目
 const navs = computed(() => {
@@ -269,6 +299,9 @@ const groupFilter = computed(() => {
 watch(mdAndUp, () => {
   if (mdAndUp && dialog) {
     dialog.value = false
+  }
+  if (mdAndUp && rail) {
+    rail.value = false
   }
 })
 </script>

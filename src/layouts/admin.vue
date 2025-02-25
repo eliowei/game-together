@@ -45,9 +45,33 @@
     </v-list>
   </v-navigation-drawer>
 
-  <v-navigation-drawer permanent>
-    <v-list>
-      <v-list-item :prepend-avatar="user.avatar" :title="user.nickname"></v-list-item>
+  <v-navigation-drawer
+    permanent
+    :rail="rail"
+    rail-width="90"
+    drawer="drawer"
+    @click="!mdAndUp ? (rail = false) : null"
+    width="260"
+    :class="{ 'cursor-pointer': rail }"
+  >
+    <v-list v-if="rail">
+      <v-list-item>
+        <v-avatar :image="user.avatar" size="40"></v-avatar>
+      </v-list-item>
+    </v-list>
+
+    <v-list v-if="!rail">
+      <div class="d-flex justify-space-between align-center">
+        <v-list-item :prepend-avatar="user.avatar" :title="user.nickname"> </v-list-item>
+        <v-btn
+          v-if="!mdAndUp"
+          icon="mdi-chevron-left"
+          size="40"
+          variant="text"
+          @click.stop="rail = true"
+        ></v-btn>
+      </div>
+
       <v-divider></v-divider>
       <v-list-item v-for="sidebar of sidebars" :key="sidebar.to" :to="sidebar.to">{{
         sidebar.text
@@ -74,6 +98,7 @@ const { mdAndUp } = useDisplay()
 const router = useRouter()
 
 const dialog = ref(false)
+const rail = ref(false)
 
 // 導覽列項目
 const navs = computed(() => {
@@ -137,6 +162,10 @@ const logout = async () => {
 watch(mdAndUp, () => {
   if (mdAndUp && dialog) {
     dialog.value = false
+  }
+
+  if (mdAndUp && rail) {
+    rail.value = false
   }
 })
 </script>

@@ -10,12 +10,12 @@
 
   <v-container>
     <v-col cols="12">
-      <h1 class="text-center mb-5">主辦揪團成功!</h1>
-      <h1 class="text-center mb-5">其他人將可以看到您的揪團</h1>
-      <h3 class="text-center mb-5">您可以在會員專區編輯您的揪團</h3>
-      <v-divider class="border-opacity-100 my-12"></v-divider>
+      <h1 class="text-center mb-15">主辦揪團成功!</h1>
+      <h1 class="text-center mb-15">其他人將可以看到您的揪團</h1>
+      <h3 class="text-center mb-15">您可以在會員專區編輯您的揪團</h3>
+      <v-divider class="border-opacity-100 my-15"></v-divider>
 
-      <div class="d-flex justify-center">
+      <div class="d-flex justify-center mb-16">
         <v-btn :to="'/member/'">返回會員專區</v-btn>
       </div>
     </v-col>

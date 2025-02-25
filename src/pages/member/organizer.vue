@@ -1,22 +1,19 @@
 <template>
   <v-container>
     <v-row>
-      <v-col cols="12">
-        <h1 class="text-center">{{ $t('member.organizer') }}</h1>
-        <v-divider></v-divider>
+      <v-col cols="11" offset-sm="1" offset-md="1" offset-lg="1">
+        <h1 class="mb-11">{{ $t('member.organizer') }}</h1>
         <v-col cols="12">
-          <div class="d-flex align-center justify-space-between mb-5">
-            <div style="height: 60px; width: 100%" class="d-flex justify-center">
-              <v-text-field
-                v-model="search"
-                prepend-icon="mdi-magnify"
-                variant="outlined"
-                max-width="600px"
-              ></v-text-field>
-            </div>
-          </div>
-
-          <v-data-table :items="group" :headers="headers" :search="search" hide-default-footer>
+          <v-data-table
+            v-model:page="currentPage"
+            v-model:items-per-page="itemsPerPage"
+            :items="group"
+            :headers="headers"
+            :search="search"
+            :total-items="group.length"
+            hide-default-footer
+            @update:options="handlePageChange"
+          >
             <template #[`item.group_id.address`]="{ value }">
               {{ value ? value : '無' }}
             </template>
@@ -30,6 +27,13 @@
               <v-btn @click="viewGroup(item)">{{ $t('member.groupView') }}</v-btn>
             </template>
           </v-data-table>
+        </v-col>
+        <v-col cols="12">
+          <v-pagination
+            v-model="currentPage"
+            :length="totalPage"
+            class="mt-8 mb-8 group__pagination"
+          ></v-pagination>
         </v-col>
       </v-col>
     </v-row>
@@ -272,6 +276,23 @@ const fileRecords = ref([])
 const rawFileRecords = ref([])
 const fileAgent = ref(null)
 const router = useRouter()
+
+// 每頁顯示筆數
+const itemsPerPage = ref(10)
+
+// 目前頁數
+const currentPage = ref(1)
+
+// 總頁數
+const totalPage = computed(() => {
+  return Math.ceil(group.length / itemsPerPage.value)
+})
+
+const handlePageChange = (options) => {
+  console.log(options)
+  currentPage.value = options.page
+  itemsPerPage.value = options.itemsPerPage
+}
 
 const editorContent = ref('')
 const editorOptions = {

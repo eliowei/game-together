@@ -1,5 +1,31 @@
 @use 'vuetify/settings';
 
+@mixin custom-pagination {
+  .v-pagination__prev,
+  .v-pagination__next,
+  .v-pagination__item {
+    background: white;
+    color: black;
+
+    border-radius: 4px;
+    box-shadow:
+      0 1px 1px rgba(170, 164, 164, 0.8),
+      0 2px 2px rgba(170, 164, 164, 0.76),
+      0 1px 5px rgba(170, 164, 164, 0.88);
+  }
+
+  .v-pagination__item--is-active {
+    background: black;
+    color: white;
+    border-radius: 4px;
+    box-shadow:
+      0 5px 5px rgba(170, 164, 164, 0.8),
+      0 9px 10px rgba(170, 164, 164, 0.76),
+      0 5px 14px rgba(170, 164, 164, 0.88);
+    transition: 0.7s;
+  }
+}
+
 // swiper
 .swiper {
   width: 100%;
@@ -240,32 +266,77 @@
         }
       }
     }
+
+    &-filters {
+      max-width: 954px;
+      .v-input {
+        max-width: 296px;
+
+        &:nth-child(1),
+        &:nth-child(2) {
+          margin-right: 32px;
+        }
+      }
+
+      @media (max-width: 959px) {
+        .v-input {
+          max-width: 100%;
+        }
+      }
+
+      @media (max-width: 599px) {
+        & {
+          flex-direction: column;
+          .v-input {
+            &:nth-child(1),
+            &:nth-child(2) {
+              margin-right: 0;
+              margin-bottom: 24px;
+            }
+          }
+        }
+        .v-input {
+          margin-right: 0;
+        }
+      }
+    }
+
+    // 搜尋關鍵字父容器
+    &-bar {
+      max-width: 954px;
+      min-width: 350px;
+
+      .v-field {
+        max-width: 784px;
+      }
+
+      .v-btn {
+        max-width: 140px;
+        min-width: 58px;
+        margin-left: 28px;
+      }
+
+      @media (max-width: 959px) {
+        .v-input {
+          width: 100%;
+          margin-bottom: 24px;
+        }
+
+        .v-btn {
+          min-width: 100%;
+          margin-left: 0;
+          margin-right: 28px;
+        }
+      }
+    }
+
+    &-select {
+      max-width: 954px;
+    }
   }
 
   &__pagination {
-    .v-pagination__prev,
-    .v-pagination__next,
-    .v-pagination__item {
-      background: white;
-      color: black;
-
-      border-radius: 4px;
-      box-shadow:
-        0 1px 1px rgba(170, 164, 164, 0.8),
-        0 2px 2px rgba(170, 164, 164, 0.76),
-        0 1px 5px rgba(170, 164, 164, 0.88);
-    }
-
-    .v-pagination__item--is-active {
-      background: black;
-      color: white;
-      border-radius: 4px;
-      box-shadow:
-        0 5px 5px rgba(170, 164, 164, 0.8),
-        0 9px 10px rgba(170, 164, 164, 0.76),
-        0 5px 14px rgba(170, 164, 164, 0.88);
-      transition: 0.7s;
-    }
+    @include custom-pagination;
   }
 
   &__select {
@@ -284,12 +355,39 @@
   }
 }
 
+@media (max-width: 599px) {
+  .card-content {
+    .card-end {
+      width: 100%;
+    }
+  }
+}
+
 // 建立揪團
 .creategroup {
   &__step1 {
     &-form {
+      .v-field {
+        border-radius: 8px;
+        height: 50px;
+        margin-top: 20px;
+      }
+    }
+  }
+
+  &__step2 {
+    &-form {
       .v-input__details {
         display: none;
+      }
+      .v-chip {
+        transition: 0.2s;
+
+        &:hover {
+          transform: scaleX(1.05);
+          background-color: orange;
+          color: white;
+        }
       }
     }
   }
@@ -305,6 +403,34 @@
       }
     }
   }
+
+  &__step4 {
+    &-preview {
+      width: 400px;
+      .v-btn {
+        margin-right: 20px;
+        flex: 0 1 200px;
+        max-width: 200px;
+      }
+
+      @media (max-width: 599px) {
+        flex-wrap: wrap;
+
+        .v-btn {
+          margin-right: 0;
+
+          &:nth-child(1) {
+            margin-bottom: 20px;
+          }
+        }
+      }
+    }
+  }
+}
+
+.dp__pointer {
+  height: 50px;
+  border-radius: 8px !important;
 }
 
 // 動畫-淡出往上

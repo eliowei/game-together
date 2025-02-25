@@ -8,7 +8,7 @@
     </v-row>
   </v-container>
 
-  <v-container>
+  <v-container style="max-width: 1440px">
     <h1 class="text-center">{{ $t('group.detail') }}</h1>
     <h2 class="text-center mb-5">
       {{ $t('group.detailIllustrateLine1') }}<br />
@@ -27,10 +27,10 @@
           />
         </div>
       </v-col>
-      <v-col cols="6" offset="3" class="mt-10">
-        <v-card height="190" color="blue-grey-lighten-5">
+      <v-col cols="6" offset="3" class="mt-16">
+        <v-card color="blue-grey-lighten-5">
           <v-card-title>範例</v-card-title>
-          <v-card-text class="px-15">
+          <v-card-text class="px-15 h-100">
             如果你正在尋找一個有趣且能夠增進友誼的活動，那麼遊戲揪團就是你不容錯過的選擇。
             這項活動不僅能夠讓你沉浸在令人興奮的遊戲世界中，還能增強團隊合作、策略思維和反應速度。
             我們的揪團將會在線上或特定的遊戲場所進行，提供完善的設施和遊戲環境
@@ -48,33 +48,34 @@
         <span class="text-h6 font-weight-bold ml-15">上傳相片</span>
       </v-col>
       <v-col offset="3">
-        <VueFileAgent
-          v-model="fileRecords"
-          v-model:raw-model-value="rawFileRecords"
-          accept="image/jpeg,image/png"
-          deletable
-          max-size="1MB"
-          :help-text="$t('fileAgent.helpText')"
-          :error-text="{
-            type: $t('fileAgent.errorType'),
-            size: $t('fileAgent.errorSize'),
-          }"
-          class="w-25"
-          ref="fileAgent"
-        ></VueFileAgent>
+        <div style="max-width: 200px">
+          <VueFileAgent
+            v-model="fileRecords"
+            v-model:raw-model-value="rawFileRecords"
+            accept="image/jpeg,image/png"
+            deletable
+            max-size="1MB"
+            :help-text="$t('fileAgent.helpText')"
+            :error-text="{
+              type: $t('fileAgent.errorType'),
+              size: $t('fileAgent.errorSize'),
+            }"
+            ref="fileAgent"
+          ></VueFileAgent>
+        </div>
       </v-col>
       <v-col cols="8" offset="2">
         <v-divider class="border-opacity-100 my-12"></v-divider>
       </v-col>
       <v-col offset="3">
-        <v-btn width="100" append-icon="mdi-arrow-left" to="/creategroup/step2">{{
+        <v-btn width="110" append-icon="mdi-arrow-left" to="/creategroup/step2">{{
           t('group.previous')
         }}</v-btn>
       </v-col>
-      <v-col offset="1">
+      <v-col offset="1" class="mb-16">
         <v-btn
           type="submit"
-          width="100"
+          width="110"
           append-icon="mdi-arrow-right"
           @click="onSubmit"
           :loading="isSubmitting"

@@ -8,12 +8,12 @@
     </v-row>
   </v-container>
 
-  <v-container>
+  <v-container style="max-width: 1440px">
     <h1 class="text-center mb-15">{{ $t('group.step1Title') }}</h1>
     <v-form :disabled="isSubmitting" @submit.prevent="onSubmit">
       <v-row>
         <v-col cols="6" offset="3">
-          <div class="d-flex align-center mb-8">
+          <div class="d-flex align-center">
             <span class="mr-12">{{ $t('group.name') }}</span>
             <v-text-field
               v-model="name.value.value"
@@ -25,7 +25,7 @@
             ></v-text-field>
           </div>
 
-          <div class="d-flex align-center mb-8">
+          <div class="d-flex align-center">
             <span class="mr-12">{{ $t('group.description') }}</span>
             <v-text-field
               v-model="description.value.value"
@@ -37,7 +37,7 @@
             ></v-text-field>
           </div>
 
-          <div class="d-flex align-center mb-8">
+          <div class="d-flex align-center">
             <span class="mr-12">{{ $t('group.createdType') }}</span>
             <v-select
               v-model="type.value.value"
@@ -47,7 +47,9 @@
               item-value="value"
               variant="outlined"
               class="creategroup__step1-form"
+              style="max-width: 100px"
             ></v-select>
+
             <span class="ml-5 mr-6">{{ $t('group.memberLimit') }}</span>
             <v-select
               v-model="member_limit.value.value"
@@ -57,10 +59,11 @@
               item-value="value"
               variant="outlined"
               class="creategroup__step1-form"
+              style="max-width: 80px"
             ></v-select>
           </div>
 
-          <div class="d-flex align-center mb-8">
+          <div class="d-flex align-center">
             <span class="mr-12">{{ $t('group.contactInfo') }}</span>
             <v-select
               v-model="contact_method.value.value"
@@ -68,6 +71,7 @@
               :error-messages="contact_method.errorMessage.value"
               variant="outlined"
               class="creategroup__step1-form"
+              style="max-width: 150px"
             ></v-select>
             <v-text-field
               v-model="contact_info.value.value"
@@ -78,7 +82,7 @@
             ></v-text-field>
           </div>
 
-          <div class="d-flex align-center mb-8" v-if="type.value.value === typeItems[1].value">
+          <div class="d-flex align-center" v-if="type.value.value === typeItems[1].value">
             <span class="mr-12">{{ $t('group.createdRegion') }}</span>
             <v-select
               v-model="city.value.value"
@@ -86,8 +90,9 @@
               :items="cityItems"
               item-title="text"
               item-value="value"
-              class="custom-input mr-4"
+              class="creategroup__step1-form mr-4"
               variant="outlined"
+              style="max-width: 150px"
             ></v-select>
             <v-select
               v-model="region.value.value"
@@ -97,10 +102,11 @@
               item-value="value"
               class="creategroup__step1-form"
               variant="outlined"
+              style="max-width: 150px"
             ></v-select>
           </div>
 
-          <div class="d-flex align-center mb-8" v-if="type.value.value === typeItems[1].value">
+          <div class="d-flex align-center" v-if="type.value.value === typeItems[1].value">
             <span class="mr-12">{{ $t('group.address') }}</span>
             <v-text-field
               v-model="address.value.value"
@@ -112,10 +118,10 @@
             ></v-text-field>
           </div>
 
-          <div class="d-flex align-center mb-8">
+          <div class="d-flex align-center">
             <span>{{ $t('group.date') }}</span>
 
-            <v-col cols="5">
+            <v-col cols="4">
               <VueDatePicker
                 v-model="date.value.value"
                 auto-apply
@@ -130,7 +136,7 @@
             <v-col cols="2" offset="1">
               <span>{{ $t('group.time') }}</span>
             </v-col>
-            <v-col cols="2">
+            <v-col cols="3">
               <VueDatePicker
                 v-model="time.value.value"
                 time-picker
@@ -143,8 +149,8 @@
             </v-col>
           </div>
           <v-divider class="border-opacity-100 my-12"></v-divider>
-          <v-col cols="12" offset="10">
-            <v-btn type="submit" width="100" append-icon="mdi-arrow-right">{{
+          <v-col cols="12" offset="10" class="mb-16">
+            <v-btn type="submit" width="110" append-icon="mdi-arrow-right">{{
               t('group.next')
             }}</v-btn>
           </v-col>

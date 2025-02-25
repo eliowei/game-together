@@ -22,17 +22,29 @@
       <v-col cols="10" offset="1">
         <!-- 揪團內容 -->
         <div class="group-content mt-15" style="margin-bottom: 100px">
-          <div class="d-flex">
-            <v-col cols="5">
+          <div class="d-flex flex-wrap">
+            <v-col cols="12" sm="12" md="5" lg="5" xl="5">
               <v-img
                 :src="props.images"
                 max-height="400"
+                min-width="300"
                 max-width="628"
                 aspect-ratio="16/9"
                 cover
               ></v-img>
             </v-col>
-            <v-col cols="4" offset="2">
+            <v-col
+              cols="12"
+              offset="1"
+              sm="12"
+              offset-sm="3"
+              md="4"
+              offset-md="3"
+              lg="4"
+              offset-lg="3"
+              xl="4"
+              offset-xl="2"
+            >
               <v-chip
                 v-for="tag of props.tags"
                 class="mb-2 mt-1 mr-1"
@@ -108,13 +120,13 @@
             </span>
             <h2>{{ props.name }}</h2>
           </div>
-          <div class="d-flex">
-            <div class="d-flex flex-column mr-8 align-center">
-              <span>{{ props.member_limit - 1 }}個空位</span>
-              <v-btn icon="mdi-bookmark-outline" variant="text"></v-btn>
-            </div>
-            <v-btn class="mr-5" height="50" width="200" :disabled="true">主辦者</v-btn>
-            <v-btn height="50" width="200">取消揪團</v-btn>
+          <div class="d-flex flex-column mr-8 align-center">
+            <span>{{ props.member_limit - 1 }}個空位</span>
+            <v-btn icon="mdi-bookmark-outline" variant="text"></v-btn>
+          </div>
+          <div class="d-flex creategroup__step4-preview">
+            <v-btn height="50" :disabled="true">主辦者</v-btn>
+            <v-btn height="50">取消揪團</v-btn>
           </div>
         </div>
       </v-col>

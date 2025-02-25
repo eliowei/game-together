@@ -1,13 +1,13 @@
 <template>
   <v-container>
     <v-row>
-      <v-col cols="12">
+      <v-col cols="11" offset="1">
         <h1>{{ $t('member.userEdit') }}</h1>
 
         <v-form :disabled="isSubmitting" @submit.prevent="onSubmit">
           <v-container>
             <v-row>
-              <v-col cols="12" offset="2" class="d-flex align-center">
+              <v-col cols="11" offset="1" class="d-flex align-center">
                 <v-avatar size="x-large">
                   <v-img alt="John" :src="userPreviewAvatar" :alt="user.name"></v-img>
                 </v-avatar>
@@ -21,7 +21,7 @@
                 />
                 <v-btn class="ml-5" @click="avatarFileInput" :disabled="!userEdit">變更頭像</v-btn>
               </v-col>
-              <v-col cols="12" offset="2">
+              <v-col cols="11" offset="1">
                 <v-col cols="4">
                   <v-text-field
                     v-model="name.value.value"
@@ -50,13 +50,13 @@
                   ></v-select>
                 </v-col>
               </v-col>
-              <v-col cols="12" offset="5" v-if="!userEdit">
+              <v-col cols="8" offset="4" v-if="!userEdit">
                 <button v-if="!userEdit" @click="userEdit = true">
                   <v-icon icon="mdi-pencil-outline" size="large"></v-icon>
                   {{ t('member.userEdit') }}
                 </button>
               </v-col>
-              <v-col cols="6">
+              <v-col cols="5">
                 <div class="d-flex justify-end">
                   <v-btn v-if="userEdit" type="submit" :loading="isSubmitting" class="mr-3">{{
                     $t('member.submitEdit')

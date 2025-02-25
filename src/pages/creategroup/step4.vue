@@ -7,24 +7,31 @@
       </v-col>
     </v-row>
   </v-container>
-  <v-container>
-    <group-preview v-bind="data"></group-preview>
-    <v-divider class="border-opacity-100 my-12"></v-divider>
-    <v-col class="d-flex justify-space-between">
-      <v-btn width="100" append-icon="mdi-arrow-left" to="/creategroup/step3">{{
-        t('group.previous')
-      }}</v-btn>
+  <v-container style="max-width: 1440px">
+    <v-row>
+      <v-col cols="10" offset="1" offset-sm="1" offset-md="1">
+        <div style="max-width: 100%">
+          <group-preview v-bind="data"></group-preview>
+          <v-divider class="border-opacity-100 my-12"></v-divider>
+          <v-col class="d-flex justify-space-between" cols="10" offset="1">
+            <v-btn class="mb-16" width="110" append-icon="mdi-arrow-left" to="/creategroup/step3">{{
+              t('group.previous')
+            }}</v-btn>
 
-      <v-btn
-        type="submit"
-        width="100"
-        append-icon="mdi-arrow-right"
-        @click="onSubmit"
-        :loading="isSubmitting"
-        :disabled="isSubmitting"
-        >{{ t('group.next') }}</v-btn
-      >
-    </v-col>
+            <v-btn
+              type="submit"
+              class="mb-16"
+              width="110"
+              append-icon="mdi-arrow-right"
+              @click="onSubmit"
+              :loading="isSubmitting"
+              :disabled="isSubmitting"
+              >{{ t('group.next') }}</v-btn
+            >
+          </v-col>
+        </div>
+      </v-col>
+    </v-row>
   </v-container>
   <group-footer></group-footer>
 </template>

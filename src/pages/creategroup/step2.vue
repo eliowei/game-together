@@ -8,9 +8,9 @@
     </v-row>
   </v-container>
 
-  <v-container>
-    <h1 class="text-center">{{ $t('group.groupTag') }}</h1>
-    <h2 class="text-center">
+  <v-container style="max-width: 1440px" class="creategroup__step2-form">
+    <h1 class="text-center mb-15">{{ $t('group.groupTag') }}</h1>
+    <h2 class="text-center mb-5">
       {{ $t('group.groupTagInfo', { variable: tagSelectCount }) }}
     </h2>
     <v-row>
@@ -19,43 +19,47 @@
           v-model="tagInput"
           :placeholder="t('group.groupPlaceHolder')"
           @keydown.enter="tagSelectItemsPush({ text: tagInput, value: tagInput })"
+          variant="outlined"
         ></v-text-field>
       </v-col>
       <v-col cols="6" offset="3">
         <v-chip
           v-for="tags in tagSelectItems"
           :key="tags"
-          class="mr-2 mb-2"
+          class="mr-2 mb-2 pt-1"
           variant="outlined"
           closable
           link
           @click:close="tagSelectItemsSplice(tags)"
+          @click="tagSelectItemsSplice(tags)"
+          prepend-icon="mdi-tag"
           >{{ tags.text }}</v-chip
+          size="x-large"
         >
       </v-col>
       <v-col cols="6" offset="3">
         <h2>標籤:</h2>
       </v-col>
-      <v-col cols="6" offset="3">
+      <v-col cols="6" offset="3" >
         <v-chip
           v-for="tags in tagItemsFiltered"
           :key="tags"
-          class="mr-2 mb-2"
+          class="mr-2 mb-2 pt-1"
           variant="outlined"
           link
           @click="tagSelectItemsPush(tags)"
         >
           {{ tags.text }}
         </v-chip>
-        <v-divider class="border-opacity-100 my-12"></v-divider>
+        <v-divider class="border-opacity-100 mb-8 mt-16"></v-divider>
       </v-col>
-      <v-col offset="3">
-        <v-btn width="100" append-icon="mdi-arrow-left" to="/creategroup/step1">{{
+      <v-col offset="3" class="mb-16">
+        <v-btn width="110" append-icon="mdi-arrow-left" to="/creategroup/step1">{{
           t('group.previous')
         }}</v-btn>
       </v-col>
-      <v-col offset="1">
-        <v-btn type="submit" width="100" append-icon="mdi-arrow-right" @click="onSubmit">{{
+      <v-col offset="1" class="mb-16">
+        <v-btn type="submit" width="110" append-icon="mdi-arrow-right" @click="onSubmit">{{
           t('group.next')
         }}</v-btn>
       </v-col>
