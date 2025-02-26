@@ -1,7 +1,7 @@
 <template>
-  <v-container>
+  <v-container max-width="1440">
     <v-row>
-      <v-col cols="11" offset-sm="1" offset-md="1" offset-lg="1">
+      <v-col cols="11" offset-sm="1" offset-md="1" offset-lg="1" offset-xl="1">
         <h1>{{ $t('member.participant') }}</h1>
       </v-col>
       <v-col cols="11" offset="1">
@@ -12,7 +12,18 @@
       <!-- 依照日期分組顯示區塊 -->
       <template v-if="hasVisibleGroups">
         <template v-for="dateGroup in paginatedGroups" :key="dateGroup.date">
-          <v-col cols="8" offset="1">
+          <v-col
+            cols="11"
+            offset="0"
+            offset-sm="1"
+            sm="11"
+            offset-md="1"
+            md="8"
+            offset-lg="1"
+            lg="8"
+            offset-xl="1"
+            xl="8"
+          >
             <!-- 日期標題 -->
             <div class="text-h6 mb-3">
               {{
@@ -31,6 +42,19 @@
               今天沒有符合條件的揪團
             </div>
             <!-- 該日期分組的活動列表 -->
+          </v-col>
+          <v-col
+            cols="12"
+            offset="0"
+            offset-sm="1"
+            sm="12"
+            offset-md="1"
+            md="8"
+            offset-lg="1"
+            lg="8"
+            offset-xl="1"
+            xl="8"
+          >
             <div v-for="group in dateGroup.groups" :key="group._id">
               <group-card v-bind="group.group_id"></group-card>
             </div>

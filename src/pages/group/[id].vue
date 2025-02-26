@@ -1,11 +1,11 @@
 <template>
-  <v-container>
+  <v-container fluid max-width="1440">
     <v-row>
-      <v-col cols="10" offset="2">
+      <v-col cols="11" offset="1">
         <h2>{{ group.name }}</h2>
         <!-- 主辦者 -->
         <div class="d-flex d-wrap align-center mb-10">
-          <v-avatar>
+          <v-avatar size="50">
             <v-img :src="group.organizer_id.image" />
           </v-avatar>
           <div class="d-flex flex-column pl-3 align-center">
@@ -16,280 +16,311 @@
       </v-col>
     </v-row>
   </v-container>
-
-  <v-container fluid class="bg-orange-lighten-5">
-    <v-row>
-      <v-col cols="10" offset="2">
-        <!-- 揪團內容 -->
-        <div class="group-content mt-15" style="margin-bottom: 100px">
-          <div class="d-flex">
-            <v-col cols="5">
-              <v-img
-                :src="group.image"
-                min-height="400"
-                min-width="628"
-                aspect-ratio="16/9"
-                cover
-              ></v-img>
-            </v-col>
-            <v-col cols="4" offset="2">
-              <v-chip
-                v-for="tag of group.tags"
-                class="mb-2 mt-1 mr-1"
-                variant="outlined"
-                color="orange"
-                >{{ tag }}
-              </v-chip>
-              <div class="card-content d-flex flex-column">
-                <v-card width="260" height="150">
-                  <v-card-text class="d-flex flex-column">
-                    <span class="mb-1"
-                      ><v-icon icon="mdi-calendar-range"></v-icon>{{ group.time }}</span
-                    >
-                    <span class="mb-1"><v-icon icon="mdi-web"></v-icon> {{ group.type }}</span>
-                    <span class="mb-1"
-                      ><v-icon icon="mdi-forum"></v-icon> {{ group.contact_method }}</span
-                    >
-                    <span class="mb-1" v-if="group.type === '線下'"
-                      ><v-icon icon="mdi-map-marker-outline"></v-icon>
-                      {{ t('area.' + group.city) + group.region }}</span
-                    >
-                    <span
-                      ><v-icon icon="mdi-account-multiple-outline"></v-icon>
-                      {{ group.member_limit }}</span
-                    >
-                  </v-card-text>
-                </v-card>
-              </div>
-              <div class="d-flex flex-column align-center" style="width: 260px" v-if="isMember">
-                <v-btn
-                  class="mt-3"
-                  prepend-icon="mdi-clipboard-list"
-                  style="width: 160px; height: 40px"
-                  @click="openDialog('contact')"
-                  >聯絡資訊</v-btn
-                >
-              </div>
-            </v-col>
-          </div>
-          <v-col cols="10">
-            <div v-dompurify-html="group.content" class="ml-6 mt-5 mb-5"></div>
-            <v-divider class="border-opacity-100"></v-divider>
-            <!-- 分頁 -->
-            <v-tabs
-              v-model="tabSelect"
-              align-tabs="star"
-              color="orange"
-              style="border-bottom: 1px solid #eeeeee"
-              class="mt-8"
-            >
-              <v-tab v-for="tab in tabs" :key="tab.id">{{ tab.title }}</v-tab>
-            </v-tabs>
-            <v-tabs-window v-model="tabSelect" class="my-8">
-              <v-tabs-window-item :value="0">
-                <div class="d-flex">
-                  <template v-for="number in group.groupMembers">
-                    <div
-                      class="d-flex flex-column mr-9 align-center pa-5"
-                      :class="{
-                        'cursor-pointer':
-                          group.organizer_id._id === user.id &&
-                          group.organizer_id._id !== number.user_id._id,
-                        'member-card':
-                          group.organizer_id._id === user.id &&
-                          group.organizer_id._id !== number.user_id._id,
-                      }"
-                      @click="
-                        group.organizer_id._id === user.id &&
-                        group.organizer_id._id !== number.user_id._id
-                          ? openDialog('kick', number)
-                          : null
-                      "
-                    >
-                      <v-avatar size="50">
-                        <v-img :src="number.user_id.image" />
-                      </v-avatar>
-                      <span class="mt-3 ml-1"> {{ number.user_id.name }}</span>
-                      <span class="mt-1">{{
-                        group.organizer_id._id === number.user_id._id ? '主辦者' : '成員'
-                      }}</span>
-                    </div>
-                  </template>
+  <div class="bg-orange-lighten-5">
+    <v-container fluid style="max-width: 1440px">
+      <v-row>
+        <v-col
+          cols="11"
+          offset="1"
+          sm="11"
+          offset-sm="1"
+          md="11"
+          offset-md="1"
+          lg="11"
+          offset-lg="1"
+          xl="11"
+          offset-xl="1"
+        >
+          <!-- 揪團內容 -->
+          <div class="group-content mt-15" style="margin-bottom: 100px">
+            <div class="d-flex flex-wrap">
+              <v-col cols="12" sm="12" md="7" lg="7" xl="7">
+                <v-img
+                  :src="group.image"
+                  max-height="400"
+                  min-width="300"
+                  max-width="628"
+                  aspect-ratio="16/9"
+                  cover
+                  style="flex: 0 1 628px"
+                ></v-img>
+              </v-col>
+              <v-col
+                cols="10"
+                offset="2"
+                sm="9"
+                offset-sm="3"
+                md="4"
+                offset-md="0"
+                lg="4"
+                offset-lg="0"
+                xl="4"
+                offset-xl="0"
+              >
+                <v-chip
+                  v-for="tag of group.tags"
+                  class="mb-2 mt-1 mr-1"
+                  variant="outlined"
+                  color="orange"
+                  >{{ tag }}
+                </v-chip>
+                <div class="card-content d-flex flex-column">
+                  <v-card width="260" height="150">
+                    <v-card-text class="d-flex flex-column">
+                      <span class="mb-1"
+                        ><v-icon icon="mdi-calendar-range"></v-icon>{{ group.time }}</span
+                      >
+                      <span class="mb-1"><v-icon icon="mdi-web"></v-icon> {{ group.type }}</span>
+                      <span class="mb-1"
+                        ><v-icon icon="mdi-forum"></v-icon> {{ group.contact_method }}</span
+                      >
+                      <span class="mb-1" v-if="group.type === '線下'"
+                        ><v-icon icon="mdi-map-marker-outline"></v-icon>
+                        {{ t('area.' + group.city) + group.region }}</span
+                      >
+                      <span
+                        ><v-icon icon="mdi-account-multiple-outline"></v-icon>
+                        {{ group.member_limit }}</span
+                      >
+                    </v-card-text>
+                  </v-card>
                 </div>
-              </v-tabs-window-item>
-              <v-tabs-window-item :value="1">
-                <template v-for="(comment, keys) of group.comments">
-                  <div :class="['d-flex', 'mb-5', 'mt-3', 'w-100']">
-                    <div class="d-flex flex-column mr-3 ml-5 order-1">
-                      <v-avatar>
-                        <v-img :src="comment.user_id.image"></v-img>
-                      </v-avatar>
-                      <span class="mt-1 ml-1">{{ comment.user_id.name }}</span>
-                    </div>
-                    <v-card class="order-2 pl-7" style="width: 600px">
-                      <v-card-text class="pb-0 pl-2" style="font-size: 16px"
-                        >{{ comment.content }}
-                      </v-card-text>
-                      <v-card-actions>
-                        <span> B{{ keys }} </span>
-                        <div v-if="group.organizer_id._id === user.id">
-                          <v-btn v-if="!comment.reply" @click="commentReplyAction(keys)"
-                            >回覆</v-btn
-                          >
-                          <span v-if="comment.reply" class="text-grey-lighten-1">已回覆</span>
-                          <v-btn
-                            @click="openDialog('commentsDelete', group, keys)"
-                            :isLoading="commentLoading"
-                            >刪除</v-btn
-                          >
-                        </div>
-                      </v-card-actions>
-                    </v-card>
-                  </div>
-                  <!-- 回覆留言 -->
-                  <div
-                    v-if="commentReply.open && commentReply.id === keys && !commentReplyEditState"
+                <div class="d-flex flex-column align-center" style="width: 260px" v-if="isMember">
+                  <v-btn
+                    class="mt-3"
+                    prepend-icon="mdi-clipboard-list"
+                    style="width: 160px; height: 40px"
+                    @click="openDialog('contact')"
+                    >聯絡資訊</v-btn
                   >
-                    <v-textarea
-                      v-model="commentReplyMessage"
-                      :placeholder="commentPlaceholder"
-                      variant="outlined"
-                      max-width="600"
-                      no-resize
-                      class="ml-5"
-                      :disabled="commentState"
-                      @keydown.esc="commentReplyCancel"
-                    ></v-textarea>
-                    <div class="d-flex justify-end mb-5" style="max-width: 600px">
-                      <v-btn
-                        height="50"
-                        @click="commentReplyCancel"
-                        :disabled="commentState"
-                        class="mr-3"
-                        >取消</v-btn
-                      >
-                      <v-btn
-                        height="50"
-                        @click="commentReplySubmit(group)"
-                        :disabled="commentState"
-                        :loading="commentLoading"
-                        >確定送出</v-btn
-                      >
-                    </div>
-                  </div>
-                  <!-- 已回覆顯示 -->
-                  <div :class="['d-flex', 'mb-5', 'mt-3', 'w-100', 'ml-16']" v-if="comment.reply">
-                    <div class="d-flex flex-column mr-3 ml-5 order-2">
-                      <v-avatar>
-                        <v-img :src="comment.reply.author.image"></v-img>
-                      </v-avatar>
-                      <span class="mt-1 ml-1">{{ comment.reply.author.name }}</span>
-                    </div>
-                    <div class="d-flex">
-                      <v-icon
-                        icon="mdi-reply"
-                        class="mr-5 ml-2 mt-10"
-                        style="transform: rotate(180deg)"
-                      ></v-icon>
-                      <!-- 編輯留言 -->
+                </div>
+              </v-col>
+            </div>
+            <v-col cols="10">
+              <div v-dompurify-html="group.content" class="ml-6 mt-5 mb-5"></div>
+              <v-divider class="border-opacity-100"></v-divider>
+              <!-- 分頁 -->
+              <v-tabs
+                v-model="tabSelect"
+                align-tabs="star"
+                color="orange"
+                style="border-bottom: 1px solid #eeeeee"
+                class="mt-8"
+              >
+                <v-tab v-for="tab in tabs" :key="tab.id">{{ tab.title }}</v-tab>
+              </v-tabs>
+              <v-tabs-window v-model="tabSelect" class="my-8">
+                <v-tabs-window-item :value="0">
+                  <div class="d-flex flex-wrap">
+                    <template v-for="number in group.groupMembers">
                       <div
-                        v-if="
-                          commentReply.open && commentReply.id === keys && commentReplyEditState
+                        class="d-flex flex-column mr-9 align-center pa-5"
+                        :class="{
+                          'cursor-pointer':
+                            group.organizer_id._id === user.id &&
+                            group.organizer_id._id !== number.user_id._id,
+                          'member-card':
+                            group.organizer_id._id === user.id &&
+                            group.organizer_id._id !== number.user_id._id,
+                        }"
+                        @click="
+                          group.organizer_id._id === user.id &&
+                          group.organizer_id._id !== number.user_id._id
+                            ? openDialog('kick', number)
+                            : null
                         "
-                        style="width: 600px"
                       >
-                        <v-textarea
-                          v-model="commentReplyMessage"
-                          :placeholder="commentPlaceholder"
-                          variant="solo"
-                          max-width="600"
-                          no-resize
-                          :disabled="commentState"
-                          @keydown.esc="commentReplyCancel"
-                          rows="3"
-                          class="custom-textarea"
-                        ></v-textarea>
-                        <div class="d-flex justify-end mb-5" style="max-width: 600px">
-                          <v-btn
-                            height="50"
-                            @click="commentReplyCancel"
-                            :disabled="commentState"
-                            class="mr-3"
-                            >取消</v-btn
-                          >
-                          <v-btn
-                            height="50"
-                            @click="commentReplySubmit(group)"
-                            :disabled="commentState"
-                            :loading="commentLoading"
-                            class="mr-3"
-                            >確定送出</v-btn
-                          >
-                          <v-btn
-                            height="50"
-                            @click="openDialog('commentsReplyDelete', group)"
-                            :disabled="commentState"
-                            :loading="commentLoading"
-                            >刪除</v-btn
-                          >
-                        </div>
+                        <v-avatar size="50">
+                          <v-img :src="number.user_id.image" />
+                        </v-avatar>
+                        <span class="mt-3 ml-1"> {{ number.user_id.name }}</span>
+                        <span class="mt-1">{{
+                          group.organizer_id._id === number.user_id._id ? '主辦者' : '成員'
+                        }}</span>
                       </div>
-                      <v-card
-                        class="order-1 pl-7"
-                        style="width: 600px"
-                        v-if="
-                          !commentReplyEditState ||
-                          (commentReply.open && commentReply.id !== keys && commentReplyEditState)
-                        "
-                      >
-                        <v-card-text class="d-flex flex-column px-0">
-                          <span class="mt-1 mb-3" style="font-size: 14px"
-                            >主辦者 回覆B{{ keys }}
-                            <v-btn
-                              variant="text"
-                              @click="
-                                group.organizer_id._id === user.id
-                                  ? commentReplyEdit(keys, comment)
-                                  : ''
-                              "
-                              v-if="group.organizer_id._id === user.id"
-                              >編輯</v-btn
-                            ></span
-                          >
-                          <span style="font-size: 16px">{{ comment.reply.message }}</span>
+                    </template>
+                  </div>
+                </v-tabs-window-item>
+                <v-tabs-window-item :value="1">
+                  <template v-for="(comment, keys) of group.comments">
+                    <div :class="['d-flex', 'mb-5', 'mt-3', 'w-100']">
+                      <div class="d-flex flex-column mr-3 ml-5 align-center">
+                        <v-avatar>
+                          <v-img :src="comment.user_id.image"></v-img>
+                        </v-avatar>
+                        <span class="mt-1 ml-1">{{ comment.user_id.name }}</span>
+                      </div>
+                      <v-card class="pl-7 mr-3" style="max-width: 600px; width: 100%">
+                        <v-card-text class="pb-0 pl-2" style="font-size: 16px"
+                          >{{ comment.content }}
                         </v-card-text>
+                        <v-card-actions>
+                          <span> B{{ keys }} </span>
+                          <div v-if="group.organizer_id._id === user.id">
+                            <v-btn v-if="!comment.reply" @click="commentReplyAction(keys)"
+                              >回覆</v-btn
+                            >
+                            <span v-if="comment.reply" class="text-grey-lighten-1">已回覆</span>
+                            <v-btn
+                              @click="openDialog('commentsDelete', group, keys)"
+                              :isLoading="commentLoading"
+                              >刪除</v-btn
+                            >
+                          </div>
+                        </v-card-actions>
                       </v-card>
                     </div>
-                  </div>
-                </template>
-                <!-- 留言 -->
-                <p class="font-weight-bold ml-5 mb-3">發佈留言</p>
-                <v-textarea
-                  v-model="commentMessage"
-                  :placeholder="commentPlaceholder"
-                  variant="outlined"
-                  max-width="600"
-                  no-resize
-                  class="ml-5"
-                  :disabled="commentState"
-                ></v-textarea>
-                <div class="d-flex justify-end mb-5" style="max-width: 600px">
-                  <v-btn
-                    height="50"
-                    @click="commentAction"
+                    <!-- 回覆留言 -->
+                    <div
+                      v-if="commentReply.open && commentReply.id === keys && !commentReplyEditState"
+                    >
+                      <v-textarea
+                        v-model="commentReplyMessage"
+                        :placeholder="commentPlaceholder"
+                        variant="outlined"
+                        max-width="600"
+                        no-resize
+                        class="ml-5"
+                        :disabled="commentState"
+                        @keydown.esc="commentReplyCancel"
+                      ></v-textarea>
+                      <div class="d-flex justify-end mb-5" style="max-width: 600px">
+                        <v-btn
+                          height="50"
+                          @click="commentReplyCancel"
+                          :disabled="commentState"
+                          class="mr-3"
+                          >取消</v-btn
+                        >
+                        <v-btn
+                          height="50"
+                          @click="commentReplySubmit(group)"
+                          :disabled="commentState"
+                          :loading="commentLoading"
+                          >確定送出</v-btn
+                        >
+                      </div>
+                    </div>
+                    <!-- 已回覆顯示 -->
+                    <div :class="['d-flex', 'mb-5', 'mt-3', 'w-100', 'ml-16']" v-if="comment.reply">
+                      <div class="d-flex flex-grow-1 mr-3">
+                        <v-icon
+                          icon="mdi-reply"
+                          class="mr-5 ml-2 mt-10"
+                          style="transform: rotate(180deg)"
+                        ></v-icon>
+                        <!-- 編輯留言 -->
+                        <div
+                          v-if="
+                            commentReply.open && commentReply.id === keys && commentReplyEditState
+                          "
+                          style="max-width: 600px; width: 100%"
+                        >
+                          <v-textarea
+                            v-model="commentReplyMessage"
+                            :placeholder="commentPlaceholder"
+                            variant="solo"
+                            max-width="600"
+                            no-resize
+                            :disabled="commentState"
+                            @keydown.esc="commentReplyCancel"
+                            rows="3"
+                            class="custom-textarea"
+                          ></v-textarea>
+                          <div
+                            class="d-flex mb-5 w-100 flex-wrap group__page-edit"
+                            style="max-width: 600px"
+                          >
+                            <v-btn
+                              height="40"
+                              @click="commentReplyCancel"
+                              :disabled="commentState"
+                              class="mr-3 mb-1"
+                              >取消</v-btn
+                            >
+                            <v-btn
+                              height="40"
+                              @click="commentReplySubmit(group)"
+                              :disabled="commentState"
+                              :loading="commentLoading"
+                              class="mr-3 mb-1"
+                              style="max-width: 600px"
+                              >確定送出</v-btn
+                            >
+                            <v-btn
+                              height="40"
+                              @click="openDialog('commentsReplyDelete', group)"
+                              :disabled="commentState"
+                              :loading="commentLoading"
+                              class="mb-1"
+                              style="max-width: 600px"
+                              >刪除</v-btn
+                            >
+                          </div>
+                        </div>
+                        <v-card
+                          class="pl-7"
+                          style="max-width: 600px; width: 100%"
+                          v-if="
+                            !commentReplyEditState ||
+                            (commentReply.open && commentReply.id !== keys && commentReplyEditState)
+                          "
+                        >
+                          <v-card-text class="d-flex flex-column px-0">
+                            <span class="mt-1 mb-3" style="font-size: 14px"
+                              >主辦者 回覆B{{ keys }}
+                              <v-btn
+                                variant="text"
+                                @click="
+                                  group.organizer_id._id === user.id
+                                    ? commentReplyEdit(keys, comment)
+                                    : ''
+                                "
+                                v-if="group.organizer_id._id === user.id"
+                                >編輯</v-btn
+                              ></span
+                            >
+                            <span style="font-size: 16px">{{ comment.reply.message }}</span>
+                          </v-card-text>
+                        </v-card>
+                        <div class="d-flex flex-column ml-5 align-center mr-15">
+                          <v-avatar>
+                            <v-img :src="comment.reply.author.image"></v-img>
+                          </v-avatar>
+                          <span class="mt-1 ml-1">{{ comment.reply.author.name }}</span>
+                        </div>
+                      </div>
+                    </div>
+                  </template>
+                  <!-- 留言 -->
+                  <p class="font-weight-bold ml-5 mb-3">發佈留言</p>
+                  <v-textarea
+                    v-model="commentMessage"
+                    :placeholder="commentPlaceholder"
+                    variant="outlined"
+                    max-width="600"
+                    no-resize
+                    class="ml-5"
                     :disabled="commentState"
-                    :loading="commentLoading"
-                    >確定送出</v-btn
-                  >
-                </div>
-              </v-tabs-window-item>
-            </v-tabs-window>
-            <v-divider class="border-opacity-100"></v-divider>
-          </v-col>
-        </div>
-      </v-col>
-    </v-row>
-  </v-container>
+                  ></v-textarea>
+                  <div class="d-flex justify-end mb-5" style="max-width: 600px">
+                    <v-btn
+                      height="50"
+                      @click="commentAction"
+                      :disabled="commentState"
+                      :loading="commentLoading"
+                      >確定送出</v-btn
+                    >
+                  </div>
+                </v-tabs-window-item>
+              </v-tabs-window>
+              <v-divider class="border-opacity-100"></v-divider>
+            </v-col>
+          </div>
+        </v-col>
+      </v-row>
+    </v-container>
+  </div>
 
   <v-container>
     <v-row>
@@ -310,14 +341,16 @@
                 variant="text"
               ></v-btn>
             </div>
-            <v-btn class="mr-5" height="50" width="200" :disabled="true">{{ groupRole }}</v-btn>
-            <v-btn
-              height="50"
-              width="200"
-              :disabled="groupButtonState || isUserInGroup"
-              @click="groupAction"
-              >{{ groupState }}</v-btn
-            >
+            <div class="d-flex group__page-action">
+              <v-btn class="mr-5" height="50" width="200" :disabled="true">{{ groupRole }}</v-btn>
+              <v-btn
+                height="50"
+                width="200"
+                :disabled="groupButtonState || isUserInGroup"
+                @click="groupAction"
+                >{{ groupState }}</v-btn
+              >
+            </div>
           </div>
         </div>
       </v-col>

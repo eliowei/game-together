@@ -5,7 +5,7 @@
         <h2>{{ props.name }}</h2>
         <!-- 主辦者 -->
         <div class="d-flex d-wrap align-center">
-          <v-avatar>
+          <v-avatar size="50">
             <v-img :src="user.image" />
           </v-avatar>
           <div class="d-flex flex-column pl-3 align-center">
@@ -92,6 +92,7 @@
             align-tabs="star"
             color="orange"
             style="border-bottom: 1px solid #eeeeee"
+            class="mt-8"
           >
             <v-tab v-for="tab in tabs" :key="tab.id">{{ tab.title }}</v-tab>
           </v-tabs>

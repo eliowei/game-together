@@ -1,21 +1,23 @@
 <template>
-  <v-container>
+  <v-container class="admin__user" max-width="1440">
     <v-row>
-      <v-col cols="12">
-        <h1 class="text-center">{{ $t('nav.adminUsers') }}</h1>
-        <v-divider></v-divider>
+      <v-col cols="11" offset="0" offset-sm="0" offset-md="0" offset-lg="0" offset-xl="1">
+        <h1 class="text-center mb-5">{{ $t('nav.adminUsers') }}</h1>
         <v-col cols="12">
-          <div class="d-flex align-center justify-space-between mb-5">
-            <v-btn @click="openDialog(null)">{{ $t('admin.userNew') }}</v-btn>
-            <div style="height: 60px; width: 100%" class="d-flex justify-center">
+          <v-row class="mb-5">
+            <v-col cols="3" align-self="center">
+              <v-btn @click="openDialog(null)">{{ $t('admin.userNew') }}</v-btn>
+            </v-col>
+            <v-col cols="9" sm="9" md="9" lg="6" xl="6">
               <v-text-field
                 v-model="search"
-                prepend-icon="mdi-magnify"
+                prepend-inner-icon="mdi-magnify"
                 variant="outlined"
-                max-width="600px"
+                max-width="600"
               ></v-text-field>
-            </div>
-          </div>
+            </v-col>
+          </v-row>
+
           <v-data-table :items="user" :headers="headers" :search="search">
             <template #[`item.role`]="{ item }">
               <span>{{ roleName(item.role) }} </span>
@@ -32,11 +34,11 @@
     </v-row>
   </v-container>
 
-  <v-dialog v-model="dialog.open" width="500">
+  <v-dialog v-model="dialog.open" max-width="500">
     <v-form :disabled="isSubmitting">
-      <v-card>
+      <v-card class="admin__user-form">
         <v-card-title>{{ $t(dialog.id ? 'admin.userEdit' : 'admin.userNew') }}</v-card-title>
-        <v-card-text>
+        <v-card-text class="pb-0">
           <v-container>
             <v-row>
               <v-col cols="12" class="d-flex align-center">
@@ -54,51 +56,76 @@
                 <v-btn class="ml-5" @click="avatarFileInput">變更頭像</v-btn>
               </v-col>
               <v-col cols="12">
-                <v-text-field
-                  v-model="email.value.value"
-                  :error-messages="email.errorMessage.value"
-                  :label="$t('user.email')"
-                ></v-text-field>
-                <v-text-field
-                  v-model="name.value.value"
-                  :error-messages="name.errorMessage.value"
-                  :label="$t('user.name')"
-                  counter
-                ></v-text-field>
-                <v-text-field
-                  v-model="account.value.value"
-                  :error-messages="account.errorMessage.value"
-                  :label="$t('user.account')"
-                  counter
-                ></v-text-field>
-                <v-text-field
-                  v-model="password.value.value"
-                  type="password"
-                  :error-messages="password.errorMessage.value"
-                  :label="$t('user.password')"
-                  counter
-                ></v-text-field>
-                <v-select
-                  v-model="gender.value.value"
-                  :error-messages="gender.errorMessage.value"
-                  :label="$t('user.gender')"
-                  :items="genderItems"
-                  item-title="text"
-                  item-value="value"
-                ></v-select>
-                <v-select
-                  v-model="age.value.value"
-                  :error-messages="age.errorMessage.value"
-                  :label="$t('user.age')"
-                  :items="ageItems"
-                  item-title="text"
-                  item-value="value"
-                ></v-select>
+                <div class="d-flex">
+                  <span class="mt-3 mr-5">{{ $t('user.email') }}</span>
+                  <v-text-field
+                    v-model="email.value.value"
+                    :error-messages="email.errorMessage.value"
+                    variant="outlined"
+                    max-width="300"
+                  ></v-text-field>
+                </div>
+
+                <div class="d-flex">
+                  <span class="mt-3 mr-13">{{ $t('user.name') }}</span>
+                  <v-text-field
+                    v-model="name.value.value"
+                    :error-messages="name.errorMessage.value"
+                    counter
+                    variant="outlined"
+                    max-width="300"
+                  ></v-text-field>
+                </div>
+                <div class="d-flex">
+                  <span class="mt-3 mr-13">{{ $t('user.account') }}</span>
+                  <v-text-field
+                    v-model="account.value.value"
+                    :error-messages="account.errorMessage.value"
+                    counter
+                    variant="outlined"
+                    max-width="300"
+                  ></v-text-field>
+                </div>
+                <div class="d-flex">
+                  <span class="mt-3 mr-13">{{ $t('user.password') }}</span>
+                  <v-text-field
+                    v-model="password.value.value"
+                    type="password"
+                    :error-messages="password.errorMessage.value"
+                    counter
+                    variant="outlined"
+                    max-width="300"
+                  ></v-text-field>
+                </div>
+                <div class="d-flex">
+                  <span class="mt-3 mr-13">{{ $t('user.gender') }}</span>
+                  <v-select
+                    v-model="gender.value.value"
+                    :error-messages="gender.errorMessage.value"
+                    :items="genderItems"
+                    item-title="text"
+                    item-value="value"
+                    variant="outlined"
+                    max-width="300"
+                  ></v-select>
+                </div>
+                <div class="d-flex">
+                  <span class="mt-3 mr-13">{{ $t('user.age') }}</span>
+                  <v-select
+                    v-model="age.value.value"
+                    :error-messages="age.errorMessage.value"
+                    :items="ageItems"
+                    item-title="text"
+                    item-value="value"
+                    variant="outlined"
+                    max-width="300"
+                  ></v-select>
+                </div>
               </v-col>
             </v-row>
           </v-container>
         </v-card-text>
-        <v-card-actions>
+        <v-card-actions class="mb-3">
           <v-btn @click="closeDialog">{{ $t('user.cancel') }}</v-btn>
           <v-btn type="button" :loading="isSubmitting" @click="onSubmit">{{
             $t('user.submit')

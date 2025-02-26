@@ -1,62 +1,67 @@
 <template>
-  <v-container>
+  <v-container max-width="1440">
     <v-row>
       <v-col cols="11" offset="1">
         <h1>{{ $t('member.userEdit') }}</h1>
 
         <v-form :disabled="isSubmitting" @submit.prevent="onSubmit">
-          <v-container>
+          <v-container class="member__info">
             <v-row>
               <v-col cols="11" offset="1" class="d-flex align-center">
-                <v-avatar size="x-large">
+                <v-avatar size="70">
                   <v-img alt="John" :src="userPreviewAvatar" :alt="user.name"></v-img>
                 </v-avatar>
                 <input
                   ref="fileInput"
                   type="file"
                   accept="image/jpeg,image/png"
-                  minlength="1024"
                   @change="uploadAvatar"
                   class="d-none"
                 />
                 <v-btn class="ml-5" @click="avatarFileInput" :disabled="!userEdit">變更頭像</v-btn>
               </v-col>
               <v-col cols="11" offset="1">
-                <v-col cols="4">
+                <v-col cols="12">
+                  <span>{{ $t('user.name') }}</span>
                   <v-text-field
                     v-model="name.value.value"
                     :error-messages="name.errorMessage.value"
-                    :label="$t('user.name')"
                     counter
+                    variant="outlined"
                     :disabled="!userEdit"
+                    max-width="300"
                   ></v-text-field>
+                  <span>{{ $t('user.gender') }}</span>
                   <v-select
                     v-model="gender.value.value"
                     :error-messages="gender.errorMessage.value"
-                    :label="$t('user.gender')"
                     :items="genderItems"
                     item-title="text"
                     item-value="value"
+                    variant="outlined"
                     :disabled="!userEdit"
+                    max-width="300"
                   ></v-select>
+                  <span>{{ $t('user.age') }}</span>
                   <v-select
                     v-model="age.value.value"
                     :error-messages="age.errorMessage.value"
-                    :label="$t('user.age')"
                     :items="ageItems"
                     item-title="text"
                     item-value="value"
+                    variant="outlined"
                     :disabled="!userEdit"
+                    max-width="300"
                   ></v-select>
                 </v-col>
               </v-col>
-              <v-col cols="8" offset="4" v-if="!userEdit">
+              <v-col cols="8" offset="3" v-if="!userEdit">
                 <button v-if="!userEdit" @click="userEdit = true">
                   <v-icon icon="mdi-pencil-outline" size="large"></v-icon>
                   {{ t('member.userEdit') }}
                 </button>
               </v-col>
-              <v-col cols="5">
+              <v-col cols="4">
                 <div class="d-flex justify-end">
                   <v-btn v-if="userEdit" type="submit" :loading="isSubmitting" class="mr-3">{{
                     $t('member.submitEdit')
@@ -116,6 +121,12 @@ const uploadAvatar = async () => {
     if (!validTypes.includes(file.type)) {
       throw new Error('userImageInvalid')
     }
+
+    // 檢查檔案大小
+    if (file.size > 1024 * 1024) {
+      throw new Error('userImageMaxSize')
+    }
+
     userPreviewAvatar.value = URL.createObjectURL(file)
     image.value = file
   } catch (error) {

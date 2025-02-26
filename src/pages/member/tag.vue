@@ -1,44 +1,53 @@
 <template>
-  <v-container>
+  <v-container max-width="1440" class="member__tag">
     <v-row>
-      <v-col cols="12">
+      <v-col cols="11" offset="1">
         <h1>{{ $t('member.tagSetting') }}</h1>
       </v-col>
-      <v-col cols="12" offset="2">
+      <v-col cols="10" offset="2">
         <span class="text-h6">
           {{ $t('member.TagInfo', { variable: tagSelectCount }) }}
         </span>
       </v-col>
-      <v-col cols="3" offset="2" class="d-flex align-center">
+      <v-col cols="10" offset="2" class="d-flex align-center">
         <v-text-field
           :disabled="!tagEditState"
           v-model="tagInput"
           :placeholder="tagEditState ? t('member.tagPlaceHolder') : ''"
           @keydown.enter="tagSelectItemsPush({ text: tagInput, value: tagInput })"
+          variant="outlined"
+          max-width="300"
         ></v-text-field>
+
+        <v-col cols="6">
+          <v-btn
+            v-if="tagEditState"
+            @click="tagSelectItemsPush({ text: tagInput, value: tagInput })"
+            class="ml-5"
+            >新增</v-btn
+          >
+          <button v-if="!tagEditState" @click="openTagEdit" class="ml-5">
+            <v-icon icon="mdi-pencil-outline" size="large"></v-icon>
+            {{ t('member.tagEdit') }}
+          </button>
+        </v-col>
       </v-col>
-      <v-col cols="2" class="d-flex align-center">
-        <v-btn v-if="tagEditState" @click="tagSelectItemsPush({ text: tagInput, value: tagInput })"
-          >新增</v-btn
-        >
-        <button v-if="!tagEditState" @click="openTagEdit">
-          <v-icon icon="mdi-pencil-outline" size="large"></v-icon>
-          {{ t('member.tagEdit') }}
-        </button>
-      </v-col>
-      <v-col cols="12" offset="2">
+      <v-col cols="10 " offset="2">
         <v-chip
           v-for="tags in tagSelectItems"
           :key="tags"
-          class="mr-2 mb-2"
+          class="mr-2 mb-2 mt-1"
+          :class="{ 'member__tag-edit': tagEditState }"
           variant="outlined"
           :closable="tagEditState"
           :link="tagEditState"
+          @click="tagEditState ? tagSelectItemsSplice(tags) : null"
           @click:close="tagSelectItemsSplice(tags)"
+          size="large"
           >{{ tags.text }}
         </v-chip>
         <v-form @submit.prevent="onSubmit">
-          <div class="d-flex mt-3 mb-3">
+          <div class="d-flex my-7">
             <v-btn v-if="tagEditState" class="mr-3" type="submit">{{
               $t('member.submitEdit')
             }}</v-btn>
@@ -48,13 +57,15 @@
 
         <h2 v-if="tagEditState">標籤:</h2>
       </v-col>
-      <v-col v-if="tagEditState" cols="5" offset="2">
+      <v-col v-if="tagEditState" cols="10" offset="2" style="max-width: 516px">
         <v-chip
           v-for="tags in tagItemsFiltered"
           :key="tags"
-          class="mr-2 mb-2"
+          class="mr-2 mb-2 mt-1"
+          :class="{ 'member__tag-edit': tagEditState }"
           variant="outlined"
           link
+          size="large"
           @click="tagSelectItemsPush(tags)"
         >
           {{ tags.text }}

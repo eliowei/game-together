@@ -26,6 +26,134 @@
   }
 }
 
+// 動畫-淡出往上
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+// 動畫-彈跳
+@-webkit-keyframes bounce-in-fwd {
+  0% {
+    -webkit-transform: scale(0);
+    transform: scale(0);
+    -webkit-animation-timing-function: ease-in;
+    animation-timing-function: ease-in;
+    opacity: 0;
+  }
+  38% {
+    -webkit-transform: scale(1);
+    transform: scale(1);
+    -webkit-animation-timing-function: ease-out;
+    animation-timing-function: ease-out;
+    opacity: 1;
+  }
+  55% {
+    -webkit-transform: scale(0.7);
+    transform: scale(0.7);
+    -webkit-animation-timing-function: ease-in;
+    animation-timing-function: ease-in;
+  }
+  72% {
+    -webkit-transform: scale(1);
+    transform: scale(1);
+    -webkit-animation-timing-function: ease-out;
+    animation-timing-function: ease-out;
+  }
+  81% {
+    -webkit-transform: scale(0.84);
+    transform: scale(0.84);
+    -webkit-animation-timing-function: ease-in;
+    animation-timing-function: ease-in;
+  }
+  89% {
+    -webkit-transform: scale(1);
+    transform: scale(1);
+    -webkit-animation-timing-function: ease-out;
+    animation-timing-function: ease-out;
+  }
+  95% {
+    -webkit-transform: scale(0.95);
+    transform: scale(0.95);
+    -webkit-animation-timing-function: ease-in;
+    animation-timing-function: ease-in;
+  }
+  100% {
+    -webkit-transform: scale(1);
+    transform: scale(1);
+    -webkit-animation-timing-function: ease-out;
+    animation-timing-function: ease-out;
+  }
+}
+// 動畫-彈跳
+@keyframes bounce-in-fwd {
+  0% {
+    -webkit-transform: scale(0);
+    transform: scale(0);
+    -webkit-animation-timing-function: ease-in;
+    animation-timing-function: ease-in;
+    opacity: 0;
+  }
+  38% {
+    -webkit-transform: scale(1);
+    transform: scale(1);
+    -webkit-animation-timing-function: ease-out;
+    animation-timing-function: ease-out;
+    opacity: 1;
+  }
+  55% {
+    -webkit-transform: scale(0.7);
+    transform: scale(0.7);
+    -webkit-animation-timing-function: ease-in;
+    animation-timing-function: ease-in;
+  }
+  72% {
+    -webkit-transform: scale(1);
+    transform: scale(1);
+    -webkit-animation-timing-function: ease-out;
+    animation-timing-function: ease-out;
+  }
+  81% {
+    -webkit-transform: scale(0.84);
+    transform: scale(0.84);
+    -webkit-animation-timing-function: ease-in;
+    animation-timing-function: ease-in;
+  }
+  89% {
+    -webkit-transform: scale(1);
+    transform: scale(1);
+    -webkit-animation-timing-function: ease-out;
+    animation-timing-function: ease-out;
+  }
+  95% {
+    -webkit-transform: scale(0.95);
+    transform: scale(0.95);
+    -webkit-animation-timing-function: ease-in;
+    animation-timing-function: ease-in;
+  }
+  100% {
+    -webkit-transform: scale(1);
+    transform: scale(1);
+    -webkit-animation-timing-function: ease-out;
+    animation-timing-function: ease-out;
+  }
+}
+
+// 佔位符-按鈕hover
+%form-button-hover {
+  &:hover {
+    background-color: orange;
+    .v-btn__content {
+      color: white;
+    }
+  }
+}
+
 // swiper
 .swiper {
   width: 100%;
@@ -143,6 +271,15 @@
       &-content {
         &-card {
           flex: 0 1 300px;
+
+          .v-btn {
+            flex: 0 1 200px;
+          }
+        }
+        &-button {
+          .v-btn {
+            flex: 0 1 200px;
+          }
         }
       }
     }
@@ -170,24 +307,6 @@
 
   .section-step__img {
     order: 1;
-  }
-}
-
-.index__groups-latest-conent-card .v-btn {
-  flex: 0 1 200px;
-}
-
-.index__groups-upcoming-content-button .v-btn {
-  flex: 0 1 200px;
-}
-
-// 佔位符-按鈕hover
-%form-button-hover {
-  &:hover {
-    background-color: orange;
-    .v-btn__content {
-      color: white;
-    }
   }
 }
 // 登入
@@ -232,7 +351,7 @@
     }
   }
 }
-
+// 揪團
 .group {
   &__search {
     &-input {
@@ -353,6 +472,36 @@
       padding-left: 4px;
     }
   }
+
+  &__page {
+    &-action {
+      width: 400px;
+      .v-btn {
+        margin-right: 20px;
+        flex: 0 1 200px;
+        max-width: 200px;
+      }
+
+      @media (max-width: 599px) {
+        flex-wrap: wrap;
+        width: 100%;
+
+        .v-btn {
+          margin-right: 0;
+
+          &:nth-child(1) {
+            margin-bottom: 20px;
+          }
+        }
+      }
+    }
+    &-edit {
+      justify-content: end;
+      @media (max-width: 599px) {
+        justify-content: start;
+      }
+    }
+  }
 }
 
 @media (max-width: 599px) {
@@ -432,121 +581,167 @@
   height: 50px;
   border-radius: 8px !important;
 }
+// 會員專區
+.member {
+  &__organizer {
+    .v-chip {
+      transition: 0.2s;
 
-// 動畫-淡出往上
-@keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
+      &:hover {
+        transform: scaleX(1.05);
+        background-color: orange;
+        color: white;
+      }
+    }
+    &-info {
+      .v-field,
+      .v-field__input {
+        border-radius: 6px;
+        height: 50px;
+      }
+      .v-input {
+        margin-bottom: 5px;
+      }
+    }
   }
-  to {
-    opacity: 1;
-    transform: translateY(0);
+
+  &__info {
+    .v-field,
+    .v-field__input {
+      border-radius: 6px;
+      height: 50px;
+    }
+    .v-field {
+      margin-top: 6px;
+    }
+    .v-input {
+      margin-bottom: 5px;
+    }
   }
-}
-// 動畫-彈跳
-@-webkit-keyframes bounce-in-fwd {
-  0% {
-    -webkit-transform: scale(0);
-    transform: scale(0);
-    -webkit-animation-timing-function: ease-in;
-    animation-timing-function: ease-in;
-    opacity: 0;
-  }
-  38% {
-    -webkit-transform: scale(1);
-    transform: scale(1);
-    -webkit-animation-timing-function: ease-out;
-    animation-timing-function: ease-out;
-    opacity: 1;
-  }
-  55% {
-    -webkit-transform: scale(0.7);
-    transform: scale(0.7);
-    -webkit-animation-timing-function: ease-in;
-    animation-timing-function: ease-in;
-  }
-  72% {
-    -webkit-transform: scale(1);
-    transform: scale(1);
-    -webkit-animation-timing-function: ease-out;
-    animation-timing-function: ease-out;
-  }
-  81% {
-    -webkit-transform: scale(0.84);
-    transform: scale(0.84);
-    -webkit-animation-timing-function: ease-in;
-    animation-timing-function: ease-in;
-  }
-  89% {
-    -webkit-transform: scale(1);
-    transform: scale(1);
-    -webkit-animation-timing-function: ease-out;
-    animation-timing-function: ease-out;
-  }
-  95% {
-    -webkit-transform: scale(0.95);
-    transform: scale(0.95);
-    -webkit-animation-timing-function: ease-in;
-    animation-timing-function: ease-in;
-  }
-  100% {
-    -webkit-transform: scale(1);
-    transform: scale(1);
-    -webkit-animation-timing-function: ease-out;
-    animation-timing-function: ease-out;
+
+  &__tag {
+    .v-field,
+    .v-field__input {
+      border-radius: 6px;
+      height: 50px;
+    }
+    .v-input__details {
+      display: none;
+    }
+
+    &-edit:hover {
+      transition: 0.2s;
+
+      &:hover {
+        transform: scaleX(1.05);
+        background-color: orange;
+        color: white;
+      }
+    }
   }
 }
-// 動畫-彈跳
-@keyframes bounce-in-fwd {
-  0% {
-    -webkit-transform: scale(0);
-    transform: scale(0);
-    -webkit-animation-timing-function: ease-in;
-    animation-timing-function: ease-in;
-    opacity: 0;
+
+// 管理
+.admin {
+  &__group {
+    .v-field,
+    .v-field__input {
+      border-radius: 6px;
+      height: 50px;
+    }
+    .v-input__details {
+      display: none;
+    }
+
+    &-form {
+      .v-chip {
+        transition: 0.2s;
+
+        &:hover {
+          transform: scaleX(1.05);
+          background-color: orange;
+          color: white;
+        }
+      }
+
+      .v-field,
+      .v-field__input {
+        border-radius: 6px;
+        height: 50px;
+      }
+      .v-input {
+        margin-bottom: 5px;
+      }
+    }
   }
-  38% {
-    -webkit-transform: scale(1);
-    transform: scale(1);
-    -webkit-animation-timing-function: ease-out;
-    animation-timing-function: ease-out;
-    opacity: 1;
+
+  &__user {
+    .v-field,
+    .v-field__input {
+      border-radius: 6px;
+      height: 50px;
+    }
+    .v-input__details {
+      display: none;
+    }
+
+    &-form {
+      .v-field,
+      .v-field__input {
+        border-radius: 6px;
+        height: 50px;
+      }
+      .v-input {
+        margin-bottom: 5px;
+      }
+    }
   }
-  55% {
-    -webkit-transform: scale(0.7);
-    transform: scale(0.7);
-    -webkit-animation-timing-function: ease-in;
-    animation-timing-function: ease-in;
+
+  &__contact {
+    .v-field,
+    .v-field__input {
+      border-radius: 6px;
+      height: 50px;
+    }
+    .v-input__details {
+      display: none;
+    }
   }
-  72% {
-    -webkit-transform: scale(1);
-    transform: scale(1);
-    -webkit-animation-timing-function: ease-out;
-    animation-timing-function: ease-out;
+}
+
+// 行事曆
+.fc-prev-button,
+.fc-next-button,
+.fc-today-button {
+  background-color: orange !important;
+  border-color: orange !important;
+
+  &:focus {
+    // box-shadow: rgba(238, 146, 8, 0.5) 0px 0px 0px 0.2rem !important;
+    box-shadow: none !important;
   }
-  81% {
-    -webkit-transform: scale(0.84);
-    transform: scale(0.84);
-    -webkit-animation-timing-function: ease-in;
-    animation-timing-function: ease-in;
+  &:hover {
+    background-color: rgba(252, 177, 37, 0.418) !important;
+    color: white !important;
   }
-  89% {
-    -webkit-transform: scale(1);
-    transform: scale(1);
-    -webkit-animation-timing-function: ease-out;
-    animation-timing-function: ease-out;
+}
+
+.fc-dayGridMonth-button,
+.fc-dayGridWeek-button {
+  background-color: white !important;
+  color: black !important;
+  border-color: orange !important;
+
+  &:focus {
+    // box-shadow: rgba(238, 146, 8, 0.5) 0px 0px 0px 0.2rem !important;
+    box-shadow: none !important;
   }
-  95% {
-    -webkit-transform: scale(0.95);
-    transform: scale(0.95);
-    -webkit-animation-timing-function: ease-in;
-    animation-timing-function: ease-in;
+  &:hover {
+    background-color: rgba(252, 177, 37, 0.418) !important;
+    color: white !important;
   }
-  100% {
-    -webkit-transform: scale(1);
-    transform: scale(1);
-    -webkit-animation-timing-function: ease-out;
-    animation-timing-function: ease-out;
-  }
+}
+.fc-button-active {
+  background-color: orange !important;
+  color: white !important;
 }

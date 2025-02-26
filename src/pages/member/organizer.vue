@@ -1,5 +1,5 @@
 <template>
-  <v-container>
+  <v-container max-width="1440">
     <v-row>
       <v-col cols="11" offset-sm="1" offset-md="1" offset-lg="1">
         <h1 class="mb-11">{{ $t('member.organizer') }}</h1>
@@ -28,7 +28,7 @@
             </template>
           </v-data-table>
         </v-col>
-        <v-col cols="12">
+        <v-col cols="12" v-if="totalPage > 1">
           <v-pagination
             v-model="currentPage"
             :length="totalPage"
@@ -39,10 +39,14 @@
     </v-row>
   </v-container>
 
-  <v-dialog v-model="dialog.open" width="800" persistent>
+  <v-dialog v-model="dialog.open" max-width="800" persistent>
     <v-form :disable="isSubmitting">
-      <v-card>
-        <v-card-title>{{ $t(dialog.id ? 'adminGroup.edit' : 'adminGroup.new') }}</v-card-title>
+      <v-card class="member__organizer-info">
+        <v-card-title
+          >{{ $t(dialog.id ? 'adminGroup.edit' : 'adminGroup.new') }}-{{
+            tabs[tabSelect].title
+          }}</v-card-title
+        >
         <v-card-text>
           <v-tabs
             v-model="tabSelect"
@@ -55,118 +59,138 @@
           <v-tabs-window v-model="tabSelect" class="my-8">
             <v-tabs-window-item :value="0">
               <v-container>
-                <v-text-field
-                  v-model="name.value.value"
-                  :label="$t('group.name')"
-                  :error-messages="name.errorMessage.value"
-                  minLength="1"
-                ></v-text-field>
+                <div class="d-flex">
+                  <span class="mt-3 mr-5">{{ $t('group.name') }}</span>
+                  <v-text-field
+                    v-model="name.value.value"
+                    :error-messages="name.errorMessage.value"
+                    minLength="1"
+                    variant="outlined"
+                    max-width="600"
+                  ></v-text-field>
+                </div>
 
-                <v-text-field
-                  v-model="description.value.value"
-                  :label="$t('group.description')"
-                  :error-messages="description.errorMessage.value"
-                  minLength="1"
-                ></v-text-field>
+                <div class="d-flex">
+                  <span class="mt-3 mr-5">{{ $t('group.description') }}</span>
+                  <v-text-field
+                    v-model="description.value.value"
+                    :error-messages="description.errorMessage.value"
+                    minLength="1"
+                    variant="outlined"
+                    max-width="600"
+                  ></v-text-field>
+                </div>
 
-                <v-select
-                  v-model="type.value.value"
-                  :label="$t('group.type')"
-                  :items="typeItems"
-                  :error-messages="type.errorMessage.value"
-                  item-title="text"
-                  item-value="value"
-                  variant="solo"
-                ></v-select>
+                <div class="d-flex">
+                  <span class="mt-3 mr-5">{{ $t('group.createdType') }}</span>
+                  <v-select
+                    v-model="type.value.value"
+                    :items="typeItems"
+                    :error-messages="type.errorMessage.value"
+                    item-title="text"
+                    item-value="value"
+                    variant="outlined"
+                    class="mr-5"
+                    max-width="100"
+                  ></v-select>
 
-                <v-select
-                  v-model="member_limit.value.value"
-                  :label="$t('group.memberLimit')"
-                  :items="memberLimitItems"
-                  :error-messages="member_limit.errorMessage.value"
-                  item-title="text"
-                  item-value="value"
-                ></v-select>
+                  <span class="mt-3 mr-5">{{ $t('group.memberLimit') }}</span>
+                  <v-select
+                    v-model="member_limit.value.value"
+                    :items="memberLimitItems"
+                    :error-messages="member_limit.errorMessage.value"
+                    item-title="text"
+                    item-value="value"
+                    variant="outlined"
+                    max-width="100"
+                  ></v-select>
+                </div>
 
-                <v-select
-                  v-model="contact_method.value.value"
-                  :label="$t('group.contactMethod')"
-                  :items="['Line', 'Discord', 'Facebook']"
-                  :error-messages="contact_method.errorMessage.value"
-                  variant="solo"
-                ></v-select>
+                <div class="d-flex">
+                  <span class="mt-3 mr-5">{{ $t('group.contactInfo') }}</span>
+                  <v-select
+                    v-model="contact_method.value.value"
+                    :items="['Line', 'Discord', 'Facebook']"
+                    :error-messages="contact_method.errorMessage.value"
+                    variant="outlined"
+                    max-width="150"
+                    class="mr-5"
+                  ></v-select>
+                  <v-text-field
+                    v-model="contact_info.value.value"
+                    :error-messages="contact_info.errorMessage.value"
+                    variant="outlined"
+                    max-width="430"
+                  ></v-text-field>
+                </div>
 
-                <v-text-field
-                  v-model="contact_info.value.value"
-                  :label="$t('group.contactInfo')"
-                  :error-messages="contact_info.errorMessage.value"
-                ></v-text-field>
+                <div class="d-flex" v-if="type.value.value === typeItems[1].value">
+                  <span class="mt-3 mr-5">{{ $t('group.createdRegion') }}</span>
+                  <v-select
+                    v-model="city.value.value"
+                    :error-messages="city.errorMessage.value"
+                    :items="cityItems"
+                    item-title="text"
+                    item-value="value"
+                    variant="outlined"
+                    max-width="150"
+                    class="mr-5"
+                  ></v-select>
+                  <v-select
+                    v-model="region.value.value"
+                    :error-messages="region.errorMessage.value"
+                    :items="regionItems"
+                    item-title="text"
+                    item-value="value"
+                    variant="outlined"
+                    max-width="150"
+                    class="mr-5"
+                  ></v-select>
+                </div>
 
-                <v-select
-                  v-model="city.value.value"
-                  :label="$t('group.city')"
-                  :error-messages="city.errorMessage.value"
-                  v-if="type.value.value === typeItems[1].value"
-                  :items="cityItems"
-                  item-title="text"
-                  item-value="value"
-                ></v-select>
+                <div class="d-flex" v-if="type.value.value === typeItems[1].value">
+                  <span class="mt-3 mr-5">{{ $t('group.address') }}</span>
 
-                <v-select
-                  v-model="region.value.value"
-                  :label="$t('group.region')"
-                  :error-messages="region.errorMessage.value"
-                  v-if="type.value.value === typeItems[1].value"
-                  :items="regionItems"
-                  item-title="text"
-                  item-value="value"
-                ></v-select>
-
-                <v-text-field
-                  v-model="address.value.value"
-                  :label="$t('group.address')"
-                  :error-messages="address.errorMessage.value"
-                  v-if="type.value.value === typeItems[1].value"
-                ></v-text-field>
+                  <v-text-field
+                    v-model="address.value.value"
+                    :error-messages="address.errorMessage.value"
+                    variant="outlined"
+                    max-width="600"
+                  ></v-text-field>
+                </div>
 
                 <div class="d-flex align-center">
-                  <v-col cols="2">
-                    <span>{{ $t('group.time') }}</span>
-                  </v-col>
-
-                  <v-col cols="5">
-                    <VueDatePicker
-                      v-model="date.value.value"
-                      auto-apply
-                      :enable-time-picker="false"
-                      :format-locale="zhTW"
-                      hide-input-icon
-                      :format="format"
-                      :min-date="new Date()"
-                    ></VueDatePicker
-                  ></v-col>
-                  <v-col cols="2">
-                    <span>{{ $t('group.startTime') }}</span>
-                  </v-col>
-                  <v-col cols="2">
-                    <VueDatePicker
-                      v-model="time.value.value"
-                      time-picker
-                      hide-input-icon
-                      :select-text="$t('group.selectSure')"
-                      :cancel-text="$t('group.selectCancel')"
-                      :format="formatTime"
-                      :error-messages="time.errorMessage.value"
-                    ></VueDatePicker>
-                  </v-col>
+                  <span class="mr-5">{{ $t('group.date') }}</span>
+                  <VueDatePicker
+                    v-model="date.value.value"
+                    auto-apply
+                    :enable-time-picker="false"
+                    :format-locale="zhTW"
+                    hide-input-icon
+                    :format="format"
+                    :min-date="new Date()"
+                    style="max-width: 300px"
+                    class="mr-5"
+                  ></VueDatePicker>
+                  <span class="mr-5">{{ $t('group.time') }}</span>
+                  <VueDatePicker
+                    v-model="time.value.value"
+                    time-picker
+                    hide-input-icon
+                    :select-text="$t('group.selectSure')"
+                    :cancel-text="$t('group.selectCancel')"
+                    :format="formatTime"
+                    :error-messages="time.errorMessage.value"
+                    style="max-width: 140px"
+                  ></VueDatePicker>
                 </div>
               </v-container>
             </v-tabs-window-item>
 
             <v-tabs-window-item :value="1">
-              <v-container>
+              <v-container class="member__organizer">
                 <h1 class="text-center">{{ $t('admin.groupTag') }}</h1>
-                <h2 class="text-center">
+                <h2 class="text-center mb-6">
                   {{ $t('admin.groupTagInfo', { variable: tagSelectCount }) }}
                 </h2>
                 <v-row>
@@ -175,17 +199,20 @@
                       v-model="tagInput"
                       :placeholder="t('admin.groupPlaceHolder')"
                       @keydown.enter="tagSelectItemsPush({ text: tagInput, value: tagInput })"
+                      variant="outlined"
                     ></v-text-field>
                   </v-col>
                   <v-col cols="12">
                     <v-chip
                       v-for="tags in tagSelectItems"
                       :key="tags"
-                      class="mr-2 mb-2"
+                      class="mr-2 mb-2 pt-1"
                       variant="outlined"
                       closable
                       link
                       @click:close="tagSelectItemsSplice(tags)"
+                      @click="tagSelectItemsSplice(tags)"
+                      prepend-icon="mdi-tag"
                       >{{ tags.text }}
                     </v-chip>
                   </v-col>
@@ -196,7 +223,7 @@
                     <v-chip
                       v-for="tags in tagItemsFiltered"
                       :key="tags"
-                      class="mr-2 mb-2"
+                      class="mr-2 mb-2 pt-1"
                       variant="outlined"
                       link
                       @click="tagSelectItemsPush(tags)"
@@ -217,27 +244,31 @@
                   :toolbar="editorOptions.modules.toolbar"
                   :options="editorOptions"
                   contentType="html"
+                  class="mb-3"
                 />
                 <span class="text-h6 font-weight-bold">圖片:</span>
-                <VueFileAgent
-                  v-model="fileRecords"
-                  v-model:raw-model-value="rawFileRecords"
-                  accept="image/jpeg,image/png"
-                  deletable
-                  max-size="1MB"
-                  :help-text="$t('fileAgent.helpText')"
-                  :error-text="{
-                    type: $t('fileAgent.errorType'),
-                    size: $t('fileAgent.errorSize'),
-                  }"
-                  class="w-25"
-                  ref="fileAgent"
-                ></VueFileAgent>
+                <div style="max-width: 200px">
+                  <VueFileAgent
+                    v-model="fileRecords"
+                    v-model:raw-model-value="rawFileRecords"
+                    accept="image/jpeg,image/png"
+                    deletable
+                    max-size="1MB"
+                    :help-text="$t('fileAgent.helpText')"
+                    :error-text="{
+                      type: $t('fileAgent.errorType'),
+                      size: $t('fileAgent.errorSize'),
+                    }"
+                    ref="fileAgent"
+                  ></VueFileAgent>
+                </div>
               </v-container>
             </v-tabs-window-item>
           </v-tabs-window>
+          <v-divider></v-divider>
         </v-card-text>
-        <v-card-actions>
+
+        <v-card-actions class="mb-3">
           <v-btn @click="closeDialog">{{ $t('adminGroup.cancel') }}</v-btn>
           <v-btn type="button" :loading="isSubmitting" @click="onSubmit">{{
             $t('adminGroup.submit')

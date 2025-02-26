@@ -34,7 +34,7 @@ export default {
     success: '登出成功',
   },
   user: {
-    name: '姓名',
+    name: '暱稱',
     namePlaceholder: '請輸入暱稱',
     account: '帳號',
     accountPlaceholder: '請輸入帳號',
@@ -155,7 +155,7 @@ export default {
     userPasswordInvalid: '密碼錯誤',
     userPasswordNotMatch: '密碼不符',
     samePassword: '新舊密碼相同',
-    userNameRequired: '姓名必填',
+    userNameRequired: '暱稱必填',
     userNameInvalid: '姓名格式不符',
     userNotFound: '查無使用者',
     userTokenInvalid: '使用者驗證錯誤',

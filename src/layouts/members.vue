@@ -296,12 +296,14 @@ const groupFilter = computed(() => {
     .slice(0, 3)
 })
 // 如果超過960px，則關閉手機板型的導覽列
-watch(mdAndUp, () => {
-  if (mdAndUp && dialog) {
-    dialog.value = false
+watch(mdAndUp, (newValue) => {
+  console.log(newValue)
+  if (newValue) {
+    if (dialog.value) dialog.value = false
+    if (rail.value) rail.value = false
   }
-  if (mdAndUp && rail) {
-    rail.value = false
+  if (!newValue) {
+    if (!rail.value) rail.value = true
   }
 })
 </script>

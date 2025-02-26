@@ -26,6 +26,11 @@ router.beforeEach(async (to, from, next) => {
   const { apiAuth } = useAxios()
   const user = useUserStore()
 
+  if (!to.matched.length) {
+    next('/404')
+    return
+  }
+
   //START_LOCATION = 初始導航，重新整理後導航過去的頁面
   if (from === START_LOCATION && user.isLoggedIn) {
     try {

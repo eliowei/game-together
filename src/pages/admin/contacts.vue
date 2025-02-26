@@ -1,40 +1,39 @@
 <template>
-  <v-container>
+  <v-container class="admin__contact" max-width="1440">
     <v-row>
-      <v-col cols="12">
-        <h1 class="text-center">{{ $t('nav.adminContacts') }}</h1>
-        <v-divider></v-divider>
-      </v-col>
-      <v-col cols="12">
-        <div style="height: 60px; width: 100%" class="d-flex align-center justify-center mb-5">
-          <v-text-field
-            v-model="search"
-            prepend-icon="mdi-magnify"
-            variant="outlined"
-            max-width="600px"
-          ></v-text-field>
-        </div>
-        <v-data-table :items="contact" :headers="headers" :search="search">
-          <template #[`item.description`]="{ value }">
-            <span>
-              {{ value.length > 20 ? value.slice(0, 20) + '...' : value }}
-            </span>
-          </template>
-          <template #[`item.createdAt`]="{ value }">
-            {{ new Date(value).toLocaleString() }}
-          </template>
-          <template #[`item.action`]="{ item }">
-            <v-btn @click="openDialog(item)">{{ $t('admin.contactView') }}</v-btn>
-          </template>
-          <template #[`item.delete`]="{ item }">
-            <v-btn @click="openDeleteDialog(item)">{{ $t('admin.contactDelete') }}</v-btn>
-          </template>
-        </v-data-table>
+      <v-col cols="11" offset="0" offset-sm="0" offset-md="0" offset-lg="0" offset-xl="1">
+        <h1 class="text-center mb-2">{{ $t('nav.adminContacts') }}</h1>
+        <v-col cols="12">
+          <div class="d-flex justify-center mb-5">
+            <v-text-field
+              v-model="search"
+              prepend-inner-icon="mdi-magnify"
+              variant="outlined"
+              max-width="500"
+            ></v-text-field>
+          </div>
+          <v-data-table :items="contact" :headers="headers" :search="search">
+            <template #[`item.description`]="{ value }">
+              <span>
+                {{ value.length > 20 ? value.slice(0, 20) + '...' : value }}
+              </span>
+            </template>
+            <template #[`item.createdAt`]="{ value }">
+              {{ new Date(value).toLocaleString() }}
+            </template>
+            <template #[`item.action`]="{ item }">
+              <v-btn @click="openDialog(item)">{{ $t('admin.contactView') }}</v-btn>
+            </template>
+            <template #[`item.delete`]="{ item }">
+              <v-btn @click="openDeleteDialog(item)">{{ $t('admin.contactDelete') }}</v-btn>
+            </template>
+          </v-data-table>
+        </v-col>
       </v-col>
     </v-row>
   </v-container>
 
-  <v-dialog v-model="dialog.open" width="400">
+  <v-dialog v-model="dialog.open" max-width="400">
     <v-card>
       <v-card-title class="d-flex align-center mb-0 pb-0">
         <span>{{ t('adminContact.view') }}</span>
@@ -42,7 +41,7 @@
         <v-btn icon="mdi-close" variant="text" @click="dialog.open = false"></v-btn>
       </v-card-title>
       <v-card-text class="pt-0">
-        <v-list class="py-0">
+        <v-list>
           <v-list-item class="py-0" v-for="(item, index) in dialogListItems" :key="index">
             {{ item.title }}: {{ item.value }}
           </v-list-item>

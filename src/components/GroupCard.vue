@@ -35,11 +35,14 @@
           }}</v-chip>
         </div>
         <div class="d-flex mb-1">
-          <template v-for="number in groupMembers">
-            <div class="d-flex flex-column mr-5">
-              <v-avatar>
-                <v-img :src="number.user_id.image" />
+          <template v-for="(member, index) in groupMembers">
+            <div class="d-flex flex-column">
+              <v-avatar v-if="index < 4" style="outline: 2px solid white" class="mr-n2">
+                <v-img :src="member.user_id.image" />
               </v-avatar>
+              <v-avatar v-if="index === 4" style="outline: 2px solid white" color="grey-lighten-2"
+                >+{{ member_count - index }}</v-avatar
+              >
             </div>
           </template>
         </div>
