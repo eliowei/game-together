@@ -10,7 +10,7 @@ import { setupLayouts } from 'virtual:generated-layouts'
 import { routes } from 'vue-router/auto-routes'
 import { useAxios } from '@/composables/axios'
 import { useUserStore } from '@/stores/user'
-import i18n from '@/i18n'
+import i18n from '@/i18N'
 
 const router = createRouter({
   history: createWebHashHistory(import.meta.env.BASE_URL),
