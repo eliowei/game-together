@@ -19,7 +19,7 @@ jobs:
       # 步驟二：編譯
       - name: Install and Build
         run: |
-          npm install
+          npm install 
           npm install sass-embedded-linux-x64 --save-dev
           npm install --save-dev @rollup/rollup-linux-x64-gnu
           npm run build
