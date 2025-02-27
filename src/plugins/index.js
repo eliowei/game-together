@@ -8,7 +8,7 @@
 import vuetify from './vuetify'
 import pinia from '@/stores'
 import router from '@/router'
-import i18n from '@/i18n'
+import i18n from '@/i18N'
 import VuetifyUseDialog from 'vuetify-use-dialog'
 import VueFileAgentNext from '@boindil/vue-file-agent-next'
 import '@boindil/vue-file-agent-next/dist/vue-file-agent-next.css'
