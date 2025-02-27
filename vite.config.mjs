@@ -13,7 +13,7 @@ import { fileURLToPath, URL } from 'node:url'
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  base: './',
+  base: '/game-together/',
   plugins: [
     VueRouter(),
     Layouts(),
