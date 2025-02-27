@@ -63,4 +63,7 @@ export default defineConfig({
       },
     },
   },
+  optimizeDeps: {
+    include: ['quill-blot-formatter'],
+  },
 })
