@@ -8,13 +8,19 @@
           :modules="modules"
           class="mySwiper"
           :autoplay="{
-            delay: 2500,
+            delay: 6000,
             disableOnInteraction: false,
           }"
+          :speed="2500"
           :crossFade="true"
         >
           <swiper-slide v-for="slide in slides" :key="slide.id">
-            <v-img :src="slide.url" :height="900" cover></v-img>
+            <v-img
+              :src="slide.url"
+              :height="900"
+              cover
+              class="index__hero-content-zoom-effect"
+            ></v-img>
           </swiper-slide>
         </swiper>
       </div>
@@ -398,8 +404,10 @@
               <v-btn
                 append-icon="mdi-arrow-right"
                 :to="'/creategroup/step1/'"
-                width="160"
-                height="50"
+                max-width="200"
+                min-width="125"
+                max-height="50"
+                min-height="40"
                 class="mt-4"
                 >主辦揪團</v-btn
               >
@@ -672,10 +680,10 @@ const slides = ref([
   },
   {
     id: 3,
-    url: new URL('@/assets/swiper-1.jpg', import.meta.url).href,
+    url: new URL('@/assets/swiper-3.jpg', import.meta.url).href,
   },
   {
-    url: new URL('@/assets/swiper-2.jpg', import.meta.url).href,
+    url: new URL('@/assets/swiper-4.jpg', import.meta.url).href,
   },
 ])
 
@@ -787,6 +795,7 @@ onMounted(() => {
     trigger: '.index__groups-latest',
     start: '-80% center',
     markers: false,
+    once: true,
     onEnter: () => {
       // 第一區塊動畫
       const groupTl = gsap.timeline()
@@ -827,6 +836,7 @@ onMounted(() => {
     trigger: '.index__groups-upcoming',
     start: '5% center',
     markers: false,
+    once: true,
     onEnter: () => {
       const groupTl2 = gsap.timeline()
 
@@ -866,6 +876,7 @@ onMounted(() => {
     trigger: '.index__introduction',
     start: 'center center',
     markers: false,
+    once: true,
     onEnter: () => {
       const cardTl = gsap.timeline()
       cardTl
@@ -903,6 +914,7 @@ onMounted(() => {
     trigger: '.index__steps',
     start: '31% center',
     markers: false,
+    once: true,
     onEnter: () => {
       const cardTl = gsap.timeline()
       cardTl
