@@ -291,7 +291,7 @@ import VueDatePicker from '@vuepic/vue-datepicker'
 import '@vuepic/vue-datepicker/dist/main.css'
 import { zhTW } from 'date-fns/locale'
 import { useDate } from 'vuetify'
-import BlotFormatter from 'quill-blot-formatter'
+import BlotFormatter from 'quill-blot-formatter/dist/BlotFormatter'
 import { useRouter } from 'vue-router'
 
 const { apiAuth } = useAxios()

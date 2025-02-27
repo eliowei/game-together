@@ -90,7 +90,7 @@
 
 <script setup>
 import { ref, onMounted } from 'vue'
-import BlotFormatter from 'quill-blot-formatter'
+import BlotFormatter from 'quill-blot-formatter/dist/BlotFormatter'
 import { useI18n } from 'vue-i18n'
 import { useGroupStore } from '@/stores/group'
 import { useSnackbar } from 'vuetify-use-dialog'
