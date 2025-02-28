@@ -52,6 +52,7 @@
 | Axios | HTTP 請求套件，與後端進行資料傳遞
 | Prettier, ESLint + Prettier | 自動格式化程式碼，保持一致的程式碼風格 |
 | Swiper | 輪播圖功能 |
+| GSAP | 動畫套件 | 
 | Vue Quill, quill-blot-formatter | 富文本編輯器，支持格式化文字和調整圖片大小 |
 | FullCalendar | 行事曆功能，顯示和管理事件 |
 | Vue I18n | 實現多語言國際化，讓應用程式支持不同語言版本 |
