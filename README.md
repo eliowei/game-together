@@ -1,79 +1,57 @@
-# Vuetify (Default)
+# GameTogether 遊戲揪團平台
 
-This is the official scaffolding tool for Vuetify, designed to give you a head start in building your new Vuetify application. It sets up a base template with all the necessary configurations and standard directory structure, enabling you to begin development without the hassle of setting up the project from scratch.
+以 Vue 搭配 Vuetify UI框架製作的單頁式應用網站(SPA)，可觀看桌面板及平板版
 
-## ❗️ Important Links
+### Demo:https://eliowei.github.io/game-together/
 
-- 📄 [Docs](https://vuetifyjs.com/)
-- 🚨 [Issues](https://issues.vuetifyjs.com/)
-- 🏬 [Store](https://store.vuetifyjs.com/)
-- 🎮 [Playground](https://play.vuetifyjs.com/)
-- 💬 [Discord](https://community.vuetifyjs.com)
+註:後端部屬在Render上，請稍後等待約30秒等待喚醒，便可正常操作。
 
-## 💿 Install
+相關連結: [Wireframe 線稿圖](https://www.figma.com/design/JbCRhjezMwJbiCL2esE0k1/%E9%81%8A%E6%88%B2%E6%8F%AA%E5%9C%98%E5%B9%B3%E5%8F%B0?node-id=0-1&t=CedlF5iGgoH3YaqW-1)、[後端](https://github.com/eliowei/game-together-back)
 
-Set up your project using your preferred package manager. Use the corresponding command to install the dependencies:
 
-| Package Manager                                                | Command        |
-|---------------------------------------------------------------|----------------|
-| [yarn](https://yarnpkg.com/getting-started)                   | `yarn install` |
-| [npm](https://docs.npmjs.com/cli/v7/commands/npm-install)     | `npm install`  |
-| [pnpm](https://pnpm.io/installation)                          | `pnpm install` |
-| [bun](https://bun.sh/#getting-started)                        | `bun install`  |
+## 網站功能
 
-After completing the installation, your environment is ready for Vuetify development.
+### 參加者
+- 瀏覽所有揪團
+- 關鍵字搜尋、地區搜尋、標籤搜尋、日期搜尋
+- 觀看詳細揪團資訊，參加別人主辦的揪團
+- 揪團留言板
+- 參加及收藏揪團
+- 管理已參加及收藏的揪團
+- 管理個人資訊
 
-## ✨ Features
+### 主辦者
+- 根據網站提供步驟主辦揪團
+- 主辦者管理自己主辦的揪團、編輯揪團資訊
 
-- 🖼️ **Optimized Front-End Stack**: Leverage the latest Vue 3 and Vuetify 3 for a modern, reactive UI development experience. [Vue 3](https://v3.vuejs.org/) | [Vuetify 3](https://vuetifyjs.com/en/)
-- 🗃️ **State Management**: Integrated with [Pinia](https://pinia.vuejs.org/), the intuitive, modular state management solution for Vue.
-- 🚦 **Routing and Layouts**: Utilizes Vue Router for SPA navigation and vite-plugin-vue-layouts for organizing Vue file layouts. [Vue Router](https://router.vuejs.org/) | [vite-plugin-vue-layouts](https://github.com/JohnCampionJr/vite-plugin-vue-layouts)
-- ⚡ **Next-Gen Tooling**: Powered by Vite, experience fast cold starts and instant HMR (Hot Module Replacement). [Vite](https://vitejs.dev/)
-- 🧩 **Automated Component Importing**: Streamline your workflow with unplugin-vue-components, automatically importing components as you use them. [unplugin-vue-components](https://github.com/antfu/unplugin-vue-components)
+### 管理者
+- 管理揪團，新增、編輯、刪除揪團
+- 管理會員，新增、編輯、刪除會員
+- 管理聯絡表單，查看、編輯聯絡表單
 
-These features are curated to provide a seamless development experience from setup to deployment, ensuring that your Vuetify application is both powerful and maintainable.
+## 專案技術
+- Vite 環境建置
+- Vue 3 Options API
+- Vue Router 建構路由
+- Pinia 全局狀態管理
+- 元件拆分與使用
+- Vue axios 串接 RESTful API資料
+- ESLint + Prettier 統一程式碼結構
+- Vuetify UI 框架
+- VeeValidate 搭配 Yup 進行表單驗證，並輔以 validator 進行資料格式驗證
+- vue-dompurify-html 避免XSS攻擊
+- 後端採用 Node.js，結合 MongoDB 進行資料儲存與管理
 
-## 💡 Usage
-
-This section covers how to start the development server and build your project for production.
-
-### Starting the Development Server
-
-To start the development server with hot-reload, run the following command. The server will be accessible at [http://localhost:3000](http://localhost:3000):
-
-```bash
-yarn dev
-```
-
-(Repeat for npm, pnpm, and bun with respective commands.)
-
-> Add NODE_OPTIONS='--no-warnings' to suppress the JSON import warnings that happen as part of the Vuetify import mapping. If you are on Node [v21.3.0](https://nodejs.org/en/blog/release/v21.3.0) or higher, you can change this to NODE_OPTIONS='--disable-warning=5401'. If you don't mind the warning, you can remove this from your package.json dev script.
-
-### Building for Production
-
-To build your project for production, use:
-
-```bash
-yarn build
-```
-
-(Repeat for npm, pnpm, and bun with respective commands.)
-
-Once the build process is completed, your application will be ready for deployment in a production environment.
-
-## 💪 Support Vuetify Development
-
-This project is built with [Vuetify](https://vuetifyjs.com/en/), a UI Library with a comprehensive collection of Vue components. Vuetify is an MIT licensed Open Source project that has been made possible due to the generous contributions by our [sponsors and backers](https://vuetifyjs.com/introduction/sponsors-and-backers/). If you are interested in supporting this project, please consider:
-
-- [Requesting Enterprise Support](https://support.vuetifyjs.com/)
-- [Sponsoring John on Github](https://github.com/users/johnleider/sponsorship)
-- [Sponsoring Kael on Github](https://github.com/users/kaelwd/sponsorship)
-- [Supporting the team on Open Collective](https://opencollective.com/vuetify)
-- [Becoming a sponsor on Patreon](https://www.patreon.com/vuetify)
-- [Becoming a subscriber on Tidelift](https://tidelift.com/subscription/npm/vuetify)
-- [Making a one-time donation with Paypal](https://paypal.me/vuetify)
-
-## 📑 License
-[MIT](http://opensource.org/licenses/MIT)
-
-Copyright (c) 2016-present Vuetify, LLC
+## 使用的套件
+| 套件名稱 | 主要功能 |
+|-------|-------|
+| Vuetify | Vue 的 UI 框架，提供豐富的元件和佈局系統 |
+| VeeValidate, Yup, validator | 表單驗證，確保用戶輸入的資料正確性 |
+| vue-dompurify-html | 防止 XSS 攻擊，過濾 HTML 資料 |
+| Pinia, pinia-plugin-persistedstate | 狀態管理，與 localStorage 整合保持應用程式狀態 |
+| Axios | HTTP 請求套件，與後端進行資料傳遞
+| Prettier, ESLint + Prettier | 自動格式化程式碼，保持一致的程式碼風格 |
+| Swiper | 輪播圖功能 |
+| Vue Quill, quill-blot-formatter | 富文本編輯器，支持格式化文字和調整圖片大小 |
+| FullCalendar | 行事曆功能，顯示和管理事件 |
+| Vue I18n | 實現多語言國際化，讓應用程式支持不同語言版本 |
