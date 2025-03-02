@@ -143,155 +143,172 @@
                 </v-tabs-window-item>
                 <v-tabs-window-item :value="1">
                   <template v-for="(comment, keys) of group.comments">
-                    <div :class="['d-flex', 'mb-5', 'mt-3', 'w-100']">
-                      <div class="d-flex flex-column mr-3 ml-5 align-center">
-                        <v-avatar>
-                          <v-img :src="comment.user_id.image"></v-img>
-                        </v-avatar>
-                        <span class="mt-1 ml-1">{{ comment.user_id.name }}</span>
-                      </div>
-                      <v-card class="pl-7 mr-3" style="max-width: 600px; width: 100%">
-                        <v-card-text class="pb-0 pl-2" style="font-size: 16px"
-                          >{{ comment.content }}
-                        </v-card-text>
-                        <v-card-actions>
-                          <span> B{{ keys }} </span>
-                          <div v-if="group.organizer_id._id === user.id">
-                            <v-btn v-if="!comment.reply" @click="commentReplyAction(keys)"
-                              >回覆</v-btn
-                            >
-                            <span v-if="comment.reply" class="text-grey-lighten-1">已回覆</span>
-                            <v-btn
-                              @click="openDialog('commentsDelete', group, keys)"
-                              :isLoading="commentLoading"
-                              >刪除</v-btn
-                            >
-                          </div>
-                        </v-card-actions>
-                      </v-card>
-                    </div>
-                    <!-- 回覆留言 -->
-                    <div
-                      v-if="commentReply.open && commentReply.id === keys && !commentReplyEditState"
-                    >
-                      <v-textarea
-                        v-model="commentReplyMessage"
-                        :placeholder="commentPlaceholder"
-                        variant="outlined"
-                        max-width="600"
-                        no-resize
-                        class="ml-5"
-                        :disabled="commentState"
-                        @keydown.esc="commentReplyCancel"
-                      ></v-textarea>
-                      <div class="d-flex justify-end mb-5" style="max-width: 600px">
-                        <v-btn
-                          height="50"
-                          @click="commentReplyCancel"
-                          :disabled="commentState"
-                          class="mr-3"
-                          >取消</v-btn
-                        >
-                        <v-btn
-                          height="50"
-                          @click="commentReplySubmit(group)"
-                          :disabled="commentState"
-                          :loading="commentLoading"
-                          >確定送出</v-btn
-                        >
-                      </div>
-                    </div>
-                    <!-- 已回覆顯示 -->
-                    <div :class="['d-flex', 'mb-5', 'mt-3', 'w-100', 'ml-16']" v-if="comment.reply">
-                      <div class="d-flex flex-grow-1 mr-3">
-                        <v-icon
-                          icon="mdi-reply"
-                          class="mr-5 ml-2 mt-10"
-                          style="transform: rotate(180deg)"
-                        ></v-icon>
-                        <!-- 編輯留言 -->
-                        <div
-                          v-if="
-                            commentReply.open && commentReply.id === keys && commentReplyEditState
-                          "
-                          style="max-width: 600px; width: 100%"
-                        >
-                          <v-textarea
-                            v-model="commentReplyMessage"
-                            :placeholder="commentPlaceholder"
-                            variant="solo"
-                            max-width="600"
-                            no-resize
-                            :disabled="commentState"
-                            @keydown.esc="commentReplyCancel"
-                            rows="3"
-                            class="custom-textarea"
-                          ></v-textarea>
-                          <div
-                            class="d-flex mb-5 w-100 flex-wrap group__page-edit"
-                            style="max-width: 600px"
-                          >
-                            <v-btn
-                              height="40"
-                              @click="commentReplyCancel"
-                              :disabled="commentState"
-                              class="mr-3 mb-1"
-                              >取消</v-btn
-                            >
-                            <v-btn
-                              height="40"
-                              @click="commentReplySubmit(group)"
-                              :disabled="commentState"
-                              :loading="commentLoading"
-                              class="mr-3 mb-1"
-                              style="max-width: 600px"
-                              >確定送出</v-btn
-                            >
-                            <v-btn
-                              height="40"
-                              @click="openDialog('commentsReplyDelete', group)"
-                              :disabled="commentState"
-                              :loading="commentLoading"
-                              class="mb-1"
-                              style="max-width: 600px"
-                              >刪除</v-btn
-                            >
-                          </div>
-                        </div>
-                        <v-card
-                          class="pl-7"
-                          style="max-width: 600px; width: 100%"
-                          v-if="
-                            !commentReplyEditState ||
-                            (commentReply.open && commentReply.id !== keys && commentReplyEditState)
-                          "
-                        >
-                          <v-card-text class="d-flex flex-column px-0">
-                            <span class="mt-1 mb-3" style="font-size: 14px"
-                              >主辦者 回覆B{{ keys }}
-                              <v-btn
-                                variant="text"
-                                @click="
-                                  group.organizer_id._id === user.id
-                                    ? commentReplyEdit(keys, comment)
-                                    : ''
-                                "
-                                v-if="group.organizer_id._id === user.id"
-                                >編輯</v-btn
-                              ></span
-                            >
-                            <span style="font-size: 16px">{{ comment.reply.message }}</span>
-                          </v-card-text>
-                        </v-card>
-                        <div class="d-flex flex-column ml-5 align-center mr-15">
+                    <template v-if="keys < commentvalidLimt * 5">
+                      <div :class="['d-flex', 'mb-5', 'mt-3', 'w-100']">
+                        <div class="d-flex flex-column mr-3 ml-5 align-center">
                           <v-avatar>
-                            <v-img :src="comment.reply.author.image"></v-img>
+                            <v-img :src="comment.user_id.image"></v-img>
                           </v-avatar>
-                          <span class="mt-1 ml-1">{{ comment.reply.author.name }}</span>
+                          <span class="mt-1 ml-1">{{ comment.user_id.name }}</span>
+                        </div>
+                        <v-card class="pl-7 mr-3" style="max-width: 600px; width: 100%">
+                          <v-card-text class="pb-0 pl-2" style="font-size: 16px"
+                            >{{ comment.content }}
+                          </v-card-text>
+                          <v-card-actions>
+                            <span> B{{ keys }} </span>
+                            <div v-if="group.organizer_id._id === user.id">
+                              <v-btn v-if="!comment.reply" @click="commentReplyAction(keys)"
+                                >回覆</v-btn
+                              >
+                              <span v-if="comment.reply" class="text-grey-lighten-1">已回覆</span>
+                              <v-btn
+                                @click="openDialog('commentsDelete', group, keys)"
+                                :isLoading="commentLoading"
+                                >刪除</v-btn
+                              >
+                            </div>
+                          </v-card-actions>
+                        </v-card>
+                      </div>
+                      <!-- 回覆留言 -->
+                      <div
+                        v-if="
+                          commentReply.open && commentReply.id === keys && !commentReplyEditState
+                        "
+                      >
+                        <v-textarea
+                          v-model="commentReplyMessage"
+                          :placeholder="commentPlaceholder"
+                          variant="outlined"
+                          max-width="600"
+                          no-resize
+                          class="ml-5"
+                          :disabled="commentState"
+                          @keydown.esc="commentReplyCancel"
+                        ></v-textarea>
+                        <div class="d-flex justify-end mb-5" style="max-width: 600px">
+                          <v-btn
+                            height="50"
+                            @click="commentReplyCancel"
+                            :disabled="commentState"
+                            class="mr-3"
+                            >取消</v-btn
+                          >
+                          <v-btn
+                            height="50"
+                            @click="commentReplySubmit(group)"
+                            :disabled="commentState"
+                            :loading="commentLoading"
+                            >確定送出</v-btn
+                          >
                         </div>
                       </div>
-                    </div>
+                      <!-- 已回覆顯示 -->
+                      <div
+                        :class="['d-flex', 'mb-5', 'mt-3', 'w-100', 'ml-16']"
+                        v-if="comment.reply"
+                      >
+                        <div class="d-flex flex-grow-1 mr-3">
+                          <v-icon
+                            icon="mdi-reply"
+                            class="mr-5 ml-2 mt-10"
+                            style="transform: rotate(180deg)"
+                          ></v-icon>
+                          <!-- 編輯留言 -->
+                          <div
+                            v-if="
+                              commentReply.open && commentReply.id === keys && commentReplyEditState
+                            "
+                            style="max-width: 600px; width: 100%"
+                          >
+                            <v-textarea
+                              v-model="commentReplyMessage"
+                              :placeholder="commentPlaceholder"
+                              variant="solo"
+                              max-width="600"
+                              no-resize
+                              :disabled="commentState"
+                              @keydown.esc="commentReplyCancel"
+                              rows="3"
+                              class="custom-textarea"
+                            ></v-textarea>
+                            <div
+                              class="d-flex mb-5 w-100 flex-wrap group__page-edit"
+                              style="max-width: 600px"
+                            >
+                              <v-btn
+                                height="40"
+                                @click="commentReplyCancel"
+                                :disabled="commentState"
+                                class="mr-3 mb-1"
+                                >取消</v-btn
+                              >
+                              <v-btn
+                                height="40"
+                                @click="commentReplySubmit(group)"
+                                :disabled="commentState"
+                                :loading="commentLoading"
+                                class="mr-3 mb-1"
+                                style="max-width: 600px"
+                                >確定送出</v-btn
+                              >
+                              <v-btn
+                                height="40"
+                                @click="openDialog('commentsReplyDelete', group)"
+                                :disabled="commentState"
+                                :loading="commentLoading"
+                                class="mb-1"
+                                style="max-width: 600px"
+                                >刪除</v-btn
+                              >
+                            </div>
+                          </div>
+                          <v-card
+                            class="pl-7"
+                            style="max-width: 600px; width: 100%"
+                            v-if="
+                              !commentReplyEditState ||
+                              (commentReply.open &&
+                                commentReply.id !== keys &&
+                                commentReplyEditState)
+                            "
+                          >
+                            <v-card-text class="d-flex flex-column px-0">
+                              <span class="mt-1 mb-3" style="font-size: 14px"
+                                >主辦者 回覆B{{ keys }}
+                                <v-btn
+                                  variant="text"
+                                  @click="
+                                    group.organizer_id._id === user.id
+                                      ? commentReplyEdit(keys, comment)
+                                      : ''
+                                  "
+                                  v-if="group.organizer_id._id === user.id"
+                                  >編輯</v-btn
+                                ></span
+                              >
+                              <span style="font-size: 16px">{{ comment.reply.message }}</span>
+                            </v-card-text>
+                          </v-card>
+                          <div class="d-flex flex-column ml-5 align-center mr-15">
+                            <v-avatar>
+                              <v-img :src="comment.reply.author.image"></v-img>
+                            </v-avatar>
+                            <span class="mt-1 ml-1">{{ comment.reply.author.name }}</span>
+                          </div>
+                        </div>
+                      </div>
+                    </template>
                   </template>
+                  <div class="d-flex justify-center" style="max-width: 700px; width: 100%">
+                    <v-btn
+                      v-if="commentvalidLimt * 5 < group.comments.length"
+                      @click="commentvalidLimt++"
+                      >查看更多</v-btn
+                    >
+                  </div>
+
                   <!-- 留言 -->
                   <p class="font-weight-bold ml-5 mb-3">發佈留言</p>
                   <v-textarea
@@ -356,7 +373,69 @@
       </v-col>
     </v-row>
   </v-container>
-
+  <v-btn
+    v-if="!chatState && isMember"
+    icon="mdi-chat-processing-outline"
+    color="black"
+    @click="chatClickAction"
+    style="position: fixed; right: 2%; bottom: 10%; z-index: 999; box-shadow: 0 0 30px white"
+  ></v-btn>
+  <!-- 聊天室 -->
+  <div
+    v-if="chatState && isMember"
+    class="group__page-chat"
+    style="position: fixed; right: 1%; bottom: 0; z-index: 999"
+  >
+    <v-card width="300" height="410">
+      <v-card-title class="d-flex align-center mb-0 pb-0 bg-black">
+        <span class="group__page-chat-title">{{ group.name }}</span>
+        <v-spacer></v-spacer>
+        <v-btn
+          icon="mdi-chevron-down"
+          variant="text"
+          @click="disconnectSocket"
+          style="font-size: 18px"
+          size="30"
+          rounded
+          class="mb-1"
+        ></v-btn>
+      </v-card-title>
+      <div
+        ref="chatContainer"
+        style="height: 300px; overflow-y: auto; padding: 12px"
+        @scroll="scrollChat"
+      >
+        <template v-for="chat of chatMessage">
+          <div class="d-flex my-3">
+            <v-avatar class="mr-5">
+              <v-img :src="chat.image" />
+            </v-avatar>
+            <div class="w-100">
+              <div class="d-flex justify-space-between w-100" style="font-size: 14px">
+                <span>{{ chat.name }}</span>
+                <span>
+                  {{ new Date(chat.create_at).toLocaleTimeString() }}
+                </span>
+              </div>
+              <p class="mb-3 text-grey">
+                {{ chat.text }}
+              </p>
+            </div>
+          </div>
+          <v-divider></v-divider>
+        </template>
+      </div>
+      <v-card-actions>
+        <v-text-field
+          variant="outlined"
+          max-width="300"
+          v-model="message"
+          placeholder="請輸入訊息"
+        ></v-text-field>
+        <v-btn @click="onSubmit">送出</v-btn>
+      </v-card-actions>
+    </v-card>
+  </div>
   <v-dialog v-model="dialogState.open" width="350" opacity="0">
     <v-card v-if="dialogState.type === 'contact'">
       <v-card-title class="d-flex align-center mb-0 pb-0">
@@ -410,7 +489,7 @@
 </style>
 
 <script setup>
-import { ref, computed, reactive } from 'vue'
+import { ref, computed, reactive, onUnmounted, nextTick } from 'vue'
 import { useAxios } from '@/composables/axios'
 import { useRoute, useRouter } from 'vue-router'
 import GroupFooter from '@/components/GroupFooter.vue'
@@ -418,6 +497,7 @@ import { useI18n } from 'vue-i18n'
 import { useUserStore } from '@/stores/user'
 import { useDate } from 'vuetify'
 import { useSnackbar } from 'vuetify-use-dialog'
+import { io } from 'socket.io-client'
 
 const { api, apiAuth } = useAxios()
 const route = useRoute()
@@ -464,6 +544,21 @@ const commentReply = reactive({
 const commentReplyMessage = ref('')
 const commentReplyEditState = ref(false)
 const commentLoading = ref(false)
+const commentvalidLimt = ref(1)
+
+// 聊天室 Socket 相關
+const newSocket = io(import.meta.env.VITE_API, {
+  autoConnect: false,
+})
+const chatMessage = reactive([])
+const isConnected = ref(false)
+const message = ref('')
+const chatState = ref(false)
+
+const chatContainer = ref(null)
+const page = ref(1)
+const loading = ref(false)
+const hasMore = ref(true)
 
 const commentReplyAction = (key) => {
   commentReply.id = key
@@ -524,7 +619,7 @@ const commentReplyDelete = async (values) => {
     commentReply.id = ''
     commentReplyMessage.value = ''
     commentReplyEditState.value = false
-  } catch (erorr) {
+  } catch (error) {
     console.log(error)
     if (error.message === 'LOGIN') {
       createSnackbar({
@@ -829,6 +924,7 @@ const groupMembersAction = async (member) => {
     await apiAuth.patch('user/organizerGroup/' + group.value._id + '/kick', {
       user_id: member.user_id._id,
     })
+
     createSnackbar({
       text: '踢除成功',
       snackbarProps: {
@@ -854,6 +950,173 @@ const groupMembersAction = async (member) => {
       })
     }
   }
+}
+
+// 聊天室連線
+const connectSocket = () => {
+  if (isConnected.value) return
+
+  console.log('嘗試建立連線...') // 添加除錯訊息
+  newSocket.connect()
+
+  newSocket.on('connect', () => {
+    console.log('連線成功，Socket ID:', newSocket.id) // 添加更多連線資訊
+    isConnected.value = true
+    getChatMessage()
+  })
+
+  newSocket.on('receive_message', (data) => {
+    console.log('收到新訊息:', data)
+    chatMessage.push(data)
+    scrollToBottom()
+  })
+
+  newSocket.emit('join_room', group.value._id)
+}
+
+// 聊天室離線
+const disconnectSocket = () => {
+  if (!isConnected.value) return
+
+  isConnected.value = false
+  newSocket.off('receive_message')
+  newSocket.emit('leave_room', group.value._id)
+  newSocket.disconnect()
+  console.log('已離線')
+  chatMessage.length = 0
+  chatState.value = false
+  loading.value = false
+  hasMore.value = true
+  page.value = 1
+}
+
+// 聊天室開啟
+const chatClickAction = async () => {
+  const isStillMember = await checkMemberStatus()
+
+  if (!isStillMember) {
+    router.push('/group')
+    return
+  }
+  chatState.value = true
+  connectSocket()
+}
+
+// 聊天室送出訊息
+const onSubmit = async () => {
+  try {
+    const isStillMember = await checkMemberStatus()
+
+    if (!isStillMember) {
+      router.push('/group')
+      return
+    }
+    if (!message.value.trim()) return
+
+    console.log(message.value)
+    await apiAuth.post(`/chat/${group.value._id}/message`, {
+      text: message.value,
+    })
+    // 透過 socket.io 送出訊息
+    newSocket.emit('send_message', {
+      roomId: group.value._id,
+      text: message.value,
+      id: user.id,
+      image: user.image,
+      name: user.nickname,
+    })
+    message.value = ''
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+onUnmounted(() => {
+  if (isConnected.value) {
+    disconnectSocket()
+  }
+})
+
+// 滾動到底部
+const scrollToBottom = async () => {
+  await nextTick()
+  if (!chatContainer.value) return
+
+  console.log('滾動到底部')
+  chatContainer.value.scrollTop = chatContainer.value.scrollHeight
+}
+
+// 取得聊天訊息
+const getChatMessage = async () => {
+  try {
+    if (loading.value || !hasMore.value) return
+
+    loading.value = true
+    const { data } = await apiAuth.get(`/chat/${group.value._id}?page=${page.value}&limit=10`)
+
+    if (data.result.length < 10) {
+      hasMore.value = false
+    }
+
+    // 更新前的總高度
+    const previousHeight = chatContainer.value.scrollHeight
+
+    chatMessage.unshift(...data.result)
+    page.value++
+
+    await nextTick()
+
+    // 更新後的總高度
+    const newHeight = chatContainer.value.scrollHeight
+
+    // 高度差
+    const heightDiff = newHeight - previousHeight
+
+    // 調整滾動軸位置
+    chatContainer.value.scrollTop = heightDiff
+
+    loading.value = false
+
+    if (page.value === 2) {
+      await scrollToBottom()
+    }
+  } catch (error) {
+    console.log(error)
+    loading.value = false
+  }
+}
+
+// 滾動事件
+const scrollChat = async () => {
+  if (!chatContainer.value) return
+
+  // 獲取 DOM 元素的滾動位置
+  const { scrollTop, scrollHeight, clientHeight } = chatContainer.value
+  // console.log('捲動位置:', scrollTop)
+  // console.log('內容總高度:', scrollHeight)
+  // console.log('可視區域高度:', clientHeight)
+
+  // 當滾動到頂部時載入更多訊息
+  if (scrollTop === 0 && !loading.value && hasMore.value) {
+    await getChatMessage()
+  }
+}
+
+const checkMemberStatus = async () => {
+  await getGroup()
+
+  if (!isMember.value) {
+    disconnectSocket()
+    chatState.value = false
+    createSnackbar({
+      text: '您已不是揪團成員',
+      snackbarProps: {
+        color: 'red',
+      },
+    })
+    return false
+  }
+  return true
 }
 </script>
 
