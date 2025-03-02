@@ -432,7 +432,7 @@
           v-model="message"
           placeholder="請輸入訊息"
         ></v-text-field>
-        <v-btn @click="onSubmit">送出</v-btn>
+        <v-btn @click="onSubmit" :loading="chatMessageLoading">送出</v-btn>
       </v-card-actions>
     </v-card>
   </div>
@@ -559,6 +559,7 @@ const chatContainer = ref(null)
 const page = ref(1)
 const loading = ref(false)
 const hasMore = ref(true)
+const chatMessageLoading = ref(false)
 
 const commentReplyAction = (key) => {
   commentReply.id = key
@@ -969,6 +970,7 @@ const connectSocket = () => {
     console.log('收到新訊息:', data)
     chatMessage.push(data)
     scrollToBottom()
+    chatMessageLoading.value = false
   })
 
   newSocket.emit('join_room', group.value._id)
@@ -1014,6 +1016,7 @@ const onSubmit = async () => {
     if (!message.value.trim()) return
 
     console.log(message.value)
+    chatMessageLoading.value = true
     await apiAuth.post(`/chat/${group.value._id}/message`, {
       text: message.value,
     })
