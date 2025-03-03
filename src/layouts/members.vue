@@ -2,8 +2,14 @@
   <v-app-bar>
     <!-- 桌面板型 MD 960px -->
     <template v-if="mdAndUp">
-      <v-container class="d-flex justify-space-between align-center" fluid>
-        <v-btn to="/" :active="false" class="ml-2">Game Together</v-btn>
+      <v-container
+        class="d-flex justify-space-between align-center"
+        fluid
+        style="max-width: 1440px"
+      >
+        <v-btn to="/" :active="false" class="ml-2" height="60" :ripple="false">
+          <v-avatar :image="logo" rounded="0" size="65"></v-avatar>
+        </v-btn>
         <div class="d-flex mr-6">
           <template v-for="nav of navs" :key="nav.to">
             <v-btn v-if="nav.show" :to="nav.to" :prepend-icon="nav.icon">{{ nav.text }} </v-btn>
@@ -18,7 +24,9 @@
     <!-- 手機板型 -->
     <template v-else-if="!mdAndUp">
       <v-container class="d-flex justify-space-between align-center" fluid>
-        <v-btn to="/" :active="false" class="ml-2">Game Together</v-btn>
+        <v-btn to="/" :active="false" class="ml-2" height="60" :ripple="false">
+          <v-avatar :image="logo" rounded="0" size="65"></v-avatar>
+        </v-btn>
         <v-app-bar-nav-icon @click="dialog = !dialog" class="mr-6"></v-app-bar-nav-icon>
       </v-container>
     </template>
@@ -186,6 +194,7 @@ const userTags = computed(() => {
 
 const dialog = ref(false)
 const rail = ref(false)
+const logo = ref(new URL('@/assets/logo.png', import.meta.url).href)
 
 // 導覽列項目
 const navs = computed(() => {
