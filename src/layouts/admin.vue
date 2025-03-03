@@ -125,13 +125,13 @@ const navs = computed(() => {
       show: user.isLoggedIn || !user.isLoggedIn,
     },
     {
-      to: '/member',
+      to: '/member/organizer',
       text: t('nav.membersSection'),
       icon: 'mdi-account-group',
       show: user.isLoggedIn,
     },
     {
-      to: '/admin',
+      to: '/admin/groups',
       text: t('nav.adminSection'),
       icon: 'mdi-cog',
       show: user.isLoggedIn && user.isAdmin,
