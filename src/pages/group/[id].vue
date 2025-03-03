@@ -771,6 +771,7 @@ const cancelGroup = async () => {
   try {
     // 取消主辦揪團
     await apiAuth.delete('/user/organizerGroup/' + group.value._id)
+    disconnectSocket()
     router.push('/group')
     createSnackbar({
       text: '取消揪團成功',
