@@ -2,7 +2,7 @@
   <v-app>
     <!-- 讀取畫面 -->
 
-    <div class="loading-overlay" v-if="isLoading">
+    <div class="loading-overlay" v-if="isFirstLoad">
       <v-overlay
         :model-value="true"
         class="d-flex align-center justify-center bg-black custom-overlay"
@@ -28,7 +28,7 @@
       </v-overlay>
     </div>
 
-    <router-view v-if="!isLoading" />
+    <router-view v-if="!isFirstLoad" />
   </v-app>
 </template>
 
@@ -54,22 +54,23 @@
 import { ref, onMounted } from 'vue'
 import gsap from 'gsap'
 
-const isLoading = ref(true)
+const isFirstLoad = ref(true)
 const loadingImage = ref(new URL('@/assets/loading.svg', import.meta.url).href)
-console.log(loadingImage.value)
 
 onMounted(() => {
-  gsap.from('.loading-char', {
-    y: 20,
-    opacity: 0,
-    stagger: 0.1,
-    duration: 0.5,
-    ease: 'back.out(1.7)',
-    repeat: -1,
-  })
+  if (isFirstLoad.value) {
+    gsap.from('.loading-char', {
+      y: 20,
+      opacity: 0,
+      stagger: 0.1,
+      duration: 0.5,
+      ease: 'back.out(1.7)',
+      repeat: -1,
+    })
 
-  setTimeout(() => {
-    isLoading.value = false // 模擬 1 秒後載入完成
-  }, 1500)
+    setTimeout(() => {
+      isFirstLoad.value = false // 模擬 1 秒後載入完成
+    }, 1500)
+  }
 })
 </script>
