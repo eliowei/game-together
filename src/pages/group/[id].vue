@@ -168,11 +168,7 @@
                                 >回覆</v-btn
                               >
                               <span v-if="comment.reply" class="text-grey-lighten-1">已回覆</span>
-                              <v-btn
-                                @click="openDialog('commentsDelete', group, keys)"
-                                :isLoading="commentLoading"
-                                >刪除</v-btn
-                              >
+                              <v-btn @click="openDialog('commentsDelete', group, keys)">刪除</v-btn>
                             </div>
                           </v-card-actions>
                         </v-card>

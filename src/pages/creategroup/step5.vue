@@ -16,7 +16,7 @@
       <v-divider class="border-opacity-100 my-15"></v-divider>
 
       <div class="d-flex justify-center mb-16">
-        <v-btn :to="'/member/'">返回會員專區</v-btn>
+        <v-btn :to="'/member/organizer'">返回會員專區</v-btn>
       </div>
     </v-col>
   </v-container>

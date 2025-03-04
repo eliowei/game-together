@@ -393,6 +393,16 @@
         color: orange;
       }
 
+      &-click {
+        .v-field__input,
+        .v-text-field__prefix,
+        .v-field__append-inner {
+          i {
+            transition: all 0.5s;
+          }
+        }
+      }
+
       &-click:hover {
         .v-field__input,
         .v-text-field__prefix,
@@ -400,6 +410,7 @@
           cursor: pointer;
           i {
             color: orange;
+            transform: rotate(90deg);
           }
         }
       }

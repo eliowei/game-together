@@ -103,7 +103,7 @@
         <template #activator="{ props }">
           <v-list-item
             v-bind="props"
-            prepend-icon="mdi-account-circle"
+            prepend-icon="mdi-account-group"
             title="我的揪團"
           ></v-list-item>
         </template>
@@ -156,9 +156,13 @@
       <v-divider></v-divider>
       <v-list-item style="font-size: 14px"
         >{{ group.group_id.name }} {{ group.group_id.type }}
-        <v-chip class="ml-1" prepend-icon="mdi-clock-time-four-outline">{{
-          new Date(group.group_id.time).toLocaleDateString()
-        }}</v-chip>
+        <v-chip
+          class="ml-1 mt-2"
+          prepend-icon="mdi-clock-time-four-outline"
+          variant="outlined"
+          color="orange"
+          >{{ new Date(group.group_id.time).toLocaleDateString() }}</v-chip
+        >
       </v-list-item>
     </template>
     <v-divider v-if="!rail"></v-divider>
