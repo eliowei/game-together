@@ -56,6 +56,8 @@ const loadingImage = ref(new URL('@/assets/loading.svg', import.meta.url).href)
 
 onMounted(async () => {
   if (isFirstLoad.value) {
+    await router.isReady()
+
     gsap.from('.loading-char', {
       y: 20,
       opacity: 0,
@@ -64,12 +66,9 @@ onMounted(async () => {
       ease: 'back.out(1.7)',
       repeat: -1,
     })
-    // 等待路由載入完成
-    await router.isReady()
 
     // 確保 DOM 更新完成
     await nextTick()
-
     isPageReady.value = true
 
     setTimeout(() => {
