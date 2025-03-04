@@ -37,9 +37,11 @@ router.beforeEach(async (to, from, next) => {
     try {
       const { data } = await apiAuth.get('./user/profile')
       user.login(data.result)
+      next()
     } catch (error) {
       console.log(error)
       user.logout()
+      next()
     }
   }
   // 如果是登入，跳頁到/login或 /register 則導向首頁

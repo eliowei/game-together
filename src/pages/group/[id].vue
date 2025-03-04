@@ -152,13 +152,19 @@
                           <span class="mt-1 ml-1">{{ comment.user_id.name }}</span>
                         </div>
                         <v-card class="pl-7 mr-3" style="max-width: 600px; width: 100%">
-                          <v-card-text class="pb-0 pl-2" style="font-size: 16px"
-                            >{{ comment.content }}
+                          <v-card-text class="pb-0 pl-2" style="font-size: 16px">
+                            <span style="font-size: 14px; color: gray">{{
+                              formatTimeAgo(comment.updatedAt)
+                            }}</span>
+                            <br />
+                            <span>{{ comment.content }}</span>
                           </v-card-text>
                           <v-card-actions>
                             <span> B{{ keys }} </span>
                             <div v-if="group.organizer_id._id === user.id">
-                              <v-btn v-if="!comment.reply" @click="commentReplyAction(keys)"
+                              <v-btn
+                                v-if="!comment.reply && commentPlaceholder !== '揪團已結束'"
+                                @click="commentReplyAction(keys)"
                                 >回覆</v-btn
                               >
                               <span v-if="comment.reply" class="text-grey-lighten-1">已回覆</span>
@@ -275,8 +281,12 @@
                             "
                           >
                             <v-card-text class="d-flex flex-column px-0">
-                              <span class="mt-1 mb-3" style="font-size: 14px"
+                              <span style="font-size: 14px"
                                 >主辦者 回覆B{{ keys }}
+                                <span style="font-size: 14px; color: gray">{{
+                                  formatTimeAgo(comment.reply.date)
+                                }}</span>
+
                                 <v-btn
                                   variant="text"
                                   @click="
@@ -284,7 +294,10 @@
                                       ? commentReplyEdit(keys, comment)
                                       : ''
                                   "
-                                  v-if="group.organizer_id._id === user.id"
+                                  v-if="
+                                    group.organizer_id._id === user.id &&
+                                    commentPlaceholder !== '揪團已結束'
+                                  "
                                   >編輯</v-btn
                                 ></span
                               >
@@ -405,19 +418,23 @@
         style="height: 300px; overflow-y: auto; padding: 12px"
         @scroll="scrollChat"
       >
-        <template v-for="chat of chatMessage">
+        <template v-for="(chat, index) of chatMessage" :key="chat._id">
+          <div v-if="shouldShowDate(chat, index)" class="text-center my-2 text-grey">
+            {{ new Date(chat.create_at).toLocaleDateString() }}
+          </div>
+
           <div class="d-flex my-3">
             <v-avatar class="mr-5">
               <v-img :src="chat.image" />
             </v-avatar>
             <div class="w-100">
-              <div class="d-flex justify-space-between w-100" style="font-size: 14px">
-                <span>{{ chat.name }}</span>
+              <div class="d-flex justify-space-between w-100" style="font-size: 16px">
+                <span>{{ chat.name }} </span>
                 <span>
-                  {{ new Date(chat.create_at).toLocaleTimeString() }}
+                  {{ formatTime(chat.create_at) }}
                 </span>
               </div>
-              <p class="mb-3 text-grey">
+              <p class="mb-3" style="font-size: 14px">
                 {{ chat.text }}
               </p>
             </div>
@@ -562,6 +579,8 @@ const hasMore = ref(true)
 const chatMessageLoading = ref(false)
 
 const commentReplyAction = (key) => {
+  if (commentPlaceholder.value === '揪團已結束') return
+
   commentReply.id = key
   commentReply.open = true
   commentReplyEditState.value = false
@@ -642,6 +661,7 @@ const commentReplyCancel = () => {
 }
 
 const commentReplyEdit = (key, value) => {
+  if (commentPlaceholder.value === '揪團已結束') return
   // console.log(value)
   commentReplyEditState.value = true
   commentReply.id = key
@@ -1065,7 +1085,7 @@ const getChatMessage = async () => {
     // 更新前的總高度
     const previousHeight = chatContainer.value.scrollHeight
 
-    chatMessage.unshift(...data.result)
+    chatMessage.unshift(...data.result.reverse())
     page.value++
 
     await nextTick()
@@ -1121,6 +1141,44 @@ const checkMemberStatus = async () => {
     return false
   }
   return true
+}
+
+const formatTime = (date) => {
+  const time = new Date(date)
+  const hours = String(time.getHours()).padStart(2, '0')
+  const minutes = String(time.getMinutes()).padStart(2, '0')
+  const seconds = String(time.getSeconds()).padStart(2, '0')
+
+  return `${hours}:${minutes}:${seconds}`
+}
+
+const formatTimeAgo = (date) => {
+  const now = new Date()
+  const past = new Date(date)
+  const diff = now - past
+
+  const seconds = Math.floor(diff / 1000)
+  const minutes = Math.floor(seconds / 60)
+  const hours = Math.floor(minutes / 60)
+  const days = Math.floor(hours / 24)
+  const months = Math.floor(days / 30)
+  const years = Math.floor(months / 12)
+
+  if (years > 0) return `${years} 年前`
+  if (months > 0) return `${months} 個月前`
+  if (days > 0) return `${days} 天前`
+  if (hours > 0) return `${hours} 小時前`
+  if (minutes > 0) return `${minutes} 分鐘前`
+  return '剛剛'
+}
+
+const shouldShowDate = (currentMessage, index) => {
+  if (index === 0) return true
+
+  const currentDate = new Date(currentMessage.create_at).toLocaleDateString()
+  const previousDate = new Date(chatMessage[index - 1].create_at).toLocaleDateString()
+
+  return currentDate !== previousDate
 }
 </script>
 
