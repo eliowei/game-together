@@ -68,7 +68,7 @@ const schema = yup.object({
   contact_method: yup
     .string()
     .required()
-    .oneOf(['Line', 'Discord', 'Facebook'], t('group.contactMethodRequired')),
+    .oneOf(['Line', 'Discord', 'Facebook', '其他'], t('group.contactMethodRequired')),
   contact_info: yup.string().required(t('group.contactInfoRequired')),
   city: yup.string().when('type', {
     is: (val) => val === t('group.offline'),

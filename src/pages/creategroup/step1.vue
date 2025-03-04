@@ -67,7 +67,7 @@
             <span class="mr-12">{{ $t('group.contactInfo') }}</span>
             <v-select
               v-model="contact_method.value.value"
-              :items="['Line', 'Discord', 'Facebook']"
+              :items="['Line', 'Discord', 'Facebook', '其他']"
               :error-messages="contact_method.errorMessage.value"
               variant="outlined"
               class="creategroup__step1-form"
@@ -198,7 +198,7 @@ const schema = yup.object({
   contact_method: yup
     .string()
     .required()
-    .oneOf(['Line', 'Discord', 'Facebook'], t('group.contactMethodRequired')),
+    .oneOf(['Line', 'Discord', 'Facebook', '其他'], t('group.contactMethodRequired')),
   contact_info: yup.string().required(t('group.contactInfoRequired')),
   city: yup.string().when('type', {
     is: (val) => val === t('group.offline'),
