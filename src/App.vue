@@ -54,7 +54,7 @@ const isFirstLoad = ref(true)
 const isPageReady = ref(false)
 const loadingImage = ref(new URL('@/assets/loading.svg', import.meta.url).href)
 
-onMounted(async () => {
+onMounted(() => {
   if (isFirstLoad.value) {
     gsap.from('.loading-char', {
       y: 20,
@@ -65,20 +65,14 @@ onMounted(async () => {
       repeat: -1,
     })
 
-    try {
-      await router.isReady()
-
-      // 確保 DOM 更新完成
-      await nextTick()
+    // 監聽路由是否完成載入
+    router.isReady().then(() => {
       isPageReady.value = true
 
       setTimeout(() => {
         isFirstLoad.value = false
-      }, 1000)
-    } catch (error) {
-      console.error('路由載入錯誤:', error)
-      isFirstLoad.value = false
-    }
+      }, 1500)
+    })
   }
 })
 </script>
