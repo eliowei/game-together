@@ -259,7 +259,6 @@
                                 height="40"
                                 @click="openDialog('commentsReplyDelete', group)"
                                 :disabled="commentState"
-                                :loading="commentLoading"
                                 class="mb-1"
                                 style="max-width: 600px"
                                 >刪除</v-btn
