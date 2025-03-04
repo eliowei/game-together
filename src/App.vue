@@ -2,7 +2,7 @@
   <v-app>
     <!-- 讀取畫面 -->
 
-    <div class="loading-overlay" v-if="isFirstLoad">
+    <div class="loading-overlay" v-if="isFirstLoad || !isPageReady">
       <v-overlay
         :model-value="true"
         class="d-flex align-center justify-center bg-black custom-overlay"
@@ -10,12 +10,6 @@
         scrim="black"
       >
         <v-card color="transparent" class="d-flex flex-column align-center" elevation="0">
-          <!-- <v-progress-circular
-            :size="70"
-            :width="7"
-            color="orange"
-            indeterminate
-          ></v-progress-circular> -->
           <div class="text-h6 mt-4 text-orange loading-text d-flex flex-column align-center">
             <v-img :src="loadingImage" aspect-ratio="1" width="150"></v-img>
             <div class="d-flex">
@@ -28,7 +22,7 @@
       </v-overlay>
     </div>
 
-    <router-view v-if="!isFirstLoad" />
+    <router-view v-if="!isFirstLoad && isPageReady" />
   </v-app>
 </template>
 
@@ -53,11 +47,14 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import gsap from 'gsap'
+import { useRouter } from 'vue-router'
 
+const router = useRouter()
 const isFirstLoad = ref(true)
+const isPageReady = ref(false)
 const loadingImage = ref(new URL('@/assets/loading.svg', import.meta.url).href)
 
-onMounted(() => {
+onMounted(async () => {
   if (isFirstLoad.value) {
     gsap.from('.loading-char', {
       y: 20,
@@ -67,10 +64,17 @@ onMounted(() => {
       ease: 'back.out(1.7)',
       repeat: -1,
     })
+    // 等待路由載入完成
+    await router.isReady()
+
+    // 確保 DOM 更新完成
+    await nextTick()
+
+    isPageReady.value = true
 
     setTimeout(() => {
-      isFirstLoad.value = false // 模擬 1 秒後載入完成
-    }, 1500)
+      isFirstLoad.value = false
+    }, 1000)
   }
 })
 </script>
