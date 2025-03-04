@@ -198,11 +198,11 @@
             <div class="d-flex w-100 mt-8 mb-10 index__groups-latest-content-button">
               <v-btn
                 append-icon="mdi-arrow-right"
-                :to="'/group/'"
                 max-width="200"
                 min-width="125"
                 max-height="50"
                 min-height="40"
+                @click="handleClick(1)"
                 >查看最新的揪團</v-btn
               >
             </div>
@@ -290,7 +290,9 @@
             xl="5"
           >
             <div class="d-flex w-100 mt-8 mb-15 index__groups-upcoming-content-button">
-              <v-btn append-icon="mdi-arrow-right" :to="'/group/'">查看即將到來的揪團</v-btn>
+              <v-btn append-icon="mdi-arrow-right" @click="handleClick(2)"
+                >查看即將到來的揪團</v-btn
+              >
             </div>
           </v-col>
         </div>
@@ -752,7 +754,7 @@ const handleDateSelect = (date) => {
     datePickerOpen.value = false
 
     const displayDate = new Date(date).toLocaleDateString()
-    console.log(displayDate)
+    // console.log(displayDate)
 
     router.push({
       path: '/group',
@@ -943,6 +945,24 @@ onBeforeUnmount(() => {
   // 清除所有 ScrollTrigger 實例
   ScrollTrigger.getAll().forEach((trigger) => trigger.kill())
 })
+
+const handleClick = (type) => {
+  if (type === 1) {
+    router.push({
+      path: '/group',
+      state: {
+        type: 'newest',
+      },
+    })
+  } else if (type === 2) {
+    router.push({
+      path: '/group',
+      state: {
+        type: 'upcoming',
+      },
+    })
+  }
+}
 </script>
 
 <route lang="yaml">

@@ -195,7 +195,7 @@ const deleteDialogAction = (type) => {
 
 const openDialog = async (item) => {
   if (item) {
-    console.log(item)
+    // console.log(item)
 
     dialog.value.id = item._id
     name.value.value = item.name

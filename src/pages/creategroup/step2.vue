@@ -156,7 +156,7 @@ const tagSelectItemsPush = (item) => {
   if (tagSelectItems.value.length < 5) {
     tagSelectItems.value.push(item)
     tagSelectCount.value -= 1
-    console.log(tagSelectItems.value)
+    // console.log(tagSelectItems.value)
   }
   tagInput.value = ''
 }
@@ -198,8 +198,8 @@ onMounted(() => {
     }))
 
     tagSelectItems.value = step2Data
-    console.log(group.step2.tags)
-    console.log(tagSelectItems.value)
+    // console.log(group.step2.tags)
+    // console.log(tagSelectItems.value)
     tagSelectCount.value = 5 - group.step2.tags.length
   }
 })

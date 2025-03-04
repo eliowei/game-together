@@ -234,7 +234,7 @@ import { useAxios } from '@/composables/axios'
 import GroupCard from '@/components/GroupCard.vue'
 import GroupFooter from '@/components/GroupFooter.vue'
 import { useRoute, useRouter } from 'vue-router'
-import { ref } from 'vue'
+import { ref, onMounted, onBeforeUnmount } from 'vue'
 import { useAreaData } from '@/composables/areaData'
 import { useI18n } from 'vue-i18n'
 
@@ -330,7 +330,7 @@ const filteredGroups = computed(() => {
 
 const getGroup = async () => {
   try {
-    console.log(route.query)
+    // console.log(route.query)
     const { data } = await api.post('/group/search', {
       search: route.query.search ? JSON.parse(decodeURIComponent(route.query.search)) : undefined,
       city: route.query.city ? JSON.parse(decodeURIComponent(route.query.city)) : undefined,
@@ -347,7 +347,7 @@ const getGroup = async () => {
       },
     })
 
-    console.log(groups.value)
+    // console.log(groups.value)
   } catch (error) {
     console.log(error)
     groups.value = [] // 錯誤時清空資料
@@ -359,7 +359,7 @@ const searchClick = async () => {
   try {
     const city = selectRegion.value.map((item) => t('area.' + item.city) + item.district)
     const date = selectDate.value ? new Date(selectDate.value).toLocaleDateString() : undefined
-    console.log(search.value.length)
+    // console.log(search.value.length)
     searchResult.value = search.value
 
     const { data } = await api.post('/group/search', {
@@ -369,7 +369,7 @@ const searchClick = async () => {
       tags: selectTag.value.length ? selectTag.value : undefined,
       time: date,
     })
-    console.log(data)
+    // console.log(data)
     groups.value = data.result
 
     router.replace({
@@ -505,13 +505,25 @@ const handleDateSelect = (date) => {
     datePickerOpen.value = false
 
     const displayDate = new Date(date).toLocaleDateString()
-    console.log(displayDate)
+    // console.log(displayDate)
     searchClick()
     selectDate.value = null
   } catch (error) {
     console.log('日期格式錯誤:', error)
   }
 }
+
+onMounted(() => {
+  if (window.history.state.type === 'newest') {
+    groupOrder.value = 0
+  } else if (window.history.state.type === 'upcoming') {
+    groupOrder.value = 3
+  }
+})
+
+onBeforeUnmount(() => {
+  window.history.replaceState({ ...window.history.state, type: null }, '')
+})
 </script>
 
 <route lang="yaml">

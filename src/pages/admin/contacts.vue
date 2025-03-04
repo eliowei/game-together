@@ -106,7 +106,7 @@ const getContact = async () => {
 getContact()
 
 const deleteContact = async (item) => {
-  console.log(item)
+  // console.log(item)
   try {
     await apiAuth.delete('/contactform/' + item._id)
     contact.length = 0

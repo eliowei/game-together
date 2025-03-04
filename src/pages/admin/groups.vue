@@ -546,7 +546,7 @@ const deleteDialogAction = (type) => {
 const openDialog = async (item) => {
   // 有傳入item代表是編輯揪團
   if (item) {
-    console.log(item)
+    // console.log(item)
     // 等待dialog打開
     await nextTick()
     dialog.value.id = item._id
@@ -698,7 +698,7 @@ const regionItems = computed(() => {
 })
 // 刪除揪團
 const deleteGroup = async (item) => {
-  console.log(item)
+  // console.log(item)
   try {
     await apiAuth.delete('/group/' + item._id)
     group.length = 0
@@ -732,7 +732,7 @@ const tagSelectItemsPush = (item) => {
   if (tagSelectItems.value.length < 5) {
     tagSelectItems.value.push(item)
     tagSelectCount.value -= 1
-    console.log(tagSelectItems.value)
+    // console.log(tagSelectItems.value)
   }
   tagInput.value = ''
 }
@@ -810,9 +810,9 @@ const onSubmit = handleSubmit(async (values) => {
       'time',
       `${dateVuetify.format(values.date, 'keyboardDate')} ${String(values.time.hours).padStart(2, '0')}:${String(values.time.minutes).padStart(2, '0')}:00`,
     )
-    console.log(
-      `${dateVuetify.format(values.date, 'keyboardDate')} ${String(values.time.hours).padStart(2, '0')}:${String(values.time.minutes).padStart(2, '0')}:00`,
-    )
+    // console.log(
+    //   `${dateVuetify.format(values.date, 'keyboardDate')} ${String(values.time.hours).padStart(2, '0')}:${String(values.time.minutes).padStart(2, '0')}:00`,
+    // )
 
     // 宣告tags為選擇的標籤，並轉換成array
     const tags = tagSelectItems.value.map((tag) => tag.value)
@@ -821,7 +821,7 @@ const onSubmit = handleSubmit(async (values) => {
     for (let tag of tags) {
       fd.append('tags[]', tag) //後端接收為array
     }
-    console.log(editorContent.value)
+    // console.log(editorContent.value)
     // content -> 文字編輯器內容
     fd.append('content', editorContent.value)
 

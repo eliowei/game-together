@@ -642,7 +642,7 @@ const commentReplyCancel = () => {
 }
 
 const commentReplyEdit = (key, value) => {
-  console.log(value)
+  // console.log(value)
   commentReplyEditState.value = true
   commentReply.id = key
   commentReply.open = true
@@ -747,7 +747,7 @@ const openDialog = (type, data, key) => {
   dialogState.type = type
   dialogState.data = data
   dialogState.key = key
-  console.log(dialogState.data)
+  // console.log(dialogState.data)
 }
 
 const DialogAction = (type) => {
@@ -919,7 +919,7 @@ const favoriteAction = async () => {
 
 const groupMembersAction = async (member) => {
   try {
-    console.log(group.value._id)
+    // console.log(group.value._id)
     if (group.value.organizer_id._id !== user.id) throw new Error('NOT_ORGANIZER')
     if (group.value.organizer_id._id === member.user_id._id) throw new Error('ORGANIZER')
 
@@ -958,17 +958,17 @@ const groupMembersAction = async (member) => {
 const connectSocket = () => {
   if (isConnected.value) return
 
-  console.log('嘗試建立連線...') // 添加除錯訊息
+  // console.log('嘗試建立連線...') // 添加除錯訊息
   newSocket.connect()
 
   newSocket.on('connect', () => {
-    console.log('連線成功，Socket ID:', newSocket.id) // 添加更多連線資訊
+    // console.log('連線成功，Socket ID:', newSocket.id) // 添加更多連線資訊
     isConnected.value = true
     getChatMessage()
   })
 
   newSocket.on('receive_message', (data) => {
-    console.log('收到新訊息:', data)
+    // console.log('收到新訊息:', data)
     chatMessage.push(data)
     scrollToBottom()
     chatMessageLoading.value = false
@@ -985,7 +985,7 @@ const disconnectSocket = () => {
   newSocket.off('receive_message')
   newSocket.emit('leave_room', group.value._id)
   newSocket.disconnect()
-  console.log('已離線')
+  // console.log('已離線')
   chatMessage.length = 0
   chatState.value = false
   loading.value = false
@@ -1016,7 +1016,7 @@ const onSubmit = async () => {
     }
     if (!message.value.trim()) return
 
-    console.log(message.value)
+    // console.log(message.value)
     chatMessageLoading.value = true
     await apiAuth.post(`/chat/${group.value._id}/message`, {
       text: message.value,
@@ -1046,7 +1046,7 @@ const scrollToBottom = async () => {
   await nextTick()
   if (!chatContainer.value) return
 
-  console.log('滾動到底部')
+  // console.log('滾動到底部')
   chatContainer.value.scrollTop = chatContainer.value.scrollHeight
 }
 

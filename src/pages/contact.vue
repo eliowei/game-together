@@ -31,7 +31,7 @@
             no-resize
             :error-messages="description.errorMessage.value"
           ></v-textarea>
-          <v-col offset="9">
+          <v-col cols="3" offset="9">
             <v-btn
               class="mb-15 text-white"
               type="submit"

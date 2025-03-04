@@ -259,12 +259,12 @@ const time = useField('time')
 
 const onSubmit = handleSubmit((values) => {
   group.setStep1(values)
-  console.log(values)
+  // console.log(values)
   router.push('/creategroup/step2')
 })
 
 onMounted(() => {
-  console.log(group.step1)
+  // console.log(group.step1)
   if (group.hasData.resotre.step1) {
     name.value.value = group.step1.name
     description.value.value = group.step1.description
@@ -314,8 +314,8 @@ watch(
   },
 )
 const regionItems = computed(() => {
-  console.log(city.value.value)
-  console.log(area_data.taipei)
+  // console.log(city.value.value)
+  // console.log(area_data.taipei)
   if (!city.value.value || !area_data[city.value.value]) return []
   return area_data[city.value.value].map((item) => ({
     text: item,
