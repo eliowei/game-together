@@ -1,1 +1,0 @@
-import{b as t}from"./route-block-B_A1xBdJ.js";import{_ as r}from"./_plugin-vue_export-helper-DlAUqK2U.js";const o={};function c(e,f){return"Group List"}typeof t=="function"&&t(o);const _=r(o,[["render",c]]);export{_ as default};
