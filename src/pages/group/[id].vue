@@ -68,7 +68,7 @@
                   <v-card width="260" height="150">
                     <v-card-text class="d-flex flex-column">
                       <span class="mb-1"
-                        ><v-icon icon="mdi-calendar-range"></v-icon>{{ group.time }}</span
+                        ><v-icon icon="mdi-calendar-range"></v-icon> {{ group.time }}</span
                       >
                       <span class="mb-1"><v-icon icon="mdi-web"></v-icon> {{ group.type }}</span>
                       <span class="mb-1"
