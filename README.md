@@ -17,12 +17,14 @@
 - 觀看詳細揪團資訊，參加別人主辦的揪團
 - 揪團留言板
 - 參加及收藏揪團
+- 揪團的即時聊天室
 - 管理已參加及收藏的揪團
 - 管理個人資訊
 
 ### 主辦者
 - 根據網站提供步驟主辦揪團
 - 主辦者管理自己主辦的揪團、編輯揪團資訊
+- 主辦者管理揪團的留言板
 
 ### 管理者
 - 管理揪團，新增、編輯、刪除揪團
@@ -35,11 +37,12 @@
 - Vue Router 建構路由
 - Pinia 全局狀態管理
 - 元件拆分與使用
-- Vue axios 串接 RESTful API資料
+- axios 串接 RESTful API資料
 - ESLint + Prettier 統一程式碼結構
 - Vuetify UI 框架
 - VeeValidate 搭配 Yup 進行表單驗證，並輔以 validator 進行資料格式驗證
 - vue-dompurify-html 避免XSS攻擊
+- Socket.IO 即時通訊
 - 後端採用 Node.js，結合 MongoDB 進行資料儲存與管理
 
 ## 使用的套件
@@ -56,3 +59,4 @@
 | Vue Quill, quill-blot-formatter | 富文本編輯器，支持格式化文字和調整圖片大小 |
 | FullCalendar | 行事曆功能，顯示和管理事件 |
 | Vue I18n | 實現多語言國際化，讓應用程式支持不同語言版本 |
+| Socket.IO | 即時通訊，處理 WebSocket 連線（聊天室功能） |
