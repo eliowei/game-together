@@ -548,12 +548,13 @@ import { useI18n } from 'vue-i18n'
 import { EffectFade, Autoplay } from 'swiper/modules'
 import { useRouter } from 'vue-router'
 
-import gsap from 'gsap'
-import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import { useAnimations } from '@/composables/useAnimations'
 
-gsap.registerPlugin(ScrollTrigger)
-
-const GroupFooter = defineAsyncComponent(() => import('@/components/GroupFooter.vue'))
+const GroupFooter = defineAsyncComponent({
+  loader: () => import('@/components/GroupFooter.vue'),
+  suspensible: true,
+  timeout: 3000,
+})
 const { area_data } = useAreaData()
 const { t } = useI18n()
 const router = useRouter()
@@ -766,182 +767,23 @@ const handleDateSelect = (date) => {
 }
 
 onMounted(() => {
-  nextTick()
-  // 首頁標題動畫
-  gsap.from('.index__hero-content-text span, .index__hero-content-text p', {
-    duration: 1,
-    y: 50,
-    opacity: 0,
-    stagger: 0.2,
-    ease: 'power2.out',
-  })
-  gsap.from('.index__search-filters', {
-    delay: 0.5,
-    opacity: 0,
-    duration: 1,
-    y: 50,
-    ease: 'power2.out',
-  })
-  gsap.from('.index__search-bar', {
-    delay: 0.7,
-    opacity: 0,
-    duration: 1,
-    y: 50,
-    ease: 'power2.out',
-  })
+  nextTick(() => {
+    const { animationManager, initializeHeroAnimations, initializeScrollAnimations } =
+      useAnimations()
 
-  // 使用 ScrollTrigger.create 來設定滾動觸發
-  ScrollTrigger.create({
-    trigger: '.index__groups-latest',
-    start: '-80% center',
-    markers: false,
-    once: true,
-    onEnter: () => {
-      // 第一區塊動畫
-      const groupTl = gsap.timeline()
+    // 初始化所有動畫
+    initializeHeroAnimations()
+    initializeScrollAnimations()
 
-      groupTl
-        .from('.index__groups-latest-title', {
-          x: -50,
-          opacity: 0,
-          duration: 1,
-          ease: 'power2.out',
-        })
-        .from(
-          '.index__groups-latest-content-card',
-          {
-            x: -100,
-            opacity: 0,
-            duration: 0.8,
-            ease: 'power2.out',
-            stagger: 0.2,
-          },
-          '-=0.5',
-        )
-        .from(
-          '.index__groups-latest-content-button',
-          {
-            x: -100,
-            opacity: 0,
-            duration: 1,
-            ease: 'power2.out',
-          },
-          '-=0.5',
-        )
-    },
-  })
-
-  // 第二區塊動畫
-  ScrollTrigger.create({
-    trigger: '.index__groups-upcoming',
-    start: '5% center',
-    markers: false,
-    once: true,
-    onEnter: () => {
-      const groupTl2 = gsap.timeline()
-
-      groupTl2
-        .from('.index__groups-upcoming-title', {
-          x: 100,
-          opacity: 0,
-          duration: 1,
-          ease: 'power2.out',
-        })
-        .from(
-          '.index__groups-upcoming-content-card',
-          {
-            x: 100,
-            opacity: 0,
-            duration: 0.8,
-            ease: 'power2.out',
-            stagger: 0.2,
-          },
-          '-=0.5',
-        )
-        .from(
-          '.index__groups-upcoming-content-button',
-          {
-            x: 100,
-            opacity: 0,
-            duration: 1,
-            ease: 'power2.out',
-          },
-          '-=0.5',
-        )
-    },
-  })
-
-  // 第三區塊動畫
-  ScrollTrigger.create({
-    trigger: '.index__introduction',
-    start: 'center center',
-    markers: false,
-    once: true,
-    onEnter: () => {
-      const cardTl = gsap.timeline()
-      cardTl
-        .from('.index__introduction-title', {
-          y: 100,
-          opacity: 0,
-          duration: 1,
-          ease: 'power2.out',
-        })
-        .from(
-          '.index__introduction-card-left',
-          {
-            scale: 0,
-            opacity: 1,
-            duration: 0.5,
-            ease: 'power2.out',
-          },
-          '-=0.5',
-        )
-        .from(
-          '.index__introduction-card-right',
-          {
-            scale: 0,
-            opacity: 1,
-            duration: 0.5,
-            ease: 'power2.out',
-          },
-          '-=0.5',
-        )
-    },
-  })
-
-  // 第四區塊動畫
-  ScrollTrigger.create({
-    trigger: '.index__steps',
-    start: '31% center',
-    markers: false,
-    once: true,
-    onEnter: () => {
-      const cardTl = gsap.timeline()
-      cardTl
-        .from('.index__steps-content', {
-          x: -100,
-          opacity: 0,
-          duration: 1,
-          ease: 'power2.out',
-        })
-        .from(
-          '.index__steps-img',
-          {
-            x: 100,
-            opacity: 0,
-            duration: 1,
-            ease: 'power2.out',
-          },
-          '-=0.5',
-        )
-    },
+    // 播放首頁動畫
+    animationManager.play('heroContent')
   })
 })
 
 // 添加頁面離開時的清理
 onBeforeUnmount(() => {
-  // 清除所有 ScrollTrigger 實例
-  ScrollTrigger.getAll().forEach((trigger) => trigger.kill())
+  const { animationManager } = useAnimations()
+  animationManager.clear()
 })
 
 const handleClick = (type) => {
