@@ -771,12 +771,12 @@ onMounted(() => {
     const { animationManager, initializeHeroAnimations, initializeScrollAnimations } =
       useAnimations()
 
-    // 初始化所有動畫
-    initializeHeroAnimations()
-    initializeScrollAnimations()
-
-    // 播放首頁動畫
-    animationManager.play('heroContent')
+    // 使用 requestAnimationFrame 優化執行時機
+    requestAnimationFrame(() => {
+      initializeHeroAnimations()
+      initializeScrollAnimations()
+      animationManager.play('heroContent')
+    })
   })
 })
 
