@@ -47,9 +47,7 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import gsap from 'gsap'
-import { useRouter } from 'vue-router'
 
-const router = useRouter()
 const isFirstLoad = ref(true)
 const isPageReady = ref(false)
 const loadingImage = ref(new URL('@/assets/loading.svg', import.meta.url).href)
@@ -65,13 +63,15 @@ onMounted(() => {
       repeat: -1,
     })
 
-    // 監聽路由是否完成載入
-    router.isReady().then(() => {
-      isPageReady.value = true
-
+    // 使用 window.load 來確保所有資源載入完成
+    window.addEventListener('load', () => {
       setTimeout(() => {
-        isFirstLoad.value = false
-      }, 1000)
+        isPageReady.value = true
+        // 延遲設定 isFirstLoad 為 false，讓 loading 動畫有時間消失
+        setTimeout(() => {
+          isFirstLoad.value = false
+        }, 500) // 這裡可以根據需要調整時間
+      }, 500) // 這個 timeout 可以根據需要調整，確保加載資源有足夠時間
     })
   }
 })
