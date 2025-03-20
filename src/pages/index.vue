@@ -536,14 +536,12 @@
 </template>
 
 <script setup>
-
 import { ref, computed, onMounted, onBeforeUnmount } from 'vue'
 import { Swiper, SwiperSlide } from 'swiper/vue'
 import 'swiper/css'
 import 'swiper/css/effect-fade'
 import 'swiper/css/navigation'
 import { useAxios } from '@/composables/axios'
-import GroupFooter from '@/components/GroupFooter.vue'
 import { useAreaData } from '@/composables/areaData'
 import { useI18n } from 'vue-i18n'
 
@@ -555,6 +553,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
 gsap.registerPlugin(ScrollTrigger)
 
+const GroupFooter = defineAsyncComponent(() => import('@/components/GroupFooter.vue'))
 const { area_data } = useAreaData()
 const { t } = useI18n()
 const router = useRouter()
@@ -680,17 +679,21 @@ const slides = ref([
   {
     id: 1,
     url: new URL('@/assets/swiper-1.jpg', import.meta.url).href,
+    loading: 'lazy',
   },
   {
     id: 2,
     url: new URL('@/assets/swiper-2.jpg', import.meta.url).href,
+    loading: 'lazy',
   },
   {
     id: 3,
     url: new URL('@/assets/swiper-3.jpg', import.meta.url).href,
+    loading: 'lazy',
   },
   {
     url: new URL('@/assets/swiper-4.jpg', import.meta.url).href,
+    loading: 'lazy',
   },
 ])
 
@@ -721,28 +724,18 @@ const getGroup = async () => {
 getGroup()
 // 最新的揪團
 const newestGroup = computed(() => {
+  const now = new Date()
   return group.value
-    .filter((item) => {
-      const now = new Date()
-      const date = new Date(item.time)
-      return date > now
-    })
-    .sort((a, b) => {
-      return new Date(b.createdAt) - new Date(a.createdAt)
-    })
+    .filter((item) => new Date(item.time) > now)
+    .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
     .splice(0, 3)
 })
 // 即將到來的揪團
 const upcomingGroup = computed(() => {
+  const now = new Date()
   return group.value
-    .filter((item) => {
-      const now = new Date()
-      const date = new Date(item.time)
-      return date > now
-    })
-    .sort((a, b) => {
-      return new Date(a.time) - new Date(b.time)
-    })
+    .filter((item) => new Date(item.time) > now)
+    .sort((a, b) => new Date(a.time) - new Date(b.time))
     .splice(0, 3)
 })
 
