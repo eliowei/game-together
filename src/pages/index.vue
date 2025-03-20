@@ -766,7 +766,6 @@ const handleDateSelect = (date) => {
 }
 
 onMounted(() => {
-  nextTick()
   // 首頁標題動畫
   gsap.from('.index__hero-content-text span, .index__hero-content-text p', {
     duration: 1,
@@ -790,158 +789,144 @@ onMounted(() => {
     ease: 'power2.out',
   })
 
-  // 使用 ScrollTrigger.create 來設定滾動觸發
-  ScrollTrigger.create({
-    trigger: '.index__groups-latest',
-    start: '-80% center',
-    markers: false,
-    once: true,
-    onEnter: () => {
-      // 第一區塊動畫
-      const groupTl = gsap.timeline()
+  // 使用 IntersectionObserver 來監聽元素進入視窗
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          const target = entry.target
 
-      groupTl
-        .from('.index__groups-latest-title', {
-          x: -50,
-          opacity: 0,
-          duration: 1,
-          ease: 'power2.out',
-        })
-        .from(
-          '.index__groups-latest-content-card',
-          {
-            x: -100,
-            opacity: 0,
-            duration: 0.8,
-            ease: 'power2.out',
-            stagger: 0.2,
-          },
-          '-=0.5',
-        )
-        .from(
-          '.index__groups-latest-content-button',
-          {
-            x: -100,
-            opacity: 0,
-            duration: 1,
-            ease: 'power2.out',
-          },
-          '-=0.5',
-        )
+          if (target.classList.contains('index__groups-latest')) {
+            const groupTl = gsap.timeline()
+            groupTl
+              .from('.index__groups-latest-title', {
+                x: -50,
+                opacity: 0,
+                duration: 1,
+                ease: 'power2.out',
+              })
+              .from(
+                '.index__groups-latest-content-card',
+                {
+                  x: -100,
+                  opacity: 0,
+                  duration: 0.8,
+                  ease: 'power2.out',
+                  stagger: 0.2,
+                },
+                '-=0.5',
+              )
+              .from(
+                '.index__groups-latest-content-button',
+                {
+                  x: -100,
+                  opacity: 0,
+                  duration: 1,
+                  ease: 'power2.out',
+                },
+                '-=0.5',
+              )
+          }
+
+          if (target.classList.contains('index__groups-upcoming')) {
+            const groupTl2 = gsap.timeline()
+            groupTl2
+              .from('.index__groups-upcoming-title', {
+                x: 100,
+                opacity: 0,
+                duration: 1,
+                ease: 'power2.out',
+              })
+              .from(
+                '.index__groups-upcoming-content-card',
+                {
+                  x: 100,
+                  opacity: 0,
+                  duration: 0.8,
+                  ease: 'power2.out',
+                  stagger: 0.2,
+                },
+                '-=0.5',
+              )
+              .from(
+                '.index__groups-upcoming-content-button',
+                {
+                  x: 100,
+                  opacity: 0,
+                  duration: 1,
+                  ease: 'power2.out',
+                },
+                '-=0.5',
+              )
+          }
+
+          if (target.classList.contains('index__introduction')) {
+            const cardTl = gsap.timeline()
+            cardTl
+              .from('.index__introduction-title', {
+                y: 100,
+                opacity: 0,
+                duration: 1,
+                ease: 'power2.out',
+              })
+              .from(
+                '.index__introduction-card-left',
+                {
+                  scale: 0,
+                  opacity: 1,
+                  duration: 0.5,
+                  ease: 'power2.out',
+                },
+                '-=0.5',
+              )
+              .from(
+                '.index__introduction-card-right',
+                {
+                  scale: 0,
+                  opacity: 1,
+                  duration: 0.5,
+                  ease: 'power2.out',
+                },
+                '-=0.5',
+              )
+          }
+
+          if (target.classList.contains('index__steps')) {
+            const cardTl = gsap.timeline()
+            cardTl
+              .from('.index__steps-content', {
+                x: -100,
+                opacity: 0,
+                duration: 1,
+                ease: 'power2.out',
+              })
+              .from(
+                '.index__steps-img',
+                {
+                  x: 100,
+                  opacity: 0,
+                  duration: 1,
+                  ease: 'power2.out',
+                },
+                '-=0.5',
+              )
+          }
+
+          // 觸發一次後取消觀察
+          observer.unobserve(target)
+        }
+      })
     },
-  })
-
-  // 第二區塊動畫
-  ScrollTrigger.create({
-    trigger: '.index__groups-upcoming',
-    start: '5% center',
-    markers: false,
-    once: true,
-    onEnter: () => {
-      const groupTl2 = gsap.timeline()
-
-      groupTl2
-        .from('.index__groups-upcoming-title', {
-          x: 100,
-          opacity: 0,
-          duration: 1,
-          ease: 'power2.out',
-        })
-        .from(
-          '.index__groups-upcoming-content-card',
-          {
-            x: 100,
-            opacity: 0,
-            duration: 0.8,
-            ease: 'power2.out',
-            stagger: 0.2,
-          },
-          '-=0.5',
-        )
-        .from(
-          '.index__groups-upcoming-content-button',
-          {
-            x: 100,
-            opacity: 0,
-            duration: 1,
-            ease: 'power2.out',
-          },
-          '-=0.5',
-        )
+    {
+      threshold: 0.05, // 當元素20%進入視窗時觸發
     },
-  })
+  )
 
-  // 第三區塊動畫
-  ScrollTrigger.create({
-    trigger: '.index__introduction',
-    start: 'center center',
-    markers: false,
-    once: true,
-    onEnter: () => {
-      const cardTl = gsap.timeline()
-      cardTl
-        .from('.index__introduction-title', {
-          y: 100,
-          opacity: 0,
-          duration: 1,
-          ease: 'power2.out',
-        })
-        .from(
-          '.index__introduction-card-left',
-          {
-            scale: 0,
-            opacity: 1,
-            duration: 0.5,
-            ease: 'power2.out',
-          },
-          '-=0.5',
-        )
-        .from(
-          '.index__introduction-card-right',
-          {
-            scale: 0,
-            opacity: 1,
-            duration: 0.5,
-            ease: 'power2.out',
-          },
-          '-=0.5',
-        )
-    },
-  })
-
-  // 第四區塊動畫
-  ScrollTrigger.create({
-    trigger: '.index__steps',
-    start: '31% center',
-    markers: false,
-    once: true,
-    onEnter: () => {
-      const cardTl = gsap.timeline()
-      cardTl
-        .from('.index__steps-content', {
-          x: -100,
-          opacity: 0,
-          duration: 1,
-          ease: 'power2.out',
-        })
-        .from(
-          '.index__steps-img',
-          {
-            x: 100,
-            opacity: 0,
-            duration: 1,
-            ease: 'power2.out',
-          },
-          '-=0.5',
-        )
-    },
-  })
-})
-
-// 添加頁面離開時的清理
-onBeforeUnmount(() => {
-  // 清除所有 ScrollTrigger 實例
-  ScrollTrigger.getAll().forEach((trigger) => trigger.kill())
+  // 觀察需要動畫的元素
+  observer.observe(document.querySelector('.index__groups-latest'))
+  observer.observe(document.querySelector('.index__groups-upcoming'))
+  observer.observe(document.querySelector('.index__introduction'))
+  observer.observe(document.querySelector('.index__steps'))
 })
 
 const handleClick = (type) => {
