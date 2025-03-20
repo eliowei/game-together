@@ -52,6 +52,7 @@
                     <v-card-title class="pa-0">
                       <v-img
                         :src="group.image"
+                        :alt="`最新揪團${group.name}圖片`"
                         max-width="600"
                         min-width="250"
                         height="260"
@@ -146,6 +147,7 @@
                     <v-card-title class="pa-0">
                       <v-img
                         :src="group.image"
+                        :alt="`即將到來揪團${group.name}圖片`"
                         max-width="600"
                         min-width="250"
                         height="260"

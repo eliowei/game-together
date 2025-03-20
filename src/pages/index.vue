@@ -17,6 +17,7 @@
           <swiper-slide v-for="slide in slides" :key="slide.id">
             <v-img
               :src="slide.url"
+              :alt="slide.alt"
               :height="900"
               cover
               class="index__hero-content-zoom-effect"
@@ -371,20 +372,24 @@ const slides = ref([
   {
     id: 1,
     url: new URL('@/assets/swiper-1.jpg', import.meta.url).href,
+    alt: 'swiper-1',
     loading: 'lazy',
   },
   {
     id: 2,
     url: new URL('@/assets/swiper-2.jpg', import.meta.url).href,
+    alt: 'swiper-2',
     loading: 'lazy',
   },
   {
     id: 3,
     url: new URL('@/assets/swiper-3.jpg', import.meta.url).href,
+    alt: 'swiper-3',
     loading: 'lazy',
   },
   {
     url: new URL('@/assets/swiper-4.jpg', import.meta.url).href,
+    alt: 'swiper-4',
     loading: 'lazy',
   },
 ])

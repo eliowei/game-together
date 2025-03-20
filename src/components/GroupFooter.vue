@@ -31,13 +31,13 @@
               All rights reserved.
             </p>
             <div class="d-flex mt-5">
-              <button class="mr-5">
+              <button class="mr-5" aria-label="facebook button">
                 <v-icon icon="mdi-facebook" size="x-large"></v-icon>
               </button>
-              <button class="mr-5">
+              <button class="mr-5" aria-label="instagram button">
                 <v-icon icon="mdi-instagram" size="x-large"></v-icon>
               </button>
-              <button>
+              <button aria-label="twitter button">
                 <v-icon icon="mdi-twitter" size="x-large"></v-icon>
               </button>
             </div>
@@ -54,6 +54,7 @@
         style="font-size: 22px; right: 50px; bottom: 30px"
         @click="scrollToTop"
         class="position-absolute back-to-top-button text-white"
+        aria-label="back to top button"
       >
       </v-btn>
     </v-container>
