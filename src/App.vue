@@ -71,7 +71,7 @@ onMounted(() => {
 
       setTimeout(() => {
         isFirstLoad.value = false
-      }, 1500)
+      }, 1000)
     })
   }
 })
