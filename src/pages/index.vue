@@ -440,7 +440,7 @@
 
   <!-- 搜尋彈出視窗 -->
   <v-dialog v-model="dialog.open" width="1000" scrollable eager>
-    <v-card v-show="dialog.type === 1">
+    <v-card v-if="dialog.type === 1">
       <v-card-title class="d-flex mb-0 pb-0">
         <div class="d-flex w-100 justify-center align-center">
           <span class="font-weight-bold" style="font-size: 20px">按縣市搜尋</span>
@@ -492,7 +492,7 @@
       </v-card-actions>
     </v-card>
 
-    <v-card v-show="dialog.type === 2" width="1000">
+    <v-card v-if="dialog.type === 2" width="1000">
       <v-card-title class="d-flex mb-0 pb-0">
         <div class="d-flex w-100 justify-center align-center">
           <span class="font-weight-bold" style="font-size: 20px">按標籤搜尋</span>
@@ -536,10 +536,6 @@
 </template>
 
 <script setup>
-// const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms))
-
-// // 頂層非同步操作
-// await delay(2000)
 
 import { ref, computed, onMounted, onBeforeUnmount } from 'vue'
 import { Swiper, SwiperSlide } from 'swiper/vue'
