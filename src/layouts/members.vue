@@ -177,14 +177,14 @@
   </v-main>
 </template>
 
-<style>
+<style scoped>
 .custom-drawer {
   position: relative;
 }
 
 .drawer-toggle {
   position: absolute;
-  top: 1%;
+  top: 5px;
   right: -21px;
   border-width: 1px 1px 1px 0;
   border-style: solid;
@@ -197,7 +197,7 @@
 </style>
 
 <script setup>
-import { ref, computed, watch } from 'vue'
+import { ref, computed, watch, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useUserStore } from '@/stores/user'
 import { useAxios } from '@/composables/axios'
@@ -331,15 +331,19 @@ const groupFilter = computed(() => {
     .sort((a, b) => new Date(a.group_id.time) - new Date(b.group_id.time))
     .slice(0, 3)
 })
-// 如果超過960px，則關閉手機板型的導覽列
-watch(mdAndUp, (newValue) => {
-  console.log(newValue)
-  if (newValue) {
+
+const handleResponsiveLayout = () => {
+  if (mdAndUp.value) {
     if (dialog.value) dialog.value = false
     if (rail.value) rail.value = false
   }
-  if (!newValue) {
+  if (!mdAndUp.value) {
     if (!rail.value) rail.value = true
   }
-})
+}
+
+// 如果超過960px，則關閉手機板型的導覽列
+watch(mdAndUp, handleResponsiveLayout)
+
+onMounted(handleResponsiveLayout)
 </script>

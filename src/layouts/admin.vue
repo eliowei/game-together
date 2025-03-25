@@ -88,6 +88,25 @@
   </v-main>
 </template>
 
+<style scoped>
+.custom-drawer {
+  position: relative;
+}
+
+.drawer-toggle {
+  position: absolute;
+  top: 5px;
+  right: -21px;
+  border-width: 1px 1px 1px 0;
+  border-style: solid;
+  border-color: rgba(0, 0, 0, 0.12);
+  border-radius: 0 4px 4px 0;
+  cursor: pointer;
+  transition: 0.3s ease;
+  box-shadow: 4px 4px 4px rgba(0, 0, 0, 0.1);
+}
+</style>
+
 <script setup>
 import { computed, watch } from 'vue'
 import { useUserStore } from '@/stores/user'
@@ -164,15 +183,18 @@ const logout = async () => {
   dialog.value = false
   router.push('/')
 }
-// 如果超過960px，則關閉手機板型的導覽列
-watch(mdAndUp, (newValue) => {
-  console.log(newValue)
-  if (newValue) {
+const handleResponsiveLayout = () => {
+  if (mdAndUp.value) {
     if (dialog.value) dialog.value = false
     if (rail.value) rail.value = false
   }
-  if (!newValue) {
+  if (!mdAndUp.value) {
     if (!rail.value) rail.value = true
   }
-})
+}
+
+// 如果超過960px，則關閉手機板型的導覽列
+watch(mdAndUp, handleResponsiveLayout)
+
+onMounted(handleResponsiveLayout)
 </script>
