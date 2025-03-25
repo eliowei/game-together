@@ -1,6 +1,6 @@
 <template>
   <section class="w-100 index__steps mx-auto" style="max-width: 1440px; margin-bottom: 115px">
-    <v-row>
+    <v-row class="w-100">
       <v-col
         cols="10"
         offset="2"
@@ -54,7 +54,7 @@
             </div>
             <p style="font-size: 20px">Step.5 主辦揪團成功!</p>
           </div>
-          <v-col cols="12" offset="5">
+          <v-col cols="3" offset="5">
             <v-btn
               append-icon="mdi-arrow-right"
               :to="'/creategroup/step1/'"

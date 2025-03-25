@@ -1,6 +1,6 @@
 <template>
   <section class="w-100 index__groups mx-auto" style="max-width: 1440px">
-    <v-row>
+    <v-row class="w-100">
       <div class="w-100 index__groups-latest">
         <div class="title d-flex mt-16 mb-12 align-center index__groups-latest-title">
           <v-col

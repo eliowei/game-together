@@ -41,7 +41,7 @@
                 height="60"
                 max-width="180"
                 min-width="87.5"
-                style="font-size: 20px"
+                style="font-size: clamp(14px, 2vw, 20px)"
                 class="rounded-e-0"
                 >按關鍵字搜尋</v-btn
               >
@@ -50,7 +50,7 @@
                 height="60"
                 max-width="180"
                 min-width="87.5"
-                style="font-size: 20px"
+                style="font-size: clamp(14px, 2vw, 20px)"
                 class="rounded-0"
                 @click="clickDialog(1)"
                 >按縣市搜尋</v-btn
@@ -60,7 +60,7 @@
                 height="60"
                 max-width="180"
                 min-width="87.5"
-                style="font-size: 20px"
+                style="font-size: clamp(14px, 2vw, 20px)"
                 class="rounded-0"
                 @click="clickDialog(2)"
                 >按標籤搜尋</v-btn
@@ -73,7 +73,7 @@
                     height="60"
                     max-width="180"
                     min-width="87.5"
-                    style="font-size: 20px"
+                    style="font-size: clamp(14px, 2vw, 20px)"
                     class="rounded-s-0"
                     >按日期搜尋</v-btn
                   >

@@ -3,10 +3,10 @@
     <v-container>
       <v-row class="d-flex justify-space-around">
         <v-col cols="4" class="d-flex align-center">
-          <h1>GAME TOGETHER</h1>
+          <h1 style="font-size: clamp(24px, 4vw, 32px)">GAME TOGETHER</h1>
         </v-col>
         <v-col cols="3">
-          <h1>SITEMAP</h1>
+          <h1 style="font-size: clamp(24px, 4vw, 32px)">SITEMAP</h1>
           <v-list>
             <template v-for="nav of navs" :key="nav.to">
               <v-list-item
@@ -22,22 +22,18 @@
         </v-col>
         <v-col cols="3">
           <div class="d-flex flex-column">
-            <h2 class="mb-4">COPYRIGHT</h2>
-            <p>
-              ©2025 GAME TOGETHER
-              <br />
-              BY BOWEI LI
-              <br />
-              All rights reserved.
-            </p>
-            <div class="d-flex mt-5">
-              <button class="mr-5" aria-label="facebook button">
+            <h2 class="mb-4" style="font-size: clamp(18px, 4vw, 24px)">COPYRIGHT</h2>
+            <p class="mb-1">©2025 GAME TOGETHER</p>
+            <p class="mb-1">BY BOWEI LI</p>
+            <p class="mb-1">All rights reserved.</p>
+            <div class="d-flex mt-5 flex-wrap">
+              <button class="mr-5 mb-5" aria-label="facebook button">
                 <v-icon icon="mdi-facebook" size="x-large"></v-icon>
               </button>
-              <button class="mr-5" aria-label="instagram button">
+              <button class="mr-5 mb-5" aria-label="instagram button">
                 <v-icon icon="mdi-instagram" size="x-large"></v-icon>
               </button>
-              <button aria-label="twitter button">
+              <button class="mb-5" aria-label="twitter button">
                 <v-icon icon="mdi-twitter" size="x-large"></v-icon>
               </button>
             </div>
