@@ -94,6 +94,8 @@
 
 .drawer-toggle {
   position: absolute;
+  height: 24px;
+  width: 20px;
   top: 5px;
   right: -21px;
   border-width: 1px 1px 1px 0;
