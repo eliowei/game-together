@@ -1,5 +1,6 @@
 # GameTogether 遊戲揪團平台
 
+## 專案簡介
 以 Vue 搭配 Vuetify UI框架製作的單頁式應用網站(SPA)，可觀看桌面板及平板版
 
 ### Demo:https://eliowei.github.io/game-together/
@@ -8,6 +9,10 @@
 
 相關連結: [Wireframe 線稿圖](https://www.figma.com/design/JbCRhjezMwJbiCL2esE0k1/%E9%81%8A%E6%88%B2%E6%8F%AA%E5%9C%98%E5%B9%B3%E5%8F%B0?node-id=0-1&t=CedlF5iGgoH3YaqW-1)、[後端](https://github.com/eliowei/game-together-back)
 
+## 主題發想
+發現社群網站上有許多玩家再找人一起玩遊戲，也觀察到現在的社群平台過於分散，無法快速的找到玩家，
+所以想藉此建立一個整合性的遊戲揪團平台，幫助玩家快速找到參與遊戲相關的揪團，以及提供直觀的操作方式，
+輕鬆管理與參與遊戲揪團，找到志同道合的夥伴
 
 ## 網站功能
 
