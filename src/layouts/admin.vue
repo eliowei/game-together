@@ -78,9 +78,11 @@
       }}</v-list-item>
     </v-list>
 
-    <div class="drawer-toggle" @click="rail = !rail" v-show="!mdAndUp">
-      <v-icon :icon="rail ? 'mdi-chevron-right' : 'mdi-chevron-left'" size="small" />
-    </div>
+    <template v-if="!mdAndUp">
+      <div class="drawer-toggle" @click="rail = !rail">
+        <v-icon :icon="rail ? 'mdi-chevron-right' : 'mdi-chevron-left'" size="small" />
+      </div>
+    </template>
   </v-navigation-drawer>
   <v-main>
     <router-view></router-view>
@@ -106,8 +108,6 @@
   transition: 0.3s ease;
   box-shadow: 4px 4px 4px rgba(0, 0, 0, 0.1);
   z-index: 999;
-  visibility: visible;
-  display: block;
 }
 </style>
 
