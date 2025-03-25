@@ -78,11 +78,9 @@
       }}</v-list-item>
     </v-list>
 
-    <template v-if="!mdAndUp">
-      <div class="drawer-toggle" @click="rail = !rail">
-        <v-icon :icon="rail ? 'mdi-chevron-right' : 'mdi-chevron-left'" size="small" />
-      </div>
-    </template>
+    <div class="drawer-toggle" @click="rail = !rail" v-if="!mdAndUp">
+      <v-icon :icon="rail ? 'mdi-chevron-right' : 'mdi-chevron-left'" size="small" />
+    </div>
   </v-navigation-drawer>
   <v-main>
     <router-view></router-view>
@@ -92,6 +90,7 @@
 <style scoped>
 .custom-drawer {
   position: relative;
+  z-index: 100;
 }
 
 .drawer-toggle {

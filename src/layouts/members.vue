@@ -75,13 +75,6 @@
             <span class="mr-3">{{ user.nickname }}</span
             ><span>{{ user.email }}</span>
           </div>
-          <!-- <v-btn
-            v-if="!mdAndUp"
-            icon="mdi-chevron-left"
-            size="40"
-            variant="text"
-            @click.stop="rail = true"
-          ></v-btn> -->
         </div>
       </v-list-item>
       <v-list-item>
@@ -167,11 +160,9 @@
     <v-divider v-if="!rail"></v-divider>
     <v-list-item v-if="groupFilter.length === 0 && !rail">本周無揪團</v-list-item>
 
-    <template v-if="!mdAndUp">
-      <div class="drawer-toggle" @click="rail = !rail">
-        <v-icon :icon="rail ? 'mdi-chevron-right' : 'mdi-chevron-left'" size="small" />
-      </div>
-    </template>
+    <div class="drawer-toggle" @click="rail = !rail" v-if="!mdAndUp">
+      <v-icon :icon="rail ? 'mdi-chevron-right' : 'mdi-chevron-left'" size="small" />
+    </div>
   </v-navigation-drawer>
   <v-main>
     <router-view></router-view>
@@ -181,6 +172,7 @@
 <style scoped>
 .custom-drawer {
   position: relative;
+  z-index: 100;
 }
 
 .drawer-toggle {
