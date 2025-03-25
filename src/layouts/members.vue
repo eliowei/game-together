@@ -195,6 +195,8 @@
   transition: 0.3s ease;
   box-shadow: 4px 4px 4px rgba(0, 0, 0, 0.1);
   z-index: 999;
+  visibility: visible;
+  display: block;
 }
 </style>
 
