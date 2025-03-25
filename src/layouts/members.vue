@@ -56,14 +56,22 @@
   <v-navigation-drawer
     permanent
     :rail="rail"
-    rail-width="10"
+    rail-width="70"
     drawer="drawer"
     width="260"
-    class="custom-drawer"
+    :class="{ 'border-0': rail }"
   >
     <v-list v-if="rail">
       <v-list-item>
-        <v-avatar :image="user.avatar" size="50"></v-avatar>
+        <v-avatar :image="user.avatar" size="50" v-if="!rail"></v-avatar>
+        <v-btn
+          v-if="!mdAndUp"
+          icon="mdi-chevron-right"
+          size="40"
+          variant="text"
+          @click.stop="rail = false"
+          class="border-sm"
+        ></v-btn>
       </v-list-item>
     </v-list>
 
@@ -75,6 +83,13 @@
             <span class="mr-3">{{ user.nickname }}</span
             ><span>{{ user.email }}</span>
           </div>
+          <v-btn
+            v-if="!mdAndUp"
+            icon="mdi-chevron-left"
+            size="40"
+            variant="text"
+            @click.stop="rail = true"
+          ></v-btn>
         </div>
       </v-list-item>
       <v-list-item>
@@ -159,39 +174,11 @@
     </template>
     <v-divider v-if="!rail"></v-divider>
     <v-list-item v-if="groupFilter.length === 0 && !rail">本周無揪團</v-list-item>
-
-    <div class="drawer-toggle" @click="rail = !rail" v-if="!mdAndUp">
-      <v-icon :icon="rail ? 'mdi-chevron-right' : 'mdi-chevron-left'" size="small" />
-    </div>
   </v-navigation-drawer>
   <v-main>
     <router-view></router-view>
   </v-main>
 </template>
-
-<style scoped>
-.custom-drawer {
-  position: relative;
-  z-index: 100;
-}
-
-.drawer-toggle {
-  position: fixed;
-  height: 24px;
-  width: 20px;
-  top: 5px;
-  right: -21px;
-  border-width: 1px 1px 1px 0;
-  border-style: solid;
-  border-color: rgba(0, 0, 0, 0.12);
-  border-radius: 0 4px 4px 0;
-  background-color: white;
-  cursor: pointer;
-  transition: 0.3s ease;
-  box-shadow: 4px 4px 4px rgba(0, 0, 0, 0.1);
-  z-index: 999;
-}
-</style>
 
 <script setup>
 import { ref, computed, watch, onMounted } from 'vue'
