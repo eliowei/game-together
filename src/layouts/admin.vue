@@ -56,11 +56,11 @@
   <v-navigation-drawer
     permanent
     :rail="rail"
-    rail-width="90"
+    rail-width="1"
     drawer="drawer"
-    @click="!mdAndUp ? (rail = false) : null"
     width="260"
     :class="{ 'cursor-pointer': rail }"
+    class="custom-drawer"
   >
     <v-list v-if="rail">
       <v-list-item>
@@ -71,13 +71,6 @@
     <v-list v-if="!rail">
       <div class="d-flex justify-space-between align-center">
         <v-list-item :prepend-avatar="user.avatar" :title="user.nickname"> </v-list-item>
-        <v-btn
-          v-if="!mdAndUp"
-          icon="mdi-chevron-left"
-          size="40"
-          variant="text"
-          @click.stop="rail = true"
-        ></v-btn>
       </div>
 
       <v-divider></v-divider>
@@ -85,6 +78,10 @@
         sidebar.text
       }}</v-list-item>
     </v-list>
+
+    <div class="drawer-toggle" @click="rail = !rail" v-if="!mdAndUp">
+      <v-icon :icon="rail ? 'mdi-chevron-right' : 'mdi-chevron-left'" size="small" />
+    </div>
   </v-navigation-drawer>
   <v-main>
     <router-view></router-view>

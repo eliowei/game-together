@@ -149,7 +149,7 @@
             </v-col>
           </div>
           <v-divider class="border-opacity-100 my-12"></v-divider>
-          <v-col cols="12" offset="10" class="mb-16">
+          <v-col cols="4" offset="10" class="mb-16">
             <v-btn type="submit" width="110" append-icon="mdi-arrow-right">{{
               t('group.next')
             }}</v-btn>
