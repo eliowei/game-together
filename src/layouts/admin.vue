@@ -94,7 +94,7 @@
 }
 
 .drawer-toggle {
-  position: absolute;
+  position: fixed;
   height: 24px;
   width: 20px;
   top: 5px;
@@ -103,6 +103,7 @@
   border-style: solid;
   border-color: rgba(0, 0, 0, 0.12);
   border-radius: 0 4px 4px 0;
+  background-color: white;
   cursor: pointer;
   transition: 0.3s ease;
   box-shadow: 4px 4px 4px rgba(0, 0, 0, 0.1);
