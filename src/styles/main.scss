@@ -219,7 +219,8 @@
     // 搜尋過濾
     &-filters {
       max-width: 720px;
-      min-width: 350px;
+      // min-width: 350px;
+      width: 100%;
 
       .v-btn {
         flex: 0 1 180px;
@@ -235,7 +236,8 @@
     // 搜尋關鍵字input
     &-input {
       max-width: 600px;
-      min-width: 292px;
+      // min-width: 292px;
+      width: 100%;
       height: 80px;
       flex: 0 1 600px;
       &::placeholder {
@@ -253,7 +255,8 @@
     // 搜尋關鍵字父容器
     &-bar {
       max-width: 720px;
-      min-width: 350px;
+      // min-width: 350px;
+      width: 100%;
 
       .v-btn {
         font-size: 20px;

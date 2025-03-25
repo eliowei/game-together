@@ -40,8 +40,8 @@
               <v-btn
                 height="60"
                 max-width="180"
-                min-width="87.5"
-                style="font-size: clamp(14px, 2vw, 20px)"
+                min-width="60"
+                style="font-size: clamp(12px, 2.5vw, 20px)"
                 class="rounded-e-0"
                 >按關鍵字搜尋</v-btn
               >
@@ -49,8 +49,8 @@
                 variant="outlined"
                 height="60"
                 max-width="180"
-                min-width="87.5"
-                style="font-size: clamp(14px, 2vw, 20px)"
+                min-width="60"
+                style="font-size: clamp(12px, 2.5vw, 20px)"
                 class="rounded-0"
                 @click="clickDialog(1)"
                 >按縣市搜尋</v-btn
@@ -59,8 +59,8 @@
                 variant="outlined"
                 height="60"
                 max-width="180"
-                min-width="87.5"
-                style="font-size: clamp(14px, 2vw, 20px)"
+                min-width="60"
+                style="font-size: clamp(12px, 2.5vw, 20px)"
                 class="rounded-0"
                 @click="clickDialog(2)"
                 >按標籤搜尋</v-btn
@@ -72,8 +72,8 @@
                     variant="outlined"
                     height="60"
                     max-width="180"
-                    min-width="87.5"
-                    style="font-size: clamp(14px, 2vw, 20px)"
+                    min-width="60"
+                    style="font-size: clamp(12px, 2.5vw, 20px)"
                     class="rounded-s-0"
                     >按日期搜尋</v-btn
                   >
