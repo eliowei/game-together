@@ -56,10 +56,9 @@
   <v-navigation-drawer
     permanent
     :rail="rail"
-    rail-width="1"
+    rail-width="10"
     drawer="drawer"
     width="260"
-    :class="{ 'cursor-pointer': rail }"
     class="custom-drawer"
   >
     <v-list v-if="rail">
@@ -193,6 +192,7 @@
   cursor: pointer;
   transition: 0.3s ease;
   box-shadow: 4px 4px 4px rgba(0, 0, 0, 0.1);
+  z-index: 999;
 }
 </style>
 
