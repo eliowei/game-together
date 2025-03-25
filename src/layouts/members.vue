@@ -167,7 +167,7 @@
     <v-divider v-if="!rail"></v-divider>
     <v-list-item v-if="groupFilter.length === 0 && !rail">本周無揪團</v-list-item>
 
-    <div class="drawer-toggle" @click="rail = !rail" v-if="!mdAndUp">
+    <div class="drawer-toggle" @click="rail = !rail" v-show="!mdAndUp">
       <v-icon :icon="rail ? 'mdi-chevron-right' : 'mdi-chevron-left'" size="small" />
     </div>
   </v-navigation-drawer>

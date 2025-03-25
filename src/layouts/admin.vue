@@ -78,7 +78,7 @@
       }}</v-list-item>
     </v-list>
 
-    <div class="drawer-toggle" @click="rail = !rail" v-if="!mdAndUp">
+    <div class="drawer-toggle" @click="rail = !rail" v-show="!mdAndUp">
       <v-icon :icon="rail ? 'mdi-chevron-right' : 'mdi-chevron-left'" size="small" />
     </div>
   </v-navigation-drawer>
@@ -186,11 +186,12 @@ const logout = async () => {
   router.push('/')
 }
 const handleResponsiveLayout = () => {
+  console.log('mdAndUp:', mdAndUp.value, 'rail:', rail.value, 'dialog:', dialog.value)
+
   if (mdAndUp.value) {
     if (dialog.value) dialog.value = false
     if (rail.value) rail.value = false
-  }
-  if (!mdAndUp.value) {
+  } else {
     if (!rail.value) rail.value = true
   }
 }
