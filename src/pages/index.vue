@@ -418,7 +418,6 @@ const getGroup = async () => {
     console.log(error)
   }
 }
-getGroup()
 // 最新的揪團
 const newestGroup = computed(() => {
   const now = new Date()
@@ -463,6 +462,8 @@ const handleDateSelect = (date) => {
 }
 
 onMounted(() => {
+  getGroup()
+
   // 首頁標題動畫
   gsap.from('.index__hero-content-text span, .index__hero-content-text p', {
     duration: 1,
