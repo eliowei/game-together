@@ -18,7 +18,7 @@
     "@mdi/font": "7.4.47",
     "@vuepic/vue-datepicker": "^11.0.3",
     "@vueup/vue-quill": "^1.2.0",
-    "axios": "^1.7.9",
+    "axios": "^1.15.0",
     "gsap": "^3.14.2",
     "pinia-plugin-persistedstate": "^4.7.1",
     "quill": "^2.0.3",

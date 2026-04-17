@@ -11,10 +11,12 @@ import { useUserStore } from '@/stores/user'
 
 const api = axios.create({
   baseURL: import.meta.env.VITE_API,
+  headers: Object.create(null)
 })
 
 const apiAuth = axios.create({
   baseURL: import.meta.env.VITE_API,
+  headers: Object.create(null)
 })
 
 // axios 攔截器
